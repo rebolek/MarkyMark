@@ -20,13 +20,13 @@ end-para?: true
 md-buffer: make string! 1000
 
 debug?: false
-debug-print: [value] [if debug? [print value]]
+debug-print: func [value] [if debug? [print value]]
 
 ; FIXME: hacky switch to determine wheter to emit <p> or not (for snippets)
 
 para?: false
 
-set [open-para close-para] either para? [[<p></p>]][["" ""]]
+open-para: close-para: none
 
 ; -----
 
@@ -49,6 +49,7 @@ close-tag: func [tag] [head insert copy tag #"/"]
 
 start-para: does [
 	if start-para? [
+		debug-print "==EMIT open-para"
 		start-para?: false 
 		end-para?: true
 		emit open-para
@@ -389,6 +390,7 @@ rules: [
 			emit value
 		)	
 	]
+	(emit newline)		; FIXME: is it always required?
 ]
 
 markdown: func [
@@ -398,14 +400,15 @@ markdown: func [
 	/only "Return result without newlines"
 	; TODO:
 	/xml "Switch from HTML tags to XML tags (e.g.: <hr /> instead of <hr>)"
+	/snippet "Do not emit opening <p>"
 	/debug "Turn on debugging"
 ] [
 	start-para?: true
 	end-para?: true
-	para?: false
+	set [open-para close-para] either snippet [["" ""]] [[<p></p>]]
 	debug?: debug
 	clear head md-buffer
 	debug-print "** Markdown started"
-	parse data [some rules]
+	parse data rules
 	md-buffer
 ]
