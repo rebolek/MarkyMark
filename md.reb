@@ -3,7 +3,7 @@ REBOL[
 	File: %md.reb
 	Author: "Boleslav Březovský"
 	Date: 7-3-2014
-	Type: 'module
+;	Type: 'module
 	Exports: [markdown]
 	Options: [isolate]
 	To-do: [
@@ -20,7 +20,7 @@ end-para?: true
 md-buffer: make string! 1000
 
 debug?: false
-debug-print: [value] [print "DBprint" if probe debug? [print value]]
+debug-print: [value] [if debug? [print value]]
 
 ; FIXME: hacky switch to determine wheter to emit <p> or not (for snippets)
 
@@ -31,6 +31,15 @@ set [open-para close-para] either para? [[<p></p>]][["" ""]]
 ; -----
 
 value: copy "" ; FIXME: leak?
+
+rule: func [
+	"Make PARSE rule with local variables"
+	local 	[word! block!]  "Local variable(s)"
+	rule 	[block!]		"PARSE rule"
+][
+	if word? local [local: reduce [local]]
+	compile-rules use local reduce [rule]
+]
 
 emit: func [data] [
 ;	print "***wrong emit***" 
@@ -52,13 +61,11 @@ entities: [
 |	#"&" (emit "&amp;")
 ]
 escape-set: charset "\`*_{}[]()#+-.!"
-escapes: use [escape] [
-	[
-		#"\"
-		(start-para)
-		set escape escape-set
-		(emit escape)
-	]
+escapes: rule [escape] [
+	#"\"
+	(start-para)
+	set escape escape-set
+	(emit escape)
 ]
 numbers: charset [#"0" - #"9"]
 ; some "longer, but readable" stuff
@@ -72,42 +79,38 @@ eq: #"="
 lt: #"<"
 gt: #">"
 
-header-underscore: use [text tag] [
-	[
-		copy text to newline 
-		newline
-		some [eq (tag: <h1>) | minus (tag: <h2>)]
-		[newline | end]
-		(
-			end-para?: false
-			start-para?: true
-			emit ajoin [tag text close-tag tag]
-		)
-	]
+header-underscore: rule [text tag] [
+	copy text to newline 
+	newline
+	some [eq (tag: <h1>) | minus (tag: <h2>)]
+	[newline | end]
+	(
+		end-para?: false
+		start-para?: true
+		emit ajoin [tag text close-tag tag]
+	)
 ]
 
-header-hash: use [value continue trailing mark tag] [
-	[
-		(
-			continue: either/only start-para? [not space] [fail]
-			mark: clear ""
-		)
-		continue
-		copy mark some hash
-		space 
-		(emit tag: to tag! compose [h (length? mark)])
-		some [
-			[
-				(trailing: "")
-				[[any space mark] | [opt [2 space (trailing: join newline newline)]]]
-				[newline | end] 
-				(end-para?: false)
-				(start-para?: true)
-				(emit ajoin [close-tag tag trailing])
-			]
-			break
-		|	set value skip (emit value)	
+header-hash: rule [value continue trailing mark tag] [
+	(
+		continue: either/only start-para? [not space] [fail]
+		mark: clear ""
+	)
+	continue
+	copy mark some hash
+	space 
+	(emit tag: to tag! compose [h (length? mark)])
+	some [
+		[
+			(trailing: "")
+			[[any space mark] | [opt [2 space (trailing: join newline newline)]]]
+			[newline | end] 
+			(end-para?: false)
+			(start-para?: true)
+			(emit ajoin [close-tag tag trailing])
 		]
+		break
+	|	set value skip (emit value)	
 	]
 ]
 
@@ -116,77 +119,69 @@ header-rule: [
 |	header-hash	
 ]
 
-autolink-rule: use [address] [
-	[
-		lt
-		copy address ; TODO: Parse address to match email
-		to gt skip
-		(
-			start-para
-			emit ajoin [{<a href="} address {">} address </a>]
-		)
-	]
+autolink-rule: rule [address] [
+	lt
+	copy address ; TODO: Parse address to match email
+	to gt skip
+	(
+		start-para
+		emit ajoin [{<a href="} address {">} address </a>]
+	)
 ]
 
-link-rule: use [text address value title] [
-	[
-		#"["
-		copy text
-		to #"]" skip
-		#"("
-		(
-			address: clear ""
-			title: none
-		)
-		any [
-			not [space | tab | #")"]
-			set value skip
-			(append address value)
-		]
-		opt [
-			some [space | tab]
-			#"^""
-			copy title to #"^""
-			skip
-		]
+link-rule: rule [text address value title] [
+	#"["
+	copy text
+	to #"]" skip
+	#"("
+	(
+		address: clear ""
+		title: none
+	)
+	any [
+		not [space | tab | #")"]
+		set value skip
+		(append address value)
+	]
+	opt [
+		some [space | tab]
+		#"^""
+		copy title to #"^""
 		skip
-		(
-			start-para
-			title: either title [ajoin [space {title="} title {"}]][""]
-			emit ajoin [{<a href="} address {"} title {>} text </a>]
-		)
 	]
+	skip
+	(
+		start-para
+		title: either title [ajoin [space {title="} title {"}]][""]
+		emit ajoin [{<a href="} address {"} title {>} text </a>]
+	)
 ]
 
-em-rule: use [mark text] [
-	[
-		copy mark ["**" | "__" | "*" | "_"]
-		(debug-print ["== EM rule matched with" mark])
-		not space
-		copy text
-		to mark mark
-		(
-			start-para
-			mark: either equal? length? mark 1 <em> <strong>
-			emit ajoin [mark text close-tag mark]
-		)
-	]
+em-rule: rule [mark text] [
+	copy mark ["**" | "__" | "*" | "_"]
+	(debug-print ["== EM rule matched with" mark])
+	not space
+	copy text
+	to mark mark
+	(
+		start-para
+		mark: either equal? length? mark 1 <em> <strong>
+		emit ajoin [mark text close-tag mark]
+	)
 ]
 
-img-rule: use [text address] [
-	[
-		#"!"
-		#"["
-		copy text
-		to #"]" skip
-		#"("
-		copy address
-		to #")" skip
-		(
-			start-para
-			emit ajoin [{<img src="} address {" alt="} text {"} either xml? { /} {} {>}]
-		)
-	]
+img-rule: rule [text address] [
+	#"!"
+	#"["
+	copy text
+	to #"]" skip
+	#"("
+	copy address
+	to #")" skip
+	(
+		start-para
+		emit ajoin [{<img src="} address {" alt="} text {"} either xml? { /} {} {>}]
+	)
 ]
 
 ; TODO: make it bitset!
@@ -213,107 +208,95 @@ ordered: [any space some numbers dot space]
 
 ; TODO: recursion for lists
 
-list-rule: use [continue tag item] [
-	[
-		some [
-			(
-				continue: either start-para? [
-					[
-						ordered (item: ordered tag: <ol>)
-					|	unordered (item: unordered tag: <ul>)
-					]
-				] [
-					[fail]
-				]
-			)
-			continue
-			(start-para?: end-para?: false)
-			(emit ajoin [tag newline <li>])
-			line-rules
-			newline
-			(emit ajoin [</li> newline])
-			some [
-				item
-				(emit <li>)
-				line-rules
-				[newline | end]
-				(emit ajoin [</li> newline])
-			]
-			(emit close-tag tag)
-		]
-	]
-]
-
-blockquote-rule: use [continue] [
-	[
+list-rule: rule [continue tag item] [
+	some [
 		(
-			continue: either/only start-para? [gt any space] [fail]
+			continue: either start-para? [
+				[
+					ordered (item: ordered tag: <ol>)
+				|	unordered (item: unordered tag: <ul>)
+				]
+			] [
+				[fail]
+			]
 		)
 		continue
-		(emit ajoin [<blockquote> newline])
+		(start-para?: end-para?: false)
+		(emit ajoin [tag newline <li>])
 		line-rules
-		[[newline (emit newline)] | end]
-		any [
-			; FIXME: what an ugly hack
-			[newline ] (remove back tail md-buffer emit ajoin [close-para newline newline open-para])
-		|	[
-				continue
-				opt line-rules
-				[newline (emit newline) | end]
-			]
-		]
-		(end-para?: false)
-		(emit ajoin [close-para newline </blockquote>])
-	]
-]
-
-inline-code-rule: use [code value] [
-	[
-		[
-			"``" 
-			(start-para)
-			(emit <code>)
-			some [
-				"``" (emit </code>) break ; end rule
-			|	entities
-			|	set value skip (emit value)
-			]
-		]
-	|	[
-			"`"
-			(start-para)
-			(emit <code>)
-			some [
-				"`" (emit </code>) break ; end rule
-			|	entities
-			|	set value skip (emit value)
-			]
-		]	
-	]
-]
-
-code-line: use [value][
-	[
+		newline
+		(emit ajoin [</li> newline])
 		some [
-			entities
-		|	[newline | end] (emit newline) break
-		|	set value skip (emit value)	
+			item
+			(emit <li>)
+			line-rules
+			[newline | end]
+			(emit ajoin [</li> newline])
+		]
+		(emit close-tag tag)
+	]
+]
+
+blockquote-rule: rule [continue] [
+	(continue: either/only start-para? [gt any space] [fail])
+	continue
+	(emit ajoin [<blockquote> newline])
+	line-rules
+	[[newline (emit newline)] | end]
+	any [
+		; FIXME: what an ugly hack
+		[newline ] (remove back tail md-buffer emit ajoin [close-para newline newline open-para])
+	|	[
+			continue
+			opt line-rules
+			[newline (emit newline) | end]
+		]
+	]
+	(end-para?: false)
+	(emit ajoin [close-para newline </blockquote>])
+]
+
+inline-code-rule: rule [code value] [
+	[
+		"``" 
+		(start-para)
+		(emit <code>)
+		some [
+			"``" (emit </code>) break ; end rule
+		|	entities
+		|	set value skip (emit value)
+		]
+	]
+|	[
+		"`"
+		(start-para)
+		(emit <code>)
+		some [
+			"`" (emit </code>) break ; end rule
+		|	entities
+		|	set value skip (emit value)
 		]
 	]
 ]
 
-code-rule: use [text] [
-	[
-		[4 space | tab]
-		(emit ajoin [<pre><code>])
-		code-line
-		any [
-			[4 space | tab]
-			code-line
-		]
-		(emit ajoin [</code></pre>])
-		(end-para?: false)
+code-line: rule [value][
+	some [
+		entities
+	|	[newline | end] (emit newline) break
+	|	set value skip (emit value)	
 	]
+]
+
+code-rule: rule [text] [
+	[4 space | tab]
+	(emit ajoin [<pre><code>])
+	code-line
+	any [
+		[4 space | tab]
+		code-line
+	]
+	(emit ajoin [</code></pre>])
+	(end-para?: false)
 ]
 
 asterisk-rule: ["\*" (emit "*")]
@@ -337,12 +320,10 @@ line-break-rule: [
 	(emit ajoin [either xml? <br /> <br> newline])
 ]
 
-leading-spaces: use [continue] [
-	[
-		(continue: either/only start-para? [some space] [fail])
-		continue
-		(start-para)
-	]
+leading-spaces: rule [continue] [
+	(continue: either/only start-para? [some space] [fail])
+	continue
+	(start-para)
 ]
 
 ; simplified rules used as sub-rule in some rules
