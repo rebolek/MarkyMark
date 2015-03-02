@@ -345,6 +345,7 @@ leading-spaces: rule [continue] [
 line-rules: [
 	some [
 		em-rule
+	|	strong-rule
 	|	link-rule
 	|	header-rule
 	|	not newline set value skip (
@@ -375,6 +376,7 @@ rules: [
 	|	code-rule
 	|	asterisk-rule
 	|	em-rule
+	|	strong-rule
 	|	horizontal-rule
 	|	entities
 	|	escapes
@@ -401,9 +403,8 @@ markdown: func [
 	start-para?: true
 	end-para?: true
 	para?: false
-	debug?: probe debug
+	debug?: debug
 	clear head md-buffer
-;	probe rules
 	debug-print "** Markdown started"
 	parse data [some rules]
 	md-buffer
