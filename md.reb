@@ -49,7 +49,7 @@ close-tag: func [tag] [head insert copy tag #"/"]
 
 start-para: does [
 	if start-para? [
-		debug-print "==EMIT open-para"
+		debug-print "::EMIT open-para"
 		start-para?: false 
 		end-para?: true
 		emit open-para
@@ -84,6 +84,7 @@ header-underscore: rule [text tag] [
 	copy text to newline 
 	newline
 	some [eq (tag: <h1>) | minus (tag: <h2>)]
+	(debug-print ["==HEADER matched with" tag])
 	[newline | end]
 	(
 		end-para?: false
@@ -160,7 +161,7 @@ link-rule: rule [text address value title] [
 
 em-rule: rule [mark text] [
 	copy mark ["*" | "_"]
-	(debug-print ["== EM rule matched with" mark])
+	(debug-print ["==EM rule matched with" mark])
 	not space
 	copy text
 	to mark mark
@@ -173,7 +174,7 @@ em-rule: rule [mark text] [
 
 strong-rule: rule [mark text] [
 	copy mark ["**" | "__"]
-	(debug-print ["== EM rule matched with" mark])
+	(debug-print ["==STRONG rule matched with" mark])
 	not space
 	copy text
 	to mark mark
@@ -208,10 +209,12 @@ horizontal-rule: [
 	horizontal-mark
 	any space
 	horizontal-mark
+	(debug-print "==HORIZONTAL rule matched")
 	any [
 		horizontal-mark
 	|	space
 	]
+	newline
 	(
 		end-para?: false
 		emit either xml? <hr /><hr>
@@ -366,9 +369,8 @@ sub-rules: [
 
 rules: [
 ;	any space
-	some [
-		header-rule
-	|	link-rule
+	some [	
+		link-rule
 	|	autolink-rule
 	|	img-rule
 	|	list-rule
@@ -376,9 +378,10 @@ rules: [
 	|	inline-code-rule
 	|	code-rule
 	|	asterisk-rule
+	|	horizontal-rule
 	|	em-rule
 	|	strong-rule
-	|	horizontal-rule
+	|	header-rule
 	|	entities
 	|	escapes
 	|	line-break-rule
