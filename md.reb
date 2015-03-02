@@ -218,6 +218,7 @@ horizontal-rule: [
 	(
 		end-para?: false
 		emit either xml? <hr /><hr>
+		emit newline
 	)
 ]
 
@@ -328,7 +329,7 @@ newline-rule: [
 		emit ajoin [close-para newline newline]
 		start-para?: true
 	)
-|	newline (emit newline)	
+|	newline ;(emit newline)	
 ]
 
 line-break-rule: [
@@ -386,14 +387,14 @@ rules: [
 	|	escapes
 	|	line-break-rule
 	|	newline-rule
-	|	end (if end-para? [end-para?: false emit close-para])
+	|	end (if end-para? [debug-print "::EMIT close-para" end-para?: false emit ajoin [close-para newline]])
 	|	leading-spaces
 	|	set value skip (
 			start-para
 			emit value
 		)	
 	]
-	(emit newline)		; FIXME: is it always required?
+;	(emit newline)		; FIXME: is it always required?
 ]
 
 markdown: func [
