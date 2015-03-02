@@ -1,0 +1,6394 @@
+make object! [
+    start_line: 3290423
+    end_line: 3290674
+    html: "<pre><code>foo baz     bim^/</code></pre>^/"
+    markdown: "^-foo^-baz^-^-bim^/"
+    section: "Tab expansion"
+    example: 49
+]
+make object! [
+    start_line: 3290676
+    end_line: 3290929
+    html: {<pre><code>a   a
+ὐ   a
+</code></pre>
+}
+    markdown: "    a^-a^/    ὐ^-a^/"
+    section: "Tab expansion"
+    example: 50
+]
+make object! [
+    start_line: 3291192
+    end_line: 3291446
+    html: {<ul>
+<li>`one</li>
+<li>two`</li>
+</ul>
+}
+    markdown: "- `one^/- two`^/"
+    section: "Precedence"
+    example: 51
+]
+make object! [
+    start_line: 3355190
+    end_line: 3355444
+    html: {<hr />
+<hr />
+<hr />
+}
+    markdown: {***
+---
+___
+}
+    section: "Horizontal rules"
+    example: 52
+]
+make object! [
+    start_line: 3355448
+    end_line: 3355698
+    html: "<p>+++</p>^/"
+    markdown: "+++^/"
+    section: "Horizontal rules"
+    example: 53
+]
+make object! [
+    start_line: 3355700
+    end_line: 3355704
+    html: "<p>===</p>^/"
+    markdown: "===^/"
+    section: "Horizontal rules"
+    example: 54
+]
+make object! [
+    start_line: 3355954
+    end_line: 3356208
+    html: {<p>--
+**
+__</p>
+}
+    markdown: {--
+**
+__
+}
+    section: "Horizontal rules"
+    example: 55
+]
+make object! [
+    start_line: 3356212
+    end_line: 3356466
+    html: {<hr />
+<hr />
+<hr />
+}
+    markdown: { ***
+  ***
+   ***
+}
+    section: "Horizontal rules"
+    example: 56
+]
+make object! [
+    start_line: 3356470
+    end_line: 3356721
+    html: "<pre><code>***^/</code></pre>^/"
+    markdown: "    ***^/"
+    section: "Horizontal rules"
+    example: 57
+]
+make object! [
+    start_line: 3356723
+    end_line: 3356729
+    html: "<p>Foo^/***</p>^/"
+    markdown: "Foo^/    ***^/"
+    section: "Horizontal rules"
+    example: 12592
+]
+make object! [
+    start_line: 3356979
+    end_line: 3356983
+    html: "<hr />^/"
+    markdown: "_____________________________________^/"
+    section: "Horizontal rules"
+    example: 12593
+]
+make object! [
+    start_line: 3420209
+    end_line: 3420213
+    html: "<hr />^/"
+    markdown: " - - -^/"
+    section: "Horizontal rules"
+    example: 12594
+]
+make object! [
+    start_line: 3420215
+    end_line: 3420465
+    html: "<hr />^/"
+    markdown: " **  * ** * ** * **^/"
+    section: "Horizontal rules"
+    example: 12595
+]
+make object! [
+    start_line: 3420467
+    end_line: 3420471
+    html: "<hr />^/"
+    markdown: "-     -      -      -^/"
+    section: "Horizontal rules"
+    example: 12596
+]
+make object! [
+    start_line: 3420721
+    end_line: 3420725
+    html: "<hr />^/"
+    markdown: "- - - -    ^/"
+    section: "Horizontal rules"
+    example: 12597
+]
+make object! [
+    start_line: 3420729
+    end_line: 3420985
+    html: {<p>_ _ _ _ a</p>
+<p>a------</p>
+<p>---a---</p>
+}
+    markdown: {_ _ _ _ a
+
+a------
+
+---a---
+}
+    section: "Horizontal rules"
+    example: 12598
+]
+make object! [
+    start_line: 3421236
+    end_line: 3421240
+    html: "<p><em>-</em></p>^/"
+    markdown: " *-*^/"
+    section: "Horizontal rules"
+    example: 12599
+]
+make object! [
+    start_line: 3421490
+    end_line: 3421748
+    html: {<ul>
+<li>foo</li>
+</ul>
+<hr />
+<ul>
+<li>bar</li>
+</ul>
+}
+    markdown: {- foo
+***
+- bar
+}
+    section: "Horizontal rules"
+    example: 12600
+]
+make object! [
+    start_line: 3421752
+    end_line: 3422006
+    html: {<p>Foo</p>
+<hr />
+<p>bar</p>
+}
+    markdown: {Foo
+***
+bar
+}
+    section: "Horizontal rules"
+    example: 12601
+]
+make object! [
+    start_line: 3422260
+    end_line: 3422513
+    html: "<h2>Foo</h2>^/<p>bar</p>^/"
+    markdown: {Foo
+---
+bar
+}
+    section: "Horizontal rules"
+    example: 12848
+]
+make object! [
+    start_line: 3422518
+    end_line: 3485752
+    html: {<ul>
+<li>Foo</li>
+</ul>
+<hr />
+<ul>
+<li>Bar</li>
+</ul>
+}
+    markdown: {* Foo
+* * *
+* Bar
+}
+    section: "Horizontal rules"
+    example: 12849
+]
+make object! [
+    start_line: 3486002
+    end_line: 3486258
+    html: {<ul>
+<li>Foo</li>
+<li>
+<hr />
+</li>
+</ul>
+}
+    markdown: "- Foo^/- * * *^/"
+    section: "Horizontal rules"
+    example: 12850
+]
+make object! [
+    start_line: 3486768
+    end_line: 3487028
+    html: {<h1>foo</h1>
+<h2>foo</h2>
+<h3>foo</h3>
+<h4>foo</h4>
+<h5>foo</h5>
+<h6>foo</h6>
+}
+    markdown: {# foo
+## foo
+### foo
+#### foo
+##### foo
+###### foo
+}
+    section: "ATX headers"
+    example: 12851
+]
+make object! [
+    start_line: 3487032
+    end_line: 3487282
+    html: "<p>####### foo</p>^/"
+    markdown: "####### foo^/"
+    section: "ATX headers"
+    example: 12852
+]
+make object! [
+    start_line: 3487536
+    end_line: 3487540
+    html: "<p>#5 bolt</p>^/"
+    markdown: "#5 bolt^/"
+    section: "ATX headers"
+    example: 12853
+]
+make object! [
+    start_line: 3487544
+    end_line: 3487794
+    html: "<p>## foo</p>^/"
+    markdown: "\## foo^/"
+    section: "ATX headers"
+    example: 12854
+]
+make object! [
+    start_line: 3487798
+    end_line: 3488048
+    html: "<h1>foo <em>bar</em> *baz*</h1>^/"
+    markdown: "# foo *bar* \*baz\*^/"
+    section: "ATX headers"
+    example: 12855
+]
+make object! [
+    start_line: 3488052
+    end_line: 3488056
+    html: "<h1>foo</h1>^/"
+    markdown: "#                  foo                     ^/"
+    section: "ATX headers"
+    example: 12856
+]
+make object! [
+    start_line: 3551282
+    end_line: 3551536
+    html: {<h3>foo</h3>
+<h2>foo</h2>
+<h1>foo</h1>
+}
+    markdown: { ### foo
+  ## foo
+   # foo
+}
+    section: "ATX headers"
+    example: 12857
+]
+make object! [
+    start_line: 3551540
+    end_line: 3551545
+    html: "<pre><code># foo^/</code></pre>^/"
+    markdown: "    # foo^/"
+    section: "ATX headers"
+    example: 13104
+]
+make object! [
+    start_line: 3551793
+    end_line: 3551799
+    html: "<p>foo^/# bar</p>^/"
+    markdown: "foo^/    # bar^/"
+    section: "ATX headers"
+    example: 13105
+]
+make object! [
+    start_line: 3552049
+    end_line: 3552055
+    html: "<h2>foo</h2>^/<h3>bar</h3>^/"
+    markdown: "## foo ##^/  ###   bar    ###^/"
+    section: "ATX headers"
+    example: 13106
+]
+make object! [
+    start_line: 3552305
+    end_line: 3552311
+    html: "<h1>foo</h1>^/<h5>foo</h5>^/"
+    markdown: {# foo ##################################
+##### foo ##
+}
+    section: "ATX headers"
+    example: 13107
+]
+make object! [
+    start_line: 3552561
+    end_line: 3552565
+    html: "<h3>foo</h3>^/"
+    markdown: "### foo ###     ^/"
+    section: "ATX headers"
+    example: 13108
+]
+make object! [
+    start_line: 3552818
+    end_line: 3552822
+    html: "<h3>foo ### b</h3>^/"
+    markdown: "### foo ### b^/"
+    section: "ATX headers"
+    example: 13109
+]
+make object! [
+    start_line: 3553072
+    end_line: 3553076
+    html: "<h1>foo#</h1>^/"
+    markdown: "# foo#^/"
+    section: "ATX headers"
+    example: 13110
+]
+make object! [
+    start_line: 3553081
+    end_line: 3553335
+    html: {<h3>foo ###</h3>
+<h2>foo ###</h2>
+<h1>foo #</h1>
+}
+    markdown: {### foo \###
+## foo #\##
+# foo \#
+}
+    section: "ATX headers"
+    example: 13111
+]
+make object! [
+    start_line: 3553586
+    end_line: 3616816
+    html: {<hr />
+<h2>foo</h2>
+<hr />
+}
+    markdown: {****
+## foo
+****
+}
+    section: "ATX headers"
+    example: 13112
+]
+make object! [
+    start_line: 3616818
+    end_line: 3617072
+    html: {<p>Foo bar</p>
+<h1>baz</h1>
+<p>Bar foo</p>
+}
+    markdown: {Foo bar
+# baz
+Bar foo
+}
+    section: "ATX headers"
+    example: 13113
+]
+make object! [
+    start_line: 3617076
+    end_line: 3617330
+    html: {<h2></h2>
+<h1></h1>
+<h3></h3>
+}
+    markdown: {## 
+#
+### ###
+}
+    section: "ATX headers"
+    example: 13360
+]
+make object! [
+    start_line: 3618100
+    end_line: 3618355
+    html: {<h1>Foo <em>bar</em></h1>
+<h2>Foo <em>bar</em></h2>
+}
+    markdown: {Foo *bar*
+=========
+
+Foo *bar*
+---------
+}
+    section: "Setext headers"
+    example: 13361
+]
+make object! [
+    start_line: 3618359
+    end_line: 3618614
+    html: "<h2>Foo</h2>^/<h1>Foo</h1>^/"
+    markdown: {Foo
+-------------------------
+
+Foo
+=
+}
+    section: "Setext headers"
+    example: 13362
+]
+make object! [
+    start_line: 3618865
+    end_line: 3619124
+    html: {<h2>Foo</h2>
+<h2>Foo</h2>
+<h1>Foo</h1>
+}
+    markdown: {   Foo
+---
+
+  Foo
+-----
+
+  Foo
+  ===
+}
+    section: "Setext headers"
+    example: 13363
+]
+make object! [
+    start_line: 3619128
+    end_line: 3682609
+    html: {<pre><code>Foo
+---
+
+Foo
+</code></pre>
+<hr />
+}
+    markdown: {    Foo
+    ---
+
+    Foo
+---
+}
+    section: "Setext headers"
+    example: 13364
+]
+make object! [
+    start_line: 3682614
+    end_line: 3682865
+    html: "<h2>Foo</h2>^/"
+    markdown: "Foo^/   ----      ^/"
+    section: "Setext headers"
+    example: 13365
+]
+make object! [
+    start_line: 3682869
+    end_line: 3683121
+    html: "<p>Foo^/---</p>^/"
+    markdown: "Foo^/    ---^/"
+    section: "Setext headers"
+    example: 13366
+]
+make object! [
+    start_line: 3683125
+    end_line: 3683382
+    html: {<p>Foo
+= =</p>
+<p>Foo</p>
+<hr />
+}
+    markdown: {Foo
+= =
+
+Foo
+--- -
+}
+    section: "Setext headers"
+    example: 13367
+]
+make object! [
+    start_line: 3683632
+    end_line: 3683637
+    html: "<h2>Foo</h2>^/"
+    markdown: "Foo  ^/-----^/"
+    section: "Setext headers"
+    example: 13368
+]
+make object! [
+    start_line: 3683641
+    end_line: 3683892
+    html: "<h2>Foo\</h2>^/"
+    markdown: "Foo\^/----^/"
+    section: "Setext headers"
+    example: 13369
+]
+make object! [
+    start_line: 3683897
+    end_line: 3684402
+    html: {<h2>`Foo</h2>
+<p>`</p>
+<h2>&lt;a title=&quot;a lot</h2>
+<p>of dashes&quot;/&gt;</p>
+}
+    markdown: {`Foo
+----
+`
+
+<a title="a lot
+---
+of dashes"/>
+}
+    section: "Setext headers"
+    example: 13616
+]
+make object! [
+    start_line: 3684407
+    end_line: 3684661
+    html: {<blockquote>
+<p>Foo</p>
+</blockquote>
+<hr />
+}
+    markdown: "> Foo^/---^/"
+    section: "Setext headers"
+    example: 13617
+]
+make object! [
+    start_line: 3684663
+    end_line: 3747893
+    html: {<ul>
+<li>Foo</li>
+</ul>
+<hr />
+}
+    markdown: "- Foo^/---^/"
+    section: "Setext headers"
+    example: 13618
+]
+make object! [
+    start_line: 3747897
+    end_line: 3748404
+    html: {<p>Foo
+Bar</p>
+<hr />
+<p>Foo
+Bar
+===</p>
+}
+    markdown: {Foo
+Bar
+---
+
+Foo
+Bar
+===
+}
+    section: "Setext headers"
+    example: 13619
+]
+make object! [
+    start_line: 3748408
+    end_line: 3748912
+    html: {<hr />
+<h2>Foo</h2>
+<h2>Bar</h2>
+<p>Baz</p>
+}
+    markdown: {---
+Foo
+---
+Bar
+---
+Baz
+}
+    section: "Setext headers"
+    example: 13620
+]
+make object! [
+    start_line: 3748916
+    end_line: 3748921
+    html: "<p>====</p>^/"
+    markdown: "^/====^/"
+    section: "Setext headers"
+    example: 13621
+]
+make object! [
+    start_line: 3749173
+    end_line: 3749425
+    html: "<hr />^/<hr />^/"
+    markdown: "---^/---^/"
+    section: "Setext headers"
+    example: 13622
+]
+make object! [
+    start_line: 3749427
+    end_line: 3749681
+    html: {<ul>
+<li>foo</li>
+</ul>
+<hr />
+}
+    markdown: "- foo^/-----^/"
+    section: "Setext headers"
+    example: 13623
+]
+make object! [
+    start_line: 3749683
+    end_line: 3749936
+    html: {<pre><code>foo
+</code></pre>
+<hr />
+}
+    markdown: "    foo^/---^/"
+    section: "Setext headers"
+    example: 13624
+]
+make object! [
+    start_line: 3749938
+    end_line: 3750192
+    html: {<blockquote>
+<p>foo</p>
+</blockquote>
+<hr />
+}
+    markdown: "> foo^/-----^/"
+    section: "Setext headers"
+    example: 13625
+]
+make object! [
+    start_line: 3750197
+    end_line: 825241648
+    html: "<h2>&gt; foo</h2>^/"
+    markdown: "\> foo^/------^/"
+    section: "Setext headers"
+    example: 13872
+]
+make object! [
+    start_line: 825241911
+    end_line: 825242164
+    html: {<pre><code>a simple
+  indented code block
+</code></pre>
+}
+    markdown: "    a simple^/      indented code block^/"
+    section: "Indented code blocks"
+    example: 13873
+]
+make object! [
+    start_line: 825242168
+    end_line: 825242425
+    html: {<pre><code>&lt;a/&gt;
+*hi*
+
+- one
+</code></pre>
+}
+    markdown: {    <a/>
+    *hi*
+
+    - one
+}
+    section: "Indented code blocks"
+    example: 13874
+]
+make object! [
+    start_line: 825242675
+    end_line: 825243184
+    html: {<pre><code>chunk1
+
+chunk2
+
+
+
+chunk3
+</code></pre>
+}
+    markdown: {    chunk1
+
+    chunk2
+  
+ 
+ 
+    chunk3
+}
+    section: "Indented code blocks"
+    example: 13875
+]
+make object! [
+    start_line: 825243189
+    end_line: 825243444
+    html: {<pre><code>chunk1
+  
+  chunk2
+</code></pre>
+}
+    markdown: {    chunk1
+      
+      chunk2
+}
+    section: "Indented code blocks"
+    example: 13876
+]
+make object! [
+    start_line: 825243449
+    end_line: 825243702
+    html: "<p>Foo^/bar</p>^/"
+    markdown: {Foo
+    bar
+
+}
+    section: "Indented code blocks"
+    example: 13877
+]
+make object! [
+    start_line: 825243954
+    end_line: 825243961
+    html: {<pre><code>foo
+</code></pre>
+<p>bar</p>
+}
+    markdown: "    foo^/bar^/"
+    section: "Indented code blocks"
+    example: 13878
+]
+make object! [
+    start_line: 825307188
+    end_line: 825307449
+    html: {<h1>Header</h1>
+<pre><code>foo
+</code></pre>
+<h2>Header</h2>
+<pre><code>foo
+</code></pre>
+<hr />
+}
+    markdown: {# Header
+    foo
+Header
+------
+    foo
+----
+}
+    section: "Indented code blocks"
+    example: 13879
+]
+make object! [
+    start_line: 825307699
+    end_line: 825307952
+    html: {<pre><code>    foo
+bar
+</code></pre>
+}
+    markdown: "        foo^/    bar^/"
+    section: "Indented code blocks"
+    example: 13880
+]
+make object! [
+    start_line: 825307957
+    end_line: 825308212
+    html: "<pre><code>foo^/</code></pre>^/"
+    markdown: {
+    
+    foo
+    
+
+}
+    section: "Indented code blocks"
+    example: 13881
+]
+make object! [
+    start_line: 825308216
+    end_line: 825308467
+    html: "<pre><code>foo  ^/</code></pre>^/"
+    markdown: "    foo  ^/"
+    section: "Indented code blocks"
+    example: 14128
+]
+make object! [
+    start_line: 825372722
+    end_line: 825372977
+    html: {<pre><code>&lt;
+ &gt;
+</code></pre>
+}
+    markdown: {```
+<
+ >
+```
+}
+    section: "Fenced code blocks"
+    example: 14129
+]
+make object! [
+    start_line: 825372981
+    end_line: 825373236
+    html: {<pre><code>&lt;
+ &gt;
+</code></pre>
+}
+    markdown: {~~~
+<
+ >
+~~~
+}
+    section: "Fenced code blocks"
+    example: 14130
+]
+make object! [
+    start_line: 825373241
+    end_line: 825373496
+    html: {<pre><code>aaa
+~~~
+</code></pre>
+}
+    markdown: {```
+aaa
+~~~
+```
+}
+    section: "Fenced code blocks"
+    example: 14131
+]
+make object! [
+    start_line: 825373744
+    end_line: 825373753
+    html: {<pre><code>aaa
+```
+</code></pre>
+}
+    markdown: {~~~
+aaa
+```
+~~~
+}
+    section: "Fenced code blocks"
+    example: 14132
+]
+make object! [
+    start_line: 825374003
+    end_line: 825374258
+    html: {<pre><code>aaa
+```
+</code></pre>
+}
+    markdown: {````
+aaa
+```
+``````
+}
+    section: "Fenced code blocks"
+    example: 14133
+]
+make object! [
+    start_line: 825374260
+    end_line: 825374515
+    html: {<pre><code>aaa
+~~~
+</code></pre>
+}
+    markdown: {~~~~
+aaa
+~~~
+~~~~
+}
+    section: "Fenced code blocks"
+    example: 14134
+]
+make object! [
+    start_line: 825374519
+    end_line: 825374769
+    html: "<pre><code></code></pre>^/"
+    markdown: "```^/"
+    section: "Fenced code blocks"
+    example: 14135
+]
+make object! [
+    start_line: 825374771
+    end_line: 825375027
+    html: {<pre><code>
+```
+aaa
+</code></pre>
+}
+    markdown: {`````
+
+```
+aaa
+}
+    section: "Fenced code blocks"
+    example: 14136
+]
+make object! [
+    start_line: 825375031
+    end_line: 825438262
+    html: {<pre><code>
+  
+</code></pre>
+}
+    markdown: {```
+
+  
+```
+}
+    section: "Fenced code blocks"
+    example: 14137
+]
+make object! [
+    start_line: 825438512
+    end_line: 825438517
+    html: "<pre><code></code></pre>^/"
+    markdown: "```^/```^/"
+    section: "Fenced code blocks"
+    example: 14384
+]
+make object! [
+    start_line: 825438769
+    end_line: 825439024
+    html: {<pre><code>aaa
+aaa
+</code></pre>
+}
+    markdown: { ```
+ aaa
+aaa
+```
+}
+    section: "Fenced code blocks"
+    example: 14385
+]
+make object! [
+    start_line: 825439026
+    end_line: 825439283
+    html: {<pre><code>aaa
+aaa
+aaa
+</code></pre>
+}
+    markdown: {  ```
+aaa
+  aaa
+aaa
+  ```
+}
+    section: "Fenced code blocks"
+    example: 14386
+]
+make object! [
+    start_line: 825439285
+    end_line: 825439542
+    html: {<pre><code>aaa
+ aaa
+aaa
+</code></pre>
+}
+    markdown: {   ```
+   aaa
+    aaa
+  aaa
+   ```
+}
+    section: "Fenced code blocks"
+    example: 14387
+]
+make object! [
+    start_line: 825439792
+    end_line: 825439801
+    html: {<pre><code>```
+aaa
+```
+</code></pre>
+}
+    markdown: {    ```
+    aaa
+    ```
+}
+    section: "Fenced code blocks"
+    example: 14388
+]
+make object! [
+    start_line: 825440052
+    end_line: 825440305
+    html: "<pre><code>aaa^/</code></pre>^/"
+    markdown: {```
+aaa
+  ```
+}
+    section: "Fenced code blocks"
+    example: 14389
+]
+make object! [
+    start_line: 825440307
+    end_line: 825440560
+    html: "<pre><code>aaa^/</code></pre>^/"
+    markdown: {   ```
+aaa
+  ```
+}
+    section: "Fenced code blocks"
+    example: 14390
+]
+make object! [
+    start_line: 825440564
+    end_line: 825503794
+    html: {<pre><code>aaa
+    ```
+</code></pre>
+}
+    markdown: {```
+aaa
+    ```
+}
+    section: "Fenced code blocks"
+    example: 14391
+]
+make object! [
+    start_line: 825503799
+    end_line: 825504051
+    html: "<p><code></code>^/aaa</p>^/"
+    markdown: "``` ```^/aaa^/"
+    section: "Fenced code blocks"
+    example: 14392
+]
+make object! [
+    start_line: 825504053
+    end_line: 825504307
+    html: {<pre><code>aaa
+~~~ ~~
+</code></pre>
+}
+    markdown: {~~~~~~
+aaa
+~~~ ~~
+}
+    section: "Fenced code blocks"
+    example: 14393
+]
+make object! [
+    start_line: 825504312
+    end_line: 825504569
+    html: {<p>foo</p>
+<pre><code>bar
+</code></pre>
+<p>baz</p>
+}
+    markdown: {foo
+```
+bar
+```
+baz
+}
+    section: "Fenced code blocks"
+    example: 14640
+]
+make object! [
+    start_line: 825504820
+    end_line: 825505078
+    html: {<h2>foo</h2>
+<pre><code>bar
+</code></pre>
+<h1>baz</h1>
+}
+    markdown: {foo
+---
+~~~
+bar
+~~~
+# baz
+}
+    section: "Fenced code blocks"
+    example: 14641
+]
+make object! [
+    start_line: 825505331
+    end_line: 825505588
+    html: {<pre><code class="language-ruby">def foo(x)
+  return 3
+end
+</code></pre>
+}
+    markdown: {```ruby
+def foo(x)
+  return 3
+end
+```
+}
+    section: "Fenced code blocks"
+    example: 14642
+]
+make object! [
+    start_line: 825505590
+    end_line: 825505847
+    html: {<pre><code class="language-ruby">def foo(x)
+  return 3
+end
+</code></pre>
+}
+    markdown: {~~~~    ruby startline=3 $%@#$
+def foo(x)
+  return 3
+end
+~~~~~~~
+}
+    section: "Fenced code blocks"
+    example: 14643
+]
+make object! [
+    start_line: 825505849
+    end_line: 825506100
+    html: {<pre><code class="language-;"></code></pre>
+}
+    markdown: "````;^/````^/"
+    section: "Fenced code blocks"
+    example: 14644
+]
+make object! [
+    start_line: 825506104
+    end_line: 825569332
+    html: "<p><code>aa</code>^/foo</p>^/"
+    markdown: "``` aa ```^/foo^/"
+    section: "Fenced code blocks"
+    example: 14645
+]
+make object! [
+    start_line: 825569336
+    end_line: 825569589
+    html: "<pre><code>``` aaa^/</code></pre>^/"
+    markdown: {```
+``` aaa
+```
+}
+    section: "Fenced code blocks"
+    example: 14646
+]
+make object! [
+    start_line: 825570354
+    end_line: 825570865
+    html: {<table>
+  <tr>
+    <td>
+           hi
+    </td>
+  </tr>
+</table>
+<p>okay.</p>
+}
+    markdown: {<table>
+  <tr>
+    <td>
+           hi
+    </td>
+  </tr>
+</table>
+
+okay.
+}
+    section: "HTML blocks"
+    example: 14647
+]
+make object! [
+    start_line: 825570867
+    end_line: 825571121
+    html: { <div>
+  *hello*
+         <foo><a>
+}
+    markdown: { <div>
+  *hello*
+         <foo><a>
+}
+    section: "HTML blocks"
+    example: 14648
+]
+make object! [
+    start_line: 825571125
+    end_line: 825571381
+    html: {<DIV CLASS="foo">
+<p><em>Markdown</em></p>
+</DIV>
+}
+    markdown: {<DIV CLASS="foo">
+
+*Markdown*
+
+</DIV>
+}
+    section: "HTML blocks"
+    example: 14649
+]
+make object! [
+    start_line: 825571633
+    end_line: 825634865
+    html: {<div></div>
+``` c
+int x = 33;
+```
+}
+    markdown: {<div></div>
+``` c
+int x = 33;
+```
+}
+    section: "HTML blocks"
+    example: 3223600
+]
+make object! [
+    start_line: 825634869
+    end_line: 825635123
+    html: {<!-- Foo
+bar
+   baz -->
+}
+    markdown: {<!-- Foo
+bar
+   baz -->
+}
+    section: "HTML blocks"
+    example: 3223601
+]
+make object! [
+    start_line: 825635127
+    end_line: 825635381
+    html: {<?php
+  echo '>';
+?>
+}
+    markdown: {<?php
+  echo '>';
+?>
+}
+    section: "HTML blocks"
+    example: 3223602
+]
+make object! [
+    start_line: 825635385
+    end_line: 825636151
+    html: {<![CDATA[
+function matchwo(a,b)
+{
+if (a < b && a < 0) then
+  {
+  return 1;
+  }
+else
+  {
+  return 0;
+  }
+}
+]]>
+}
+    markdown: {<![CDATA[
+function matchwo(a,b)
+{
+if (a < b && a < 0) then
+  {
+  return 1;
+  }
+else
+  {
+  return 0;
+  }
+}
+]]>
+}
+    section: "HTML blocks"
+    example: 3223603
+]
+make object! [
+    start_line: 825636401
+    end_line: 825636409
+    html: {  <!-- foo -->
+<pre><code>&lt;!-- foo --&gt;
+</code></pre>
+}
+    markdown: {  <!-- foo -->
+
+    <!-- foo -->
+}
+    section: "HTML blocks"
+    example: 3223604
+]
+make object! [
+    start_line: 825636660
+    end_line: 825636916
+    html: {<p>Foo</p>
+<div>
+bar
+</div>
+}
+    markdown: {Foo
+<div>
+bar
+</div>
+}
+    section: "HTML blocks"
+    example: 3223605
+]
+make object! [
+    start_line: 825636921
+    end_line: 825637177
+    html: {<div>
+bar
+</div>
+*foo*
+}
+    markdown: {<div>
+bar
+</div>
+*foo*
+}
+    section: "HTML blocks"
+    example: 3223606
+]
+make object! [
+    start_line: 825700403
+    end_line: 825700409
+    html: "<div class^/foo^/"
+    markdown: "<div class^/foo^/"
+    section: "HTML blocks"
+    example: 3223607
+]
+make object! [
+    start_line: 825701177
+    end_line: 825701433
+    html: {<div>
+<p><em>Emphasized</em> text.</p>
+</div>
+}
+    markdown: {<div>
+
+*Emphasized* text.
+
+</div>
+}
+    section: "HTML blocks"
+    example: 3223608
+]
+make object! [
+    start_line: 825701683
+    end_line: 825701937
+    html: {<div>
+*Emphasized* text.
+</div>
+}
+    markdown: {<div>
+*Emphasized* text.
+</div>
+}
+    section: "HTML blocks"
+    example: 3223609
+]
+make object! [
+    start_line: 825702196
+    end_line: 825702708
+    html: {<table>
+<tr>
+<td>
+Hi
+</td>
+</tr>
+</table>
+}
+    markdown: {<table>
+
+<tr>
+
+<td>
+Hi
+</td>
+
+</tr>
+
+</table>
+}
+    section: "HTML blocks"
+    example: 3223856
+]
+make object! [
+    start_line: 825766449
+    end_line: 825766455
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo]: /url "title"
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3223857
+]
+make object! [
+    start_line: 825766457
+    end_line: 825766711
+    html: {<p><a href="/url" title="the title">foo</a></p>
+}
+    markdown: {   [foo]: 
+      /url  
+           'the title'  
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3223858
+]
+make object! [
+    start_line: 825766713
+    end_line: 825766965
+    html: {<p><a href="my_(url)" title="title (with parens)">Foo*bar]</a></p>
+}
+    markdown: {[Foo*bar\]]:my_(url) 'title (with parens)'
+
+[Foo*bar\]]
+}
+    section: "Link reference definitions"
+    example: 3223859
+]
+make object! [
+    start_line: 825766967
+    end_line: 825767221
+    html: {<p><a href="my%20url" title="title">Foo bar</a></p>
+}
+    markdown: {[Foo bar]:
+<my url>
+'title'
+
+[Foo bar]
+}
+    section: "Link reference definitions"
+    example: 3223860
+]
+make object! [
+    start_line: 825767225
+    end_line: 825767731
+    html: {<p><a href="/url" title="
+title
+line1
+line2
+">foo</a></p>
+}
+    markdown: {[foo]: /url '
+title
+line1
+line2
+'
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3223861
+]
+make object! [
+    start_line: 825767735
+    end_line: 825767991
+    html: {<p>[foo]: /url 'title</p>
+<p>with blank line'</p>
+<p>[foo]</p>
+}
+    markdown: {[foo]: /url 'title
+
+with blank line'
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3223862
+]
+make object! [
+    start_line: 825768241
+    end_line: 825768248
+    html: {<p><a href="/url">foo</a></p>
+}
+    markdown: {[foo]:
+/url
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3223863
+]
+make object! [
+    start_line: 825831474
+    end_line: 825831481
+    html: "<p>[foo]:</p>^/<p>[foo]</p>^/"
+    markdown: {[foo]:
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3223864
+]
+make object! [
+    start_line: 825831731
+    end_line: 825831737
+    html: {<p><a href="url">foo</a></p>
+}
+    markdown: {[foo]
+
+[foo]: url
+}
+    section: "Link reference definitions"
+    example: 3223865
+]
+make object! [
+    start_line: 825831988
+    end_line: 825832241
+    html: {<p><a href="first">foo</a></p>
+}
+    markdown: {[foo]
+
+[foo]: first
+[foo]: second
+}
+    section: "Link reference definitions"
+    example: 3224112
+]
+make object! [
+    start_line: 825832246
+    end_line: 825832498
+    html: {<p><a href="/url">Foo</a></p>
+}
+    markdown: {[FOO]: /url
+
+[Foo]
+}
+    section: "Link reference definitions"
+    example: 3224113
+]
+make object! [
+    start_line: 825832500
+    end_line: 825832752
+    html: {<p><a href="/%CF%86%CE%BF%CF%85">αγω</a></p>
+}
+    markdown: {[ΑΓΩ]: /φου
+
+[αγω]
+}
+    section: "Link reference definitions"
+    example: 3224114
+]
+make object! [
+    start_line: 825832757
+    end_line: 825832760
+    html: ""
+    markdown: "[foo]: /url^/"
+    section: "Link reference definitions"
+    example: 3224115
+]
+make object! [
+    start_line: 825833010
+    end_line: 825833017
+    html: "<p>bar</p>^/"
+    markdown: {[
+foo
+]: /url
+bar
+}
+    section: "Link reference definitions"
+    example: 3224116
+]
+make object! [
+    start_line: 825833268
+    end_line: 825833272
+    html: "<p>[foo]: /url &quot;title&quot; ok</p>^/"
+    markdown: {[foo]: /url "title" ok
+}
+    section: "Link reference definitions"
+    example: 3224117
+]
+make object! [
+    start_line: 825833523
+    end_line: 825833777
+    html: {<pre><code>[foo]: /url &quot;title&quot;
+</code></pre>
+<p>[foo]</p>
+}
+    markdown: {    [foo]: /url "title"
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3224118
+]
+make object! [
+    start_line: 825833782
+    end_line: 842018870
+    html: {<pre><code>[foo]: /url
+</code></pre>
+<p>[foo]</p>
+}
+    markdown: {```
+[foo]: /url
+```
+
+[foo]
+}
+    section: "Link reference definitions"
+    example: 3224119
+]
+make object! [
+    start_line: 842019120
+    end_line: 842019129
+    html: {<p>Foo
+[bar]: /baz</p>
+<p>[bar]</p>
+}
+    markdown: {Foo
+[bar]: /baz
+
+[bar]
+}
+    section: "Link reference definitions"
+    example: 3224120
+]
+make object! [
+    start_line: 842019380
+    end_line: 842019635
+    html: {<h1><a href="/url">Foo</a></h1>
+<blockquote>
+<p>bar</p>
+</blockquote>
+}
+    markdown: {# [Foo]
+[foo]: /url
+> bar
+}
+    section: "Link reference definitions"
+    example: 3224121
+]
+make object! [
+    start_line: 842019640
+    end_line: 842020145
+    html: {<p><a href="/foo-url" title="foo">foo</a>,
+<a href="/bar-url" title="bar">bar</a>,
+<a href="/baz-url">baz</a></p>
+}
+    markdown: {[foo]: /foo-url "foo"
+[bar]: /bar-url
+  "bar"
+[baz]: /baz-url
+
+[foo],
+[bar],
+[baz]
+}
+    section: "Link reference definitions"
+    example: 3224368
+]
+make object! [
+    start_line: 842020152
+    end_line: 842020406
+    html: {<p><a href="/url">foo</a></p>
+<blockquote>
+</blockquote>
+}
+    markdown: {[foo]
+
+> [foo]: /url
+}
+    section: "Link reference definitions"
+    example: 3224369
+]
+make object! [
+    start_line: 842020912
+    end_line: 842020919
+    html: "<p>aaa</p>^/<p>bbb</p>^/"
+    markdown: {aaa
+
+bbb
+}
+    section: "Paragraphs"
+    example: 3224370
+]
+make object! [
+    start_line: 842021169
+    end_line: 842084402
+    html: {<p>aaa
+bbb</p>
+<p>ccc
+ddd</p>
+}
+    markdown: {aaa
+bbb
+
+ccc
+ddd
+}
+    section: "Paragraphs"
+    example: 3224371
+]
+make object! [
+    start_line: 842084406
+    end_line: 842084660
+    html: "<p>aaa</p>^/<p>bbb</p>^/"
+    markdown: {aaa
+
+
+bbb
+}
+    section: "Paragraphs"
+    example: 3224372
+]
+make object! [
+    start_line: 842084664
+    end_line: 842084916
+    html: "<p>aaa^/bbb</p>^/"
+    markdown: "  aaa^/ bbb^/"
+    section: "Paragraphs"
+    example: 3224373
+]
+make object! [
+    start_line: 842084921
+    end_line: 842085175
+    html: {<p>aaa
+bbb
+ccc</p>
+}
+    markdown: {aaa
+             bbb
+                                       ccc
+}
+    section: "Paragraphs"
+    example: 3224374
+]
+make object! [
+    start_line: 842085426
+    end_line: 842085432
+    html: "<p>aaa^/bbb</p>^/"
+    markdown: "   aaa^/bbb^/"
+    section: "Paragraphs"
+    example: 3224375
+]
+make object! [
+    start_line: 842085680
+    end_line: 842085687
+    html: {<pre><code>aaa
+</code></pre>
+<p>bbb</p>
+}
+    markdown: "    aaa^/bbb^/"
+    section: "Paragraphs"
+    example: 3224376
+]
+make object! [
+    start_line: 842085939
+    end_line: 842085945
+    html: "<p>aaa<br />^/bbb</p>^/"
+    markdown: "aaa     ^/bbb     ^/"
+    section: "Paragraphs"
+    example: 3224377
+]
+make object! [
+    start_line: 842086201
+    end_line: 842086705
+    html: "<p>aaa</p>^/<h1>aaa</h1>^/"
+    markdown: {  
+
+aaa
+  
+
+# aaa
+
+  
+}
+    section: "Blank lines"
+    example: 3224624
+]
+make object! [
+    start_line: 842150964
+    end_line: 842151220
+    html: {<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+}
+    markdown: {> # Foo
+> bar
+> baz
+}
+    section: "Block quotes"
+    example: 3224625
+]
+make object! [
+    start_line: 842151224
+    end_line: 842151480
+    html: {<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+}
+    markdown: {># Foo
+>bar
+> baz
+}
+    section: "Block quotes"
+    example: 3224626
+]
+make object! [
+    start_line: 842151730
+    end_line: 842151986
+    html: {<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+}
+    markdown: {   > # Foo
+   > bar
+ > baz
+}
+    section: "Block quotes"
+    example: 3224627
+]
+make object! [
+    start_line: 842151990
+    end_line: 842152245
+    html: {<pre><code>&gt; # Foo
+&gt; bar
+&gt; baz
+</code></pre>
+}
+    markdown: {    > # Foo
+    > bar
+    > baz
+}
+    section: "Block quotes"
+    example: 3224628
+]
+make object! [
+    start_line: 842215472
+    end_line: 842215728
+    html: {<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+}
+    markdown: {> # Foo
+> bar
+baz
+}
+    section: "Block quotes"
+    example: 3224629
+]
+make object! [
+    start_line: 842215733
+    end_line: 842215989
+    html: {<blockquote>
+<p>bar
+baz
+foo</p>
+</blockquote>
+}
+    markdown: {> bar
+baz
+> foo
+}
+    section: "Block quotes"
+    example: 3224630
+]
+make object! [
+    start_line: 842216241
+    end_line: 842216249
+    html: {<blockquote>
+<p>foo</p>
+</blockquote>
+<hr />
+}
+    markdown: "> foo^/---^/"
+    section: "Block quotes"
+    example: 3224631
+]
+make object! [
+    start_line: 842216497
+    end_line: 842216755
+    html: {<blockquote>
+<ul>
+<li>foo</li>
+</ul>
+</blockquote>
+<ul>
+<li>bar</li>
+</ul>
+}
+    markdown: "> - foo^/- bar^/"
+    section: "Block quotes"
+    example: 3224632
+]
+make object! [
+    start_line: 842216757
+    end_line: 842217013
+    html: {<blockquote>
+<pre><code>foo
+</code></pre>
+</blockquote>
+<pre><code>bar
+</code></pre>
+}
+    markdown: ">     foo^/    bar^/"
+    section: "Block quotes"
+    example: 3224633
+]
+make object! [
+    start_line: 842217015
+    end_line: 842217271
+    html: {<blockquote>
+<pre><code></code></pre>
+</blockquote>
+<p>foo</p>
+<pre><code></code></pre>
+}
+    markdown: {> ```
+foo
+```
+}
+    section: "Block quotes"
+    example: 3224880
+]
+make object! [
+    start_line: 842217521
+    end_line: 842217526
+    html: "<blockquote>^/</blockquote>^/"
+    markdown: ">^/"
+    section: "Block quotes"
+    example: 3224881
+]
+make object! [
+    start_line: 842217528
+    end_line: 842217781
+    html: "<blockquote>^/</blockquote>^/"
+    markdown: {>
+>  
+> 
+}
+    section: "Block quotes"
+    example: 3224882
+]
+make object! [
+    start_line: 842217785
+    end_line: 842281015
+    html: {<blockquote>
+<p>foo</p>
+</blockquote>
+}
+    markdown: {>
+> foo
+>  
+}
+    section: "Block quotes"
+    example: 3224883
+]
+make object! [
+    start_line: 842281265
+    end_line: 842281522
+    html: {<blockquote>
+<p>foo</p>
+</blockquote>
+<blockquote>
+<p>bar</p>
+</blockquote>
+}
+    markdown: {> foo
+
+> bar
+}
+    section: "Block quotes"
+    example: 3224884
+]
+make object! [
+    start_line: 842281778
+    end_line: 842282032
+    html: {<blockquote>
+<p>foo
+bar</p>
+</blockquote>
+}
+    markdown: "> foo^/> bar^/"
+    section: "Block quotes"
+    example: 3224885
+]
+make object! [
+    start_line: 842282036
+    end_line: 842282291
+    html: {<blockquote>
+<p>foo</p>
+<p>bar</p>
+</blockquote>
+}
+    markdown: {> foo
+>
+> bar
+}
+    section: "Block quotes"
+    example: 3224886
+]
+make object! [
+    start_line: 842282295
+    end_line: 842282549
+    html: {<p>foo</p>
+<blockquote>
+<p>bar</p>
+</blockquote>
+}
+    markdown: "foo^/> bar^/"
+    section: "Block quotes"
+    example: 3224887
+]
+make object! [
+    start_line: 842282800
+    end_line: 842283058
+    html: {<blockquote>
+<p>aaa</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>bbb</p>
+</blockquote>
+}
+    markdown: {> aaa
+***
+> bbb
+}
+    section: "Block quotes"
+    example: 3224888
+]
+make object! [
+    start_line: 842283063
+    end_line: 842283317
+    html: {<blockquote>
+<p>bar
+baz</p>
+</blockquote>
+}
+    markdown: "> bar^/baz^/"
+    section: "Block quotes"
+    example: 3224889
+]
+make object! [
+    start_line: 842283319
+    end_line: 842346550
+    html: {<blockquote>
+<p>bar</p>
+</blockquote>
+<p>baz</p>
+}
+    markdown: {> bar
+
+baz
+}
+    section: "Block quotes"
+    example: 3225136
+]
+make object! [
+    start_line: 842346552
+    end_line: 842346807
+    html: {<blockquote>
+<p>bar</p>
+</blockquote>
+<p>baz</p>
+}
+    markdown: {> bar
+>
+baz
+}
+    section: "Block quotes"
+    example: 3225137
+]
+make object! [
+    start_line: 842347059
+    end_line: 842347317
+    html: {<blockquote>
+<blockquote>
+<blockquote>
+<p>foo
+bar</p>
+</blockquote>
+</blockquote>
+</blockquote>
+}
+    markdown: "> > > foo^/bar^/"
+    section: "Block quotes"
+    example: 3225138
+]
+make object! [
+    start_line: 842347319
+    end_line: 842347825
+    html: {<blockquote>
+<blockquote>
+<blockquote>
+<p>foo
+bar
+baz</p>
+</blockquote>
+</blockquote>
+</blockquote>
+}
+    markdown: {>>> foo
+> bar
+>>baz
+}
+    section: "Block quotes"
+    example: 3225139
+]
+make object! [
+    start_line: 842347832
+    end_line: 842348336
+    html: {<blockquote>
+<pre><code>code
+</code></pre>
+</blockquote>
+<blockquote>
+<p>not code</p>
+</blockquote>
+}
+    markdown: {>     code
+
+>    not code
+}
+    section: "Block quotes"
+    example: 3225140
+]
+make object! [
+    start_line: 842412080
+    end_line: 842412341
+    html: {<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+}
+    markdown: {A paragraph
+with two lines.
+
+    indented code
+
+> A block quote.
+}
+    section: "List items"
+    example: 3225141
+]
+make object! [
+    start_line: 842412593
+    end_line: 842413104
+    html: {<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+}
+    markdown: {1.  A paragraph
+    with two lines.
+
+        indented code
+
+    > A block quote.
+}
+    section: "List items"
+    example: 3225142
+]
+make object! [
+    start_line: 842413363
+    end_line: 842413618
+    html: {<ul>
+<li>one</li>
+</ul>
+<p>two</p>
+}
+    markdown: {- one
+
+ two
+}
+    section: "List items"
+    example: 3225143
+]
+make object! [
+    start_line: 842413620
+    end_line: 842413877
+    html: {<ul>
+<li>
+<p>one</p>
+<p>two</p>
+</li>
+</ul>
+}
+    markdown: {- one
+
+  two
+}
+    section: "List items"
+    example: 3225144
+]
+make object! [
+    start_line: 842413879
+    end_line: 842414135
+    html: {<ul>
+<li>one</li>
+</ul>
+<pre><code> two
+</code></pre>
+}
+    markdown: { -    one
+
+     two
+}
+    section: "List items"
+    example: 3225145
+]
+make object! [
+    start_line: 842414137
+    end_line: 842477616
+    html: {<ul>
+<li>
+<p>one</p>
+<p>two</p>
+</li>
+</ul>
+}
+    markdown: { -    one
+
+      two
+}
+    section: "List items"
+    example: 3225392
+]
+make object! [
+    start_line: 842477872
+    end_line: 842478133
+    html: {<blockquote>
+<blockquote>
+<ol>
+<li>
+<p>one</p>
+<p>two</p>
+</li>
+</ol>
+</blockquote>
+</blockquote>
+}
+    markdown: {   > > 1.  one
+>>
+>>     two
+}
+    section: "List items"
+    example: 3225393
+]
+make object! [
+    start_line: 842478390
+    end_line: 842478649
+    html: {<blockquote>
+<blockquote>
+<ul>
+<li>one</li>
+</ul>
+<p>two</p>
+</blockquote>
+</blockquote>
+}
+    markdown: {>>- one
+>>
+  >  > two
+}
+    section: "List items"
+    example: 3225394
+]
+make object! [
+    start_line: 842478900
+    end_line: 842479153
+    html: "<p>-one</p>^/<p>2.two</p>^/"
+    markdown: {-one
+
+2.two
+}
+    section: "List items"
+    example: 3225395
+]
+make object! [
+    start_line: 842479159
+    end_line: 842543668
+    html: {<ul>
+<li>
+<p>foo</p>
+<p>bar</p>
+</li>
+<li>
+<p>foo</p>
+</li>
+</ul>
+<p>bar</p>
+<ul>
+<li>
+<pre><code>foo
+
+
+bar
+</code></pre>
+</li>
+<li>
+<p>baz</p>
+<ul>
+<li>
+<pre><code>foo
+
+
+bar
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+}
+    markdown: {- foo
+
+  bar
+
+- foo
+
+
+  bar
+
+- ```
+  foo
+
+
+  bar
+  ```
+
+- baz
+
+  + ```
+    foo
+
+
+    bar
+    ```
+}
+    section: "List items"
+    example: 3225396
+]
+make object! [
+    start_line: 842543672
+    end_line: 842544432
+    html: {<ol>
+<li>
+<p>foo</p>
+<pre><code>bar
+</code></pre>
+<p>baz</p>
+<blockquote>
+<p>bam</p>
+</blockquote>
+</li>
+</ol>
+}
+    markdown: {1.  foo
+
+    ```
+    bar
+    ```
+
+    baz
+
+    > bam
+}
+    section: "List items"
+    example: 3225397
+]
+make object! [
+    start_line: 842544696
+    end_line: 842545200
+    html: {<ul>
+<li>
+<p>foo</p>
+<pre><code>bar
+</code></pre>
+</li>
+</ul>
+}
+    markdown: {- foo
+
+      bar
+}
+    section: "List items"
+    example: 3225398
+]
+make object! [
+    start_line: 842545204
+    end_line: 842545462
+    html: {<ol start="10">
+<li>
+<p>foo</p>
+<pre><code>bar
+</code></pre>
+</li>
+</ol>
+}
+    markdown: {  10.  foo
+
+           bar
+}
+    section: "List items"
+    example: 3225399
+]
+make object! [
+    start_line: 842608690
+    end_line: 842608948
+    html: {<pre><code>indented code
+</code></pre>
+<p>paragraph</p>
+<pre><code>more code
+</code></pre>
+}
+    markdown: {    indented code
+
+paragraph
+
+    more code
+}
+    section: "List items"
+    example: 3225400
+]
+make object! [
+    start_line: 842608950
+    end_line: 842609458
+    html: {<ol>
+<li>
+<pre><code>indented code
+</code></pre>
+<p>paragraph</p>
+<pre><code>more code
+</code></pre>
+</li>
+</ol>
+}
+    markdown: {1.     indented code
+
+   paragraph
+
+       more code
+}
+    section: "List items"
+    example: 3225401
+]
+make object! [
+    start_line: 842609463
+    end_line: 842609971
+    html: {<ol>
+<li>
+<pre><code> indented code
+</code></pre>
+<p>paragraph</p>
+<pre><code>more code
+</code></pre>
+</li>
+</ol>
+}
+    markdown: {1.      indented code
+
+   paragraph
+
+       more code
+}
+    section: "List items"
+    example: 3225648
+]
+make object! [
+    start_line: 842610227
+    end_line: 842610480
+    html: "<p>foo</p>^/<p>bar</p>^/"
+    markdown: {   foo
+
+bar
+}
+    section: "List items"
+    example: 3225649
+]
+make object! [
+    start_line: 842610482
+    end_line: 842610737
+    html: {<ul>
+<li>foo</li>
+</ul>
+<p>bar</p>
+}
+    markdown: {-    foo
+
+  bar
+}
+    section: "List items"
+    example: 3225650
+]
+make object! [
+    start_line: 842610744
+    end_line: 842611001
+    html: {<ul>
+<li>
+<p>foo</p>
+<p>bar</p>
+</li>
+</ul>
+}
+    markdown: {-  foo
+
+   bar
+}
+    section: "List items"
+    example: 3225651
+]
+make object! [
+    start_line: 858796341
+    end_line: 858796854
+    html: {<ul>
+<li>foo</li>
+<li>
+<pre><code>bar
+</code></pre>
+</li>
+<li>
+<pre><code>baz
+</code></pre>
+</li>
+</ul>
+}
+    markdown: {-
+  foo
+-
+  ```
+  bar
+  ```
+-
+      baz
+}
+    section: "List items"
+    example: 3225652
+]
+make object! [
+    start_line: 858797104
+    end_line: 858797360
+    html: {<ul>
+<li>foo</li>
+<li></li>
+<li>bar</li>
+</ul>
+}
+    markdown: {- foo
+-
+- bar
+}
+    section: "List items"
+    example: 3225653
+]
+make object! [
+    start_line: 858797364
+    end_line: 858797620
+    html: {<ul>
+<li>foo</li>
+<li></li>
+<li>bar</li>
+</ul>
+}
+    markdown: {- foo
+-   
+- bar
+}
+    section: "List items"
+    example: 3225654
+]
+make object! [
+    start_line: 858797624
+    end_line: 858797880
+    html: {<ol>
+<li>foo</li>
+<li></li>
+<li>bar</li>
+</ol>
+}
+    markdown: {1. foo
+2.
+3. bar
+}
+    section: "List items"
+    example: 3225655
+]
+make object! [
+    start_line: 858798130
+    end_line: 858798136
+    html: {<ul>
+<li></li>
+</ul>
+}
+    markdown: "*^/"
+    section: "List items"
+    example: 3225656
+]
+make object! [
+    start_line: 858798393
+    end_line: 858861880
+    html: {<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+}
+    markdown: { 1.  A paragraph
+     with two lines.
+
+         indented code
+
+     > A block quote.
+}
+    section: "List items"
+    example: 3225657
+]
+make object! [
+    start_line: 858862130
+    end_line: 858862641
+    html: {<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+}
+    markdown: {  1.  A paragraph
+      with two lines.
+
+          indented code
+
+      > A block quote.
+}
+    section: "List items"
+    example: 3225904
+]
+make object! [
+    start_line: 858862645
+    end_line: 858863156
+    html: {<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+}
+    markdown: {   1.  A paragraph
+       with two lines.
+
+           indented code
+
+       > A block quote.
+}
+    section: "List items"
+    example: 3225905
+]
+make object! [
+    start_line: 858863160
+    end_line: 858863667
+    html: {<pre><code>1.  A paragraph
+    with two lines.
+
+        indented code
+
+    &gt; A block quote.
+</code></pre>
+}
+    markdown: {    1.  A paragraph
+        with two lines.
+
+            indented code
+
+        > A block quote.
+}
+    section: "List items"
+    example: 3225906
+]
+make object! [
+    start_line: 858863927
+    end_line: 858927414
+    html: {<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+}
+    markdown: {  1.  A paragraph
+with two lines.
+
+          indented code
+
+      > A block quote.
+}
+    section: "List items"
+    example: 3225907
+]
+make object! [
+    start_line: 858927664
+    end_line: 858927672
+    html: {<ol>
+<li>A paragraph
+with two lines.</li>
+</ol>
+}
+    markdown: "  1.  A paragraph^/    with two lines.^/"
+    section: "List items"
+    example: 3225908
+]
+make object! [
+    start_line: 858927922
+    end_line: 858928182
+    html: {<blockquote>
+<ol>
+<li>
+<blockquote>
+<p>Blockquote
+continued here.</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+}
+    markdown: "> 1. > Blockquote^/continued here.^/"
+    section: "List items"
+    example: 3225909
+]
+make object! [
+    start_line: 858928184
+    end_line: 858928690
+    html: {<blockquote>
+<ol>
+<li>
+<blockquote>
+<p>Blockquote
+continued here.</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+}
+    markdown: "> 1. > Blockquote^/> continued here.^/"
+    section: "List items"
+    example: 3225910
+]
+make object! [
+    start_line: 858928948
+    end_line: 858929456
+    html: {<ul>
+<li>foo
+<ul>
+<li>bar
+<ul>
+<li>baz</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+}
+    markdown: {- foo
+  - bar
+    - baz
+}
+    section: "List items"
+    example: 3225911
+]
+make object! [
+    start_line: 858929460
+    end_line: 858992692
+    html: {<ul>
+<li>foo</li>
+<li>bar</li>
+<li>baz</li>
+</ul>
+}
+    markdown: {- foo
+ - bar
+  - baz
+}
+    section: "List items"
+    example: 3225912
+]
+make object! [
+    start_line: 858992696
+    end_line: 858992953
+    html: {<ol start="10">
+<li>foo
+<ul>
+<li>bar</li>
+</ul>
+</li>
+</ol>
+}
+    markdown: "10) foo^/    - bar^/"
+    section: "List items"
+    example: 3225913
+]
+make object! [
+    start_line: 858993203
+    end_line: 858993459
+    html: {<ol start="10">
+<li>foo</li>
+</ol>
+<ul>
+<li>bar</li>
+</ul>
+}
+    markdown: "10) foo^/   - bar^/"
+    section: "List items"
+    example: 3289136
+]
+make object! [
+    start_line: 858993463
+    end_line: 858993719
+    html: {<ul>
+<li>
+<ul>
+<li>foo</li>
+</ul>
+</li>
+</ul>
+}
+    markdown: "- - foo^/"
+    section: "List items"
+    example: 3289137
+]
+make object! [
+    start_line: 858993721
+    end_line: 858994227
+    html: {<ol>
+<li>
+<ul>
+<li>
+<ol start="2">
+<li>foo</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+}
+    markdown: "1. - 2. foo^/"
+    section: "List items"
+    example: 3289138
+]
+make object! [
+    start_line: 858994231
+    end_line: 858994737
+    html: {<ul>
+<li>
+<h1>Foo</h1>
+</li>
+<li>
+<h2>Bar</h2>
+baz</li>
+</ul>
+}
+    markdown: {- # Foo
+- Bar
+  ---
+  baz
+}
+    section: "List items"
+    example: 3289139
+]
+make object! [
+    start_line: 859189299
+    end_line: 859189557
+    html: {<ul>
+<li>foo</li>
+<li>bar</li>
+</ul>
+<ul>
+<li>baz</li>
+</ul>
+}
+    markdown: {- foo
+- bar
++ baz
+}
+    section: "Lists"
+    example: 3289140
+]
+make object! [
+    start_line: 859189559
+    end_line: 859189817
+    html: {<ol>
+<li>foo</li>
+<li>bar</li>
+</ol>
+<ol start="3">
+<li>baz</li>
+</ol>
+}
+    markdown: {1. foo
+2. bar
+3) baz
+}
+    section: "Lists"
+    example: 3289141
+]
+make object! [
+    start_line: 859190069
+    end_line: 859190325
+    html: {<p>Foo</p>
+<ul>
+<li>bar</li>
+<li>baz</li>
+</ul>
+}
+    markdown: {Foo
+- bar
+- baz
+}
+    section: "Lists"
+    example: 3289142
+]
+make object! [
+    start_line: 859190576
+    end_line: 859190584
+    html: {<p>The number of windows in my house is</p>
+<ol start="14">
+<li>The number of doors is 6.</li>
+</ol>
+}
+    markdown: {The number of windows in my house is
+14.  The number of doors is 6.
+}
+    section: "Lists"
+    example: 3289143
+]
+make object! [
+    start_line: 859255093
+    end_line: 859255604
+    html: {<ul>
+<li>
+<p>foo</p>
+</li>
+<li>
+<p>bar</p>
+</li>
+</ul>
+<ul>
+<li>baz</li>
+</ul>
+}
+    markdown: {- foo
+
+- bar
+
+
+- baz
+}
+    section: "Lists"
+    example: 3289144
+]
+make object! [
+    start_line: 859255856
+    end_line: 859256116
+    html: {<ul>
+<li>foo</li>
+</ul>
+<p>bar</p>
+<ul>
+<li>baz</li>
+</ul>
+}
+    markdown: {- foo
+
+
+  bar
+- baz
+}
+    section: "Lists"
+    example: 3289145
+]
+make object! [
+    start_line: 859256120
+    end_line: 859256633
+    html: {<ul>
+<li>foo
+<ul>
+<li>bar
+<ul>
+<li>baz</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>  bim
+</code></pre>
+}
+    markdown: {- foo
+  - bar
+    - baz
+
+
+      bim
+}
+    section: "Lists"
+    example: 3289392
+]
+make object! [
+    start_line: 859256886
+    end_line: 859320370
+    html: {<ul>
+<li>foo</li>
+<li>bar</li>
+</ul>
+<ul>
+<li>baz</li>
+<li>bim</li>
+</ul>
+}
+    markdown: {- foo
+- bar
+
+
+- baz
+- bim
+}
+    section: "Lists"
+    example: 3289393
+]
+make object! [
+    start_line: 859320372
+    end_line: 859320885
+    html: {<ul>
+<li>
+<p>foo</p>
+<p>notcode</p>
+</li>
+<li>
+<p>foo</p>
+</li>
+</ul>
+<pre><code>code
+</code></pre>
+}
+    markdown: {-   foo
+
+    notcode
+
+-   foo
+
+
+    code
+}
+    section: "Lists"
+    example: 3289394
+]
+make object! [
+    start_line: 859321138
+    end_line: 859321648
+    html: {<ul>
+<li>a</li>
+<li>b</li>
+<li>c</li>
+<li>d</li>
+<li>e</li>
+<li>f</li>
+<li>g</li>
+</ul>
+}
+    markdown: {- a
+ - b
+  - c
+   - d
+  - e
+ - f
+- g
+}
+    section: "Lists"
+    example: 3289395
+]
+make object! [
+    start_line: 859321653
+    end_line: 859322162
+    html: {<ul>
+<li>
+<p>a</p>
+</li>
+<li>
+<p>b</p>
+</li>
+<li>
+<p>c</p>
+</li>
+</ul>
+}
+    markdown: {- a
+- b
+
+- c
+}
+    section: "Lists"
+    example: 3289396
+]
+make object! [
+    start_line: 859322166
+    end_line: 859322673
+    html: {<ul>
+<li>
+<p>a</p>
+</li>
+<li></li>
+<li>
+<p>c</p>
+</li>
+</ul>
+}
+    markdown: {* a
+*
+
+* c
+}
+    section: "Lists"
+    example: 3289397
+]
+make object! [
+    start_line: 859322679
+    end_line: 859386166
+    html: {<ul>
+<li>
+<p>a</p>
+</li>
+<li>
+<p>b</p>
+<p>c</p>
+</li>
+<li>
+<p>d</p>
+</li>
+</ul>
+}
+    markdown: {- a
+- b
+
+  c
+- d
+}
+    section: "Lists"
+    example: 3289398
+]
+make object! [
+    start_line: 859386168
+    end_line: 859386678
+    html: {<ul>
+<li>
+<p>a</p>
+</li>
+<li>
+<p>b</p>
+</li>
+<li>
+<p>d</p>
+</li>
+</ul>
+}
+    markdown: {- a
+- b
+
+  [ref]: /url
+- d
+}
+    section: "Lists"
+    example: 3289399
+]
+make object! [
+    start_line: 859386928
+    end_line: 859387193
+    html: {<ul>
+<li>a</li>
+<li>
+<pre><code>b
+
+
+</code></pre>
+</li>
+<li>c</li>
+</ul>
+}
+    markdown: {- a
+- ```
+  b
+
+
+  ```
+- c
+}
+    section: "Lists"
+    example: 3289400
+]
+make object! [
+    start_line: 859387445
+    end_line: 859387955
+    html: {<ul>
+<li>a
+<ul>
+<li>
+<p>b</p>
+<p>c</p>
+</li>
+</ul>
+</li>
+<li>d</li>
+</ul>
+}
+    markdown: {- a
+  - b
+
+    c
+- d
+}
+    section: "Lists"
+    example: 3289401
+]
+make object! [
+    start_line: 859387960
+    end_line: 875573298
+    html: {<ul>
+<li>a
+<blockquote>
+<p>b</p>
+</blockquote>
+</li>
+<li>c</li>
+</ul>
+}
+    markdown: {* a
+  > b
+  >
+* c
+}
+    section: "Lists"
+    example: 3289648
+]
+make object! [
+    start_line: 875573303
+    end_line: 875573813
+    html: {<ul>
+<li>a
+<blockquote>
+<p>b</p>
+</blockquote>
+<pre><code>c
+</code></pre>
+</li>
+<li>d</li>
+</ul>
+}
+    markdown: {- a
+  > b
+  ```
+  c
+  ```
+- d
+}
+    section: "Lists"
+    example: 3289649
+]
+make object! [
+    start_line: 875573817
+    end_line: 875574069
+    html: {<ul>
+<li>a</li>
+</ul>
+}
+    markdown: "- a^/"
+    section: "Lists"
+    example: 3289650
+]
+make object! [
+    start_line: 875574071
+    end_line: 875574328
+    html: {<ul>
+<li>a
+<ul>
+<li>b</li>
+</ul>
+</li>
+</ul>
+}
+    markdown: "- a^/  - b^/"
+    section: "Lists"
+    example: 3289651
+]
+make object! [
+    start_line: 875574579
+    end_line: 875574839
+    html: {<ol>
+<li>
+<pre><code>foo
+</code></pre>
+<p>bar</p>
+</li>
+</ol>
+}
+    markdown: {1. ```
+   foo
+   ```
+
+   bar
+}
+    section: "Lists"
+    example: 3289652
+]
+make object! [
+    start_line: 875575089
+    end_line: 875575350
+    html: {<ul>
+<li>
+<p>foo</p>
+<ul>
+<li>bar</li>
+</ul>
+<p>baz</p>
+</li>
+</ul>
+}
+    markdown: {* foo
+  * bar
+
+  baz
+}
+    section: "Lists"
+    example: 3289653
+]
+make object! [
+    start_line: 875575352
+    end_line: 875639091
+    html: {<ul>
+<li>
+<p>a</p>
+<ul>
+<li>b</li>
+<li>c</li>
+</ul>
+</li>
+<li>
+<p>d</p>
+<ul>
+<li>e</li>
+<li>f</li>
+</ul>
+</li>
+</ul>
+}
+    markdown: {- a
+  - b
+  - c
+
+- d
+  - e
+  - f
+}
+    section: "Lists"
+    example: 3289654
+]
+make object! [
+    start_line: 875639345
+    end_line: 875639349
+    html: "<p><code>hi</code>lo`</p>^/"
+    markdown: "`hi`lo`^/"
+    section: "Inlines"
+    example: 3289655
+]
+make object! [
+    start_line: 875639604
+    end_line: 875639608
+    html: {<p>!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^^_`{|}~</p>
+}
+    markdown: {\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^^\_\`\{\|\}\~
+}
+    section: "Backslash escapes"
+    example: 3289656
+]
+make object! [
+    start_line: 875639859
+    end_line: 875639863
+    html: "<p>\   \A\a\ \3\φ\«</p>^/"
+    markdown: "\^-\A\a\ \3\φ\«^/"
+    section: "Backslash escapes"
+    example: 3289657
+]
+make object! [
+    start_line: 875640114
+    end_line: 875640624
+    html: {<p>*not emphasized*
+&lt;br/&gt; not a tag
+[not a link](/foo)
+`not code`
+1. not a list
+* not a list
+# not a header
+[foo]: /url &quot;not a reference&quot;</p>
+}
+    markdown: {\*not emphasized*
+\<br/> not a tag
+\[not a link](/foo)
+\`not code`
+1\. not a list
+\* not a list
+\# not a header
+\[foo]: /url "not a reference"
+}
+    section: "Backslash escapes"
+    example: 3289904
+]
+make object! [
+    start_line: 875640628
+    end_line: 875640632
+    html: "<p>\<em>emphasis</em></p>^/"
+    markdown: "\\*emphasis*^/"
+    section: "Backslash escapes"
+    example: 3289905
+]
+make object! [
+    start_line: 875640882
+    end_line: 875640888
+    html: "<p>foo<br />^/bar</p>^/"
+    markdown: "foo\^/bar^/"
+    section: "Backslash escapes"
+    example: 3289906
+]
+make object! [
+    start_line: 875641139
+    end_line: 875641143
+    html: "<p><code>\[\`</code></p>^/"
+    markdown: "`` \[\` ``^/"
+    section: "Backslash escapes"
+    example: 3289907
+]
+make object! [
+    start_line: 875641145
+    end_line: 875704372
+    html: "<pre><code>\[\]^/</code></pre>^/"
+    markdown: "    \[\]^/"
+    section: "Backslash escapes"
+    example: 3289908
+]
+make object! [
+    start_line: 875704374
+    end_line: 875704627
+    html: "<pre><code>\[\]^/</code></pre>^/"
+    markdown: {~~~
+\[\]
+~~~
+}
+    section: "Backslash escapes"
+    example: 3289909
+]
+make object! [
+    start_line: 875704629
+    end_line: 875704633
+    html: {<p><a href="http://example.com?find=%5C*">http://example.com?find=\*</a></p>
+}
+    markdown: "<http://example.com?find=\*>^/"
+    section: "Backslash escapes"
+    example: 3289910
+]
+make object! [
+    start_line: 875704881
+    end_line: 875704885
+    html: {<p><a href="/bar\/)"></p>
+}
+    markdown: {<a href="/bar\/)">
+}
+    section: "Backslash escapes"
+    example: 3289911
+]
+make object! [
+    start_line: 875705136
+    end_line: 875705140
+    html: {<p><a href="/bar*" title="ti*tle">foo</a></p>
+}
+    markdown: {[foo](/bar\* "ti\*tle")
+}
+    section: "Backslash escapes"
+    example: 3289912
+]
+make object! [
+    start_line: 875705142
+    end_line: 875705394
+    html: {<p><a href="/bar*" title="ti*tle">foo</a></p>
+}
+    markdown: {[foo]
+
+[foo]: /bar\* "ti\*tle"
+}
+    section: "Backslash escapes"
+    example: 3289913
+]
+make object! [
+    start_line: 875705396
+    end_line: 875705649
+    html: {<pre><code class="language-foo+bar">foo
+</code></pre>
+}
+    markdown: {``` foo\+bar
+foo
+```
+}
+    section: "Backslash escapes"
+    example: 3290160
+]
+make object! [
+    start_line: 875706160
+    end_line: 875706164
+    html: "<p>  &amp; © Æ Ď ¾ ℋ ⅆ ∲</p>^/"
+    markdown: {&nbsp; &amp; &copy; &AElig; &Dcaron; &frac34; &HilbertSpace; &DifferentialD; &ClockwiseContourIntegral;
+}
+    section: "Entities"
+    example: 3290161
+]
+make object! [
+    start_line: 875706418
+    end_line: 875706422
+    html: "<p># Ӓ Ϡ �</p>^/"
+    markdown: "&#35; &#1234; &#992; &#98765432;^/"
+    section: "Entities"
+    example: 3290162
+]
+make object! [
+    start_line: 875706674
+    end_line: 875706678
+    html: "<p>&quot; ആ ಫ</p>^/"
+    markdown: "&#X22; &#XD06; &#xcab;^/"
+    section: "Entities"
+    example: 3290163
+]
+make object! [
+    start_line: 875769904
+    end_line: 875769908
+    html: {<p>&amp;nbsp &amp;x; &amp;#; &amp;#x; &amp;ThisIsWayTooLongToBeAnEntityIsntIt; &amp;hi?;</p>
+}
+    markdown: {&nbsp &x; &#; &#x; &ThisIsWayTooLongToBeAnEntityIsntIt; &hi?;
+}
+    section: "Entities"
+    example: 3290164
+]
+make object! [
+    start_line: 875770160
+    end_line: 875770164
+    html: "<p>&amp;copy</p>^/"
+    markdown: "&copy^/"
+    section: "Entities"
+    example: 3290165
+]
+make object! [
+    start_line: 875770169
+    end_line: 875770419
+    html: "<p>&amp;MadeUpEntity;</p>^/"
+    markdown: "&MadeUpEntity;^/"
+    section: "Entities"
+    example: 3290166
+]
+make object! [
+    start_line: 875770425
+    end_line: 875770675
+    html: {<p><a href="&ouml;&ouml;.html"></p>
+}
+    markdown: {<a href="&ouml;&ouml;.html">
+}
+    section: "Entities"
+    example: 3290167
+]
+make object! [
+    start_line: 875770677
+    end_line: 875770681
+    html: {<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>
+}
+    markdown: {[foo](/f&ouml;&ouml; "f&ouml;&ouml;")
+}
+    section: "Entities"
+    example: 3290168
+]
+make object! [
+    start_line: 875770929
+    end_line: 875770935
+    html: {<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>
+}
+    markdown: {[foo]
+
+[foo]: /f&ouml;&ouml; "f&ouml;&ouml;"
+}
+    section: "Entities"
+    example: 3290169
+]
+make object! [
+    start_line: 875770937
+    end_line: 875771190
+    html: {<pre><code class="language-föö">foo
+</code></pre>
+}
+    markdown: {``` f&ouml;&ouml;
+foo
+```
+}
+    section: "Entities"
+    example: 3290416
+]
+make object! [
+    start_line: 875771440
+    end_line: 875771444
+    html: "<p><code>f&amp;ouml;&amp;ouml;</code></p>^/"
+    markdown: "`f&ouml;&ouml;`^/"
+    section: "Entities"
+    example: 3290417
+]
+make object! [
+    start_line: 875771446
+    end_line: 875771697
+    html: "<pre><code>f&amp;ouml;f&amp;ouml;^/</code></pre>^/"
+    markdown: "    f&ouml;f&ouml;^/"
+    section: "Entities"
+    example: 3290418
+]
+make object! [
+    start_line: 875771959
+    end_line: 875772209
+    html: "<p><code>foo</code></p>^/"
+    markdown: "`foo`^/"
+    section: "Code spans"
+    example: 3290419
+]
+make object! [
+    start_line: 875772214
+    end_line: 875835440
+    html: "<p><code>foo ` bar</code></p>^/"
+    markdown: "`` foo ` bar  ``^/"
+    section: "Code spans"
+    example: 3290420
+]
+make object! [
+    start_line: 875835445
+    end_line: 875835449
+    html: "<p><code>``</code></p>^/"
+    markdown: "` `` `^/"
+    section: "Code spans"
+    example: 3290421
+]
+make object! [
+    start_line: 875835699
+    end_line: 875835705
+    html: "<p><code>foo</code></p>^/"
+    markdown: {``
+foo
+``
+}
+    section: "Code spans"
+    example: 3290422
+]
+make object! [
+    start_line: 875835956
+    end_line: 875835961
+    html: "<p><code>foo bar baz</code></p>^/"
+    markdown: "`foo   bar^/  baz`^/"
+    section: "Code spans"
+    example: 3290423
+]
+make object! [
+    start_line: 875836468
+    end_line: 875836472
+    html: "<p><code>foo `` bar</code></p>^/"
+    markdown: "`foo `` bar`^/"
+    section: "Code spans"
+    example: 3290424
+]
+make object! [
+    start_line: 875836723
+    end_line: 875836727
+    html: "<p><code>foo\</code>bar`</p>^/"
+    markdown: "`foo\`bar`^/"
+    section: "Code spans"
+    example: 3290425
+]
+make object! [
+    start_line: 875836984
+    end_line: 875837234
+    html: "<p>*foo<code>*</code></p>^/"
+    markdown: "*foo`*`^/"
+    section: "Code spans"
+    example: 3290672
+]
+make object! [
+    start_line: 875837238
+    end_line: 875837488
+    html: "<p>[not a <code>link](/foo</code>)</p>^/"
+    markdown: "[not a `link](/foo`)^/"
+    section: "Code spans"
+    example: 3290673
+]
+make object! [
+    start_line: 875837493
+    end_line: 875837497
+    html: "<p><code>&lt;a href=&quot;</code>&quot;&gt;`</p>^/"
+    markdown: {`<a href="`">`
+}
+    section: "Code spans"
+    example: 3290674
+]
+make object! [
+    start_line: 875837747
+    end_line: 875837751
+    html: {<p><a href="`">`</p>
+}
+    markdown: {<a href="`">`
+}
+    section: "Code spans"
+    example: 3290675
+]
+make object! [
+    start_line: 875900977
+    end_line: 875900981
+    html: "<p><code>&lt;http://foo.bar.</code>baz&gt;`</p>^/"
+    markdown: "`<http://foo.bar.`baz>`^/"
+    section: "Code spans"
+    example: 3290676
+]
+make object! [
+    start_line: 875900985
+    end_line: 875901235
+    html: {<p><a href="http://foo.bar.%60baz">http://foo.bar.`baz</a>`</p>
+}
+    markdown: "<http://foo.bar.`baz>`^/"
+    section: "Code spans"
+    example: 3290677
+]
+make object! [
+    start_line: 875901240
+    end_line: 875901490
+    html: "<p>```foo``</p>^/"
+    markdown: "```foo``^/"
+    section: "Code spans"
+    example: 3290678
+]
+make object! [
+    start_line: 875901492
+    end_line: 875901496
+    html: "<p>`foo</p>^/"
+    markdown: "`foo^/"
+    section: "Code spans"
+    example: 3290679
+]
+make object! [
+    start_line: 876032563
+    end_line: 876032567
+    html: "<p><em>foo bar</em></p>^/"
+    markdown: "*foo bar*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290680
+]
+make object! [
+    start_line: 876032818
+    end_line: 876032822
+    html: "<p>a * foo bar*</p>^/"
+    markdown: "a * foo bar*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290681
+]
+make object! [
+    start_line: 876033074
+    end_line: 876033078
+    html: "<p>a*&quot;foo&quot;*</p>^/"
+    markdown: {a*"foo"*
+}
+    section: "Emphasis and strong emphasis"
+    example: 3290928
+]
+make object! [
+    start_line: 876033328
+    end_line: 876033332
+    html: "<p>* a *</p>^/"
+    markdown: "* a *^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290929
+]
+make object! [
+    start_line: 876033336
+    end_line: 876033586
+    html: "<p>foo<em>bar</em></p>^/"
+    markdown: "foo*bar*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290930
+]
+make object! [
+    start_line: 876033588
+    end_line: 876033592
+    html: "<p>5<em>6</em>78</p>^/"
+    markdown: "5*6*78^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290931
+]
+make object! [
+    start_line: 876033842
+    end_line: 876033846
+    html: "<p><em>foo bar</em></p>^/"
+    markdown: "_foo bar_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290932
+]
+make object! [
+    start_line: 876034097
+    end_line: 876034101
+    html: "<p>_ foo bar_</p>^/"
+    markdown: "_ foo bar_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290933
+]
+make object! [
+    start_line: 876034352
+    end_line: 876034356
+    html: "<p>a_&quot;foo&quot;_</p>^/"
+    markdown: {a_"foo"_
+}
+    section: "Emphasis and strong emphasis"
+    example: 3290934
+]
+make object! [
+    start_line: 876034360
+    end_line: 876097586
+    html: "<p>foo_bar_</p>^/"
+    markdown: "foo_bar_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290935
+]
+make object! [
+    start_line: 876097588
+    end_line: 876097592
+    html: "<p>5_6_78</p>^/"
+    markdown: "5_6_78^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290936
+]
+make object! [
+    start_line: 876097840
+    end_line: 876097844
+    html: "<p>пристаням_стремятся_</p>^/"
+    markdown: "пристаням_стремятся_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3290937
+]
+make object! [
+    start_line: 876097849
+    end_line: 876098099
+    html: "<p>aa_&quot;bb&quot;_cc</p>^/"
+    markdown: {aa_"bb"_cc
+}
+    section: "Emphasis and strong emphasis"
+    example: 3291184
+]
+make object! [
+    start_line: 876098104
+    end_line: 876098354
+    html: {<p>&quot;aa&quot;_&quot;bb&quot;_&quot;cc&quot;</p>
+}
+    markdown: {"aa"_"bb"_"cc"
+}
+    section: "Emphasis and strong emphasis"
+    example: 3291185
+]
+make object! [
+    start_line: 876098361
+    end_line: 876098611
+    html: "<p>_foo*</p>^/"
+    markdown: "_foo*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291186
+]
+make object! [
+    start_line: 876098616
+    end_line: 876098866
+    html: "<p>*foo bar *</p>^/"
+    markdown: "*foo bar *^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291187
+]
+make object! [
+    start_line: 876098870
+    end_line: 876099124
+    html: {<p>*foo bar</p>
+<ul>
+<li></li>
+</ul>
+}
+    markdown: "*foo bar^/*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291188
+]
+make object! [
+    start_line: 876099376
+    end_line: 876099380
+    html: "<p>*(*foo)</p>^/"
+    markdown: "*(*foo)^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291189
+]
+make object! [
+    start_line: 876099385
+    end_line: 876099635
+    html: "<p><em>(<em>foo</em>)</em></p>^/"
+    markdown: "*(*foo*)*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291190
+]
+make object! [
+    start_line: 876099639
+    end_line: 876099889
+    html: "<p><em>foo</em>bar</p>^/"
+    markdown: "*foo*bar^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291191
+]
+make object! [
+    start_line: 876099897
+    end_line: 876163123
+    html: "<p>_foo bar _</p>^/"
+    markdown: "_foo bar _^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291192
+]
+make object! [
+    start_line: 876163128
+    end_line: 876163378
+    html: "<p>_(_foo)</p>^/"
+    markdown: "_(_foo)^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291193
+]
+make object! [
+    start_line: 876163382
+    end_line: 876163632
+    html: "<p><em>(<em>foo</em>)</em></p>^/"
+    markdown: "_(_foo_)_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291440
+]
+make object! [
+    start_line: 876163636
+    end_line: 876163640
+    html: "<p>_foo_bar</p>^/"
+    markdown: "_foo_bar^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291441
+]
+make object! [
+    start_line: 876163888
+    end_line: 876163892
+    html: "<p>_пристаням_стремятся</p>^/"
+    markdown: "_пристаням_стремятся^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291442
+]
+make object! [
+    start_line: 876163894
+    end_line: 876164144
+    html: "<p><em>foo_bar_baz</em></p>^/"
+    markdown: "_foo_bar_baz_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291443
+]
+make object! [
+    start_line: 876164148
+    end_line: 876164152
+    html: "<p><strong>foo bar</strong></p>^/"
+    markdown: "**foo bar**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291444
+]
+make object! [
+    start_line: 876164403
+    end_line: 876164407
+    html: "<p>** foo bar**</p>^/"
+    markdown: "** foo bar**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291445
+]
+make object! [
+    start_line: 876164659
+    end_line: 876164663
+    html: "<p>a**&quot;foo&quot;**</p>^/"
+    markdown: {a**"foo"**
+}
+    section: "Emphasis and strong emphasis"
+    example: 3291446
+]
+make object! [
+    start_line: 876164913
+    end_line: 876164917
+    html: "<p>foo<strong>bar</strong></p>^/"
+    markdown: "foo**bar**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291447
+]
+make object! [
+    start_line: 876164921
+    end_line: 876165171
+    html: "<p><strong>foo bar</strong></p>^/"
+    markdown: "__foo bar__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291448
+]
+make object! [
+    start_line: 876165176
+    end_line: 876165426
+    html: "<p>__ foo bar__</p>^/"
+    markdown: "__ foo bar__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3291449
+]
+make object! [
+    start_line: 876165429
+    end_line: 892350513
+    html: "<p>__^/foo bar__</p>^/"
+    markdown: "__^/foo bar__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354672
+]
+make object! [
+    start_line: 892350518
+    end_line: 892350768
+    html: "<p>a__&quot;foo&quot;__</p>^/"
+    markdown: {a__"foo"__
+}
+    section: "Emphasis and strong emphasis"
+    example: 3354673
+]
+make object! [
+    start_line: 892350772
+    end_line: 892350776
+    html: "<p>foo__bar__</p>^/"
+    markdown: "foo__bar__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354674
+]
+make object! [
+    start_line: 892351024
+    end_line: 892351028
+    html: "<p>5__6__78</p>^/"
+    markdown: "5__6__78^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354675
+]
+make object! [
+    start_line: 892351030
+    end_line: 892351280
+    html: "<p>пристаням__стремятся__</p>^/"
+    markdown: "пристаням__стремятся__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354676
+]
+make object! [
+    start_line: 892351282
+    end_line: 892351286
+    html: {<p><strong>foo, <strong>bar</strong>, baz</strong></p>
+}
+    markdown: "__foo, __bar__, baz__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354677
+]
+make object! [
+    start_line: 892351539
+    end_line: 892351543
+    html: "<p>**foo bar **</p>^/"
+    markdown: "**foo bar **^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354678
+]
+make object! [
+    start_line: 892351797
+    end_line: 892351801
+    html: "<p>**(**foo)</p>^/"
+    markdown: "**(**foo)^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354679
+]
+make object! [
+    start_line: 892352052
+    end_line: 892352056
+    html: "<p><em>(<strong>foo</strong>)</em></p>^/"
+    markdown: "*(**foo**)*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354680
+]
+make object! [
+    start_line: 892352304
+    end_line: 892352310
+    html: {<p><strong>Gomphocarpus (<em>Gomphocarpus physocarpus</em>, syn.
+<em>Asclepias physocarpa</em>)</strong></p>
+}
+    markdown: {**Gomphocarpus (*Gomphocarpus physocarpus*, syn.
+*Asclepias physocarpa*)**
+}
+    section: "Emphasis and strong emphasis"
+    example: 3354681
+]
+make object! [
+    start_line: 892352312
+    end_line: 892352562
+    html: {<p><strong>foo &quot;<em>bar</em>&quot; foo</strong></p>
+}
+    markdown: {**foo "*bar*" foo**
+}
+    section: "Emphasis and strong emphasis"
+    example: 3354928
+]
+make object! [
+    start_line: 892352566
+    end_line: 892352816
+    html: "<p><strong>foo</strong>bar</p>^/"
+    markdown: "**foo**bar^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354929
+]
+make object! [
+    start_line: 892352823
+    end_line: 892416049
+    html: "<p>__foo bar __</p>^/"
+    markdown: "__foo bar __^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354930
+]
+make object! [
+    start_line: 892416054
+    end_line: 892416304
+    html: "<p>__(__foo)</p>^/"
+    markdown: "__(__foo)^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354931
+]
+make object! [
+    start_line: 892416309
+    end_line: 892416313
+    html: "<p><em>(<strong>foo</strong>)</em></p>^/"
+    markdown: "_(__foo__)_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354932
+]
+make object! [
+    start_line: 892416563
+    end_line: 892416567
+    html: "<p>__foo__bar</p>^/"
+    markdown: "__foo__bar^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354933
+]
+make object! [
+    start_line: 892416569
+    end_line: 892416819
+    html: "<p>__пристаням__стремятся</p>^/"
+    markdown: "__пристаням__стремятся^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354934
+]
+make object! [
+    start_line: 892416821
+    end_line: 892416825
+    html: "<p><strong>foo__bar__baz</strong></p>^/"
+    markdown: "__foo__bar__baz__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354935
+]
+make object! [
+    start_line: 892417078
+    end_line: 892417328
+    html: {<p><em>foo <a href="/url">bar</a></em></p>
+}
+    markdown: "*foo [bar](/url)*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354936
+]
+make object! [
+    start_line: 892417330
+    end_line: 892417336
+    html: "<p><em>foo^/bar</em></p>^/"
+    markdown: "*foo^/bar*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3354937
+]
+make object! [
+    start_line: 892417587
+    end_line: 892417591
+    html: "<p><em>foo <strong>bar</strong> baz</em></p>^/"
+    markdown: "_foo __bar__ baz_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355184
+]
+make object! [
+    start_line: 892417593
+    end_line: 892417843
+    html: "<p><em>foo <em>bar</em> baz</em></p>^/"
+    markdown: "_foo _bar_ baz_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355185
+]
+make object! [
+    start_line: 892417845
+    end_line: 892417849
+    html: "<p><em><em>foo</em> bar</em></p>^/"
+    markdown: "__foo_ bar_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355186
+]
+make object! [
+    start_line: 892418097
+    end_line: 892418101
+    html: "<p><em>foo <em>bar</em></em></p>^/"
+    markdown: "*foo *bar**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355187
+]
+make object! [
+    start_line: 892418103
+    end_line: 892418353
+    html: "<p><em>foo <strong>bar</strong> baz</em></p>^/"
+    markdown: "*foo **bar** baz*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355188
+]
+make object! [
+    start_line: 892418357
+    end_line: 892418361
+    html: "<p><em>foo</em><em>bar</em><em>baz</em></p>^/"
+    markdown: "*foo**bar**baz*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355189
+]
+make object! [
+    start_line: 892481588
+    end_line: 892481592
+    html: "<p><em><strong>foo</strong> bar</em></p>^/"
+    markdown: "***foo** bar*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355190
+]
+make object! [
+    start_line: 892481840
+    end_line: 892481844
+    html: "<p><em>foo <strong>bar</strong></em></p>^/"
+    markdown: "*foo **bar***^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355191
+]
+make object! [
+    start_line: 892482096
+    end_line: 892482100
+    html: "<p><em>foo</em><em>bar</em>**</p>^/"
+    markdown: "*foo**bar***^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355192
+]
+make object! [
+    start_line: 892482105
+    end_line: 892482355
+    html: {<p><em>foo <strong>bar <em>baz</em> bim</strong> bop</em></p>
+}
+    markdown: "*foo **bar *baz* bim** bop*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355193
+]
+make object! [
+    start_line: 892482357
+    end_line: 892482361
+    html: {<p><em>foo <a href="/url"><em>bar</em></a></em></p>
+}
+    markdown: "*foo [*bar*](/url)*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355440
+]
+make object! [
+    start_line: 892482611
+    end_line: 892482615
+    html: "<p>** is not an empty emphasis</p>^/"
+    markdown: "** is not an empty emphasis^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355441
+]
+make object! [
+    start_line: 892482617
+    end_line: 892482867
+    html: "<p>**** is not an empty strong emphasis</p>^/"
+    markdown: "**** is not an empty strong emphasis^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355442
+]
+make object! [
+    start_line: 892483121
+    end_line: 892483125
+    html: {<p><strong>foo <a href="/url">bar</a></strong></p>
+}
+    markdown: "**foo [bar](/url)**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355443
+]
+make object! [
+    start_line: 892483127
+    end_line: 892483379
+    html: "<p><strong>foo^/bar</strong></p>^/"
+    markdown: "**foo^/bar**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355444
+]
+make object! [
+    start_line: 892483384
+    end_line: 892483634
+    html: "<p><strong>foo <em>bar</em> baz</strong></p>^/"
+    markdown: "__foo _bar_ baz__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355445
+]
+make object! [
+    start_line: 892483636
+    end_line: 892483640
+    html: {<p><strong>foo <strong>bar</strong> baz</strong></p>
+}
+    markdown: "__foo __bar__ baz__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355446
+]
+make object! [
+    start_line: 892483888
+    end_line: 892483892
+    html: "<p><strong><strong>foo</strong> bar</strong></p>^/"
+    markdown: "____foo__ bar__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355447
+]
+make object! [
+    start_line: 892483894
+    end_line: 892547120
+    html: "<p><strong>foo <strong>bar</strong></strong></p>^/"
+    markdown: "**foo **bar****^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355448
+]
+make object! [
+    start_line: 892547122
+    end_line: 892547126
+    html: "<p><strong>foo <em>bar</em> baz</strong></p>^/"
+    markdown: "**foo *bar* baz**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355449
+]
+make object! [
+    start_line: 892547376
+    end_line: 892547380
+    html: "<p><em><em>foo</em>bar</em>baz**</p>^/"
+    markdown: "**foo*bar*baz**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355696
+]
+make object! [
+    start_line: 892547385
+    end_line: 892547635
+    html: "<p><strong><em>foo</em> bar</strong></p>^/"
+    markdown: "***foo* bar**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355697
+]
+make object! [
+    start_line: 892547637
+    end_line: 892547641
+    html: "<p><strong>foo <em>bar</em></strong></p>^/"
+    markdown: "**foo *bar***^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355698
+]
+make object! [
+    start_line: 892547891
+    end_line: 892547897
+    html: {<p><strong>foo <em>bar <strong>baz</strong>
+bim</em> bop</strong></p>
+}
+    markdown: "**foo *bar **baz**^/bim* bop**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355699
+]
+make object! [
+    start_line: 892548145
+    end_line: 892548149
+    html: {<p><strong>foo <a href="/url"><em>bar</em></a></strong></p>
+}
+    markdown: "**foo [*bar*](/url)**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355700
+]
+make object! [
+    start_line: 892548153
+    end_line: 892548403
+    html: "<p>__ is not an empty emphasis</p>^/"
+    markdown: "__ is not an empty emphasis^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355701
+]
+make object! [
+    start_line: 892548405
+    end_line: 892548409
+    html: "<p>____ is not an empty strong emphasis</p>^/"
+    markdown: "____ is not an empty strong emphasis^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355702
+]
+make object! [
+    start_line: 892548660
+    end_line: 892548664
+    html: "<p>foo ***</p>^/"
+    markdown: "foo ***^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355703
+]
+make object! [
+    start_line: 892548912
+    end_line: 892548916
+    html: "<p>foo <em>*</em></p>^/"
+    markdown: "foo *\**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355704
+]
+make object! [
+    start_line: 892548918
+    end_line: 892549168
+    html: "<p>foo <em>_</em></p>^/"
+    markdown: "foo *_*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355705
+]
+make object! [
+    start_line: 892549170
+    end_line: 892549174
+    html: "<p>foo *****</p>^/"
+    markdown: "foo *****^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355952
+]
+make object! [
+    start_line: 892549176
+    end_line: 892549426
+    html: "<p>foo <strong>*</strong></p>^/"
+    markdown: "foo **\***^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355953
+]
+make object! [
+    start_line: 892549428
+    end_line: 892549432
+    html: "<p>foo <strong>_</strong></p>^/"
+    markdown: "foo **_**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355954
+]
+make object! [
+    start_line: 892612660
+    end_line: 892612664
+    html: "<p>*<em>foo</em></p>^/"
+    markdown: "**foo*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355955
+]
+make object! [
+    start_line: 892612912
+    end_line: 892612916
+    html: "<p><em>foo</em>*</p>^/"
+    markdown: "*foo**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355956
+]
+make object! [
+    start_line: 892612918
+    end_line: 892613168
+    html: "<p>*<strong>foo</strong></p>^/"
+    markdown: "***foo**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355957
+]
+make object! [
+    start_line: 892613170
+    end_line: 892613174
+    html: "<p>***<em>foo</em></p>^/"
+    markdown: "****foo*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355958
+]
+make object! [
+    start_line: 892613176
+    end_line: 892613426
+    html: "<p><strong>foo</strong>*</p>^/"
+    markdown: "**foo***^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355959
+]
+make object! [
+    start_line: 892613428
+    end_line: 892613432
+    html: "<p><em>foo</em>***</p>^/"
+    markdown: "*foo****^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355960
+]
+make object! [
+    start_line: 892613683
+    end_line: 892613687
+    html: "<p>foo ___</p>^/"
+    markdown: "foo ___^/"
+    section: "Emphasis and strong emphasis"
+    example: 3355961
+]
+make object! [
+    start_line: 892613689
+    end_line: 892613939
+    html: "<p>foo <em>_</em></p>^/"
+    markdown: "foo _\__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356208
+]
+make object! [
+    start_line: 892613941
+    end_line: 892613945
+    html: "<p>foo <em>*</em></p>^/"
+    markdown: "foo _*_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356209
+]
+make object! [
+    start_line: 892614193
+    end_line: 892614197
+    html: "<p>foo _____</p>^/"
+    markdown: "foo _____^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356210
+]
+make object! [
+    start_line: 892614199
+    end_line: 892614449
+    html: "<p>foo <strong>_</strong></p>^/"
+    markdown: "foo __\___^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356211
+]
+make object! [
+    start_line: 892614451
+    end_line: 892614455
+    html: "<p>foo <strong>*</strong></p>^/"
+    markdown: "foo __*__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356212
+]
+make object! [
+    start_line: 892614457
+    end_line: 892614707
+    html: "<p>_<em>foo</em></p>^/"
+    markdown: "__foo_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356213
+]
+make object! [
+    start_line: 892614713
+    end_line: 892614963
+    html: "<p><em>foo</em>_</p>^/"
+    markdown: "_foo__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356214
+]
+make object! [
+    start_line: 892614965
+    end_line: 892614969
+    html: "<p>_<strong>foo</strong></p>^/"
+    markdown: "___foo__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356215
+]
+make object! [
+    start_line: 892678193
+    end_line: 892678197
+    html: "<p>___<em>foo</em></p>^/"
+    markdown: "____foo_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356216
+]
+make object! [
+    start_line: 892678199
+    end_line: 892678449
+    html: "<p><strong>foo</strong>_</p>^/"
+    markdown: "__foo___^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356217
+]
+make object! [
+    start_line: 892678451
+    end_line: 892678455
+    html: "<p><em>foo</em>___</p>^/"
+    markdown: "_foo____^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356464
+]
+make object! [
+    start_line: 892678706
+    end_line: 892678710
+    html: "<p><strong>foo</strong></p>^/"
+    markdown: "**foo**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356465
+]
+make object! [
+    start_line: 892678712
+    end_line: 892678962
+    html: "<p><em><em>foo</em></em></p>^/"
+    markdown: "*_foo_*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356466
+]
+make object! [
+    start_line: 892678964
+    end_line: 892678968
+    html: "<p><strong>foo</strong></p>^/"
+    markdown: "__foo__^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356467
+]
+make object! [
+    start_line: 892679216
+    end_line: 892679220
+    html: "<p><em><em>foo</em></em></p>^/"
+    markdown: "_*foo*_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356468
+]
+make object! [
+    start_line: 892679225
+    end_line: 892679475
+    html: "<p><strong><strong>foo</strong></strong></p>^/"
+    markdown: "****foo****^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356469
+]
+make object! [
+    start_line: 892679477
+    end_line: 892679481
+    html: "<p><strong><strong>foo</strong></strong></p>^/"
+    markdown: "____foo____^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356470
+]
+make object! [
+    start_line: 892679733
+    end_line: 892679737
+    html: {<p><strong><strong><strong>foo</strong></strong></strong></p>
+}
+    markdown: "******foo******^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356471
+]
+make object! [
+    start_line: 892679987
+    end_line: 892679991
+    html: "<p><strong><em>foo</em></strong></p>^/"
+    markdown: "***foo***^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356472
+]
+make object! [
+    start_line: 892679993
+    end_line: 892680243
+    html: {<p><strong><strong><em>foo</em></strong></strong></p>
+}
+    markdown: "_____foo_____^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356473
+]
+make object! [
+    start_line: 892680247
+    end_line: 892680497
+    html: "<p><em>foo _bar</em> baz_</p>^/"
+    markdown: "*foo _bar* baz_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356720
+]
+make object! [
+    start_line: 892680499
+    end_line: 892680503
+    html: "<p><em><em>foo</em>bar</em>*</p>^/"
+    markdown: "**foo*bar**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356721
+]
+make object! [
+    start_line: 892743730
+    end_line: 892743734
+    html: "<p>**foo <strong>bar baz</strong></p>^/"
+    markdown: "**foo **bar baz**^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356722
+]
+make object! [
+    start_line: 892743736
+    end_line: 892743986
+    html: "<p>*foo <em>bar baz</em></p>^/"
+    markdown: "*foo *bar baz*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356723
+]
+make object! [
+    start_line: 892743990
+    end_line: 892744240
+    html: {<p>*<a href="/url">bar*</a></p>
+}
+    markdown: "*[bar*](/url)^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356724
+]
+make object! [
+    start_line: 892744242
+    end_line: 892744246
+    html: {<p>_foo <a href="/url">bar_</a></p>
+}
+    markdown: "_foo [bar_](/url)^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356725
+]
+make object! [
+    start_line: 892744248
+    end_line: 892744498
+    html: {<p>*<img src="foo" title="*"/></p>
+}
+    markdown: {*<img src="foo" title="*"/>
+}
+    section: "Emphasis and strong emphasis"
+    example: 3356726
+]
+make object! [
+    start_line: 892744500
+    end_line: 892744504
+    html: {<p>**<a href="**"></p>
+}
+    markdown: {**<a href="**">
+}
+    section: "Emphasis and strong emphasis"
+    example: 3356727
+]
+make object! [
+    start_line: 892744752
+    end_line: 892744756
+    html: {<p>__<a href="__"></p>
+}
+    markdown: {__<a href="__">
+}
+    section: "Emphasis and strong emphasis"
+    example: 3356728
+]
+make object! [
+    start_line: 892744758
+    end_line: 892745008
+    html: "<p><em>a <code>*</code></em></p>^/"
+    markdown: "*a `*`*^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356729
+]
+make object! [
+    start_line: 892745010
+    end_line: 892745014
+    html: "<p><em>a <code>_</code></em></p>^/"
+    markdown: "_a `_`_^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356976
+]
+make object! [
+    start_line: 892745016
+    end_line: 892745266
+    html: {<p>**a<a href="http://foo.bar/?q=**">http://foo.bar/?q=**</a></p>
+}
+    markdown: "**a<http://foo.bar/?q=**>^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356977
+]
+make object! [
+    start_line: 892745268
+    end_line: 892745272
+    html: {<p>__a<a href="http://foo.bar/?q=__">http://foo.bar/?q=__</a></p>
+}
+    markdown: "__a<http://foo.bar/?q=__>^/"
+    section: "Emphasis and strong emphasis"
+    example: 3356978
+]
+make object! [
+    start_line: 892810289
+    end_line: 892810293
+    html: {<p><a href="/uri" title="title">link</a></p>
+}
+    markdown: {[link](/uri "title")
+}
+    section: "Links"
+    example: 3356979
+]
+make object! [
+    start_line: 892810297
+    end_line: 892810547
+    html: {<p><a href="/uri">link</a></p>
+}
+    markdown: "[link](/uri)^/"
+    section: "Links"
+    example: 3356980
+]
+make object! [
+    start_line: 892810551
+    end_line: 892810801
+    html: {<p><a href="">link</a></p>
+}
+    markdown: "[link]()^/"
+    section: "Links"
+    example: 3356981
+]
+make object! [
+    start_line: 892810803
+    end_line: 892810807
+    html: {<p><a href="">link</a></p>
+}
+    markdown: "[link](<>)^/"
+    section: "Links"
+    example: 3356982
+]
+make object! [
+    start_line: 892811058
+    end_line: 892811062
+    html: "<p>[link](/my uri)</p>^/"
+    markdown: "[link](/my uri)^/"
+    section: "Links"
+    example: 3356983
+]
+make object! [
+    start_line: 892811064
+    end_line: 892811314
+    html: {<p><a href="/my%20uri">link</a></p>
+}
+    markdown: "[link](</my uri>)^/"
+    section: "Links"
+    example: 3356984
+]
+make object! [
+    start_line: 892811318
+    end_line: 892811570
+    html: "<p>[link](foo^/bar)</p>^/"
+    markdown: "[link](foo^/bar)^/"
+    section: "Links"
+    example: 3356985
+]
+make object! [
+    start_line: 892811572
+    end_line: 892874800
+    html: "<p>[link](<foo^/bar>)</p>^/"
+    markdown: "[link](<foo^/bar>)^/"
+    section: "Links"
+    example: 3420208
+]
+make object! [
+    start_line: 892874804
+    end_line: 892874808
+    html: {<p><a href="(foo)and(bar)">link</a></p>
+}
+    markdown: "[link]((foo)and(bar))^/"
+    section: "Links"
+    example: 3420209
+]
+make object! [
+    start_line: 892875059
+    end_line: 892875063
+    html: "<p>[link](foo(and(bar)))</p>^/"
+    markdown: "[link](foo(and(bar)))^/"
+    section: "Links"
+    example: 3420210
+]
+make object! [
+    start_line: 892875065
+    end_line: 892875315
+    html: {<p><a href="foo(and(bar))">link</a></p>
+}
+    markdown: "[link](foo(and\(bar\)))^/"
+    section: "Links"
+    example: 3420211
+]
+make object! [
+    start_line: 892875317
+    end_line: 892875321
+    html: {<p><a href="foo(and(bar))">link</a></p>
+}
+    markdown: "[link](<foo(and(bar))>)^/"
+    section: "Links"
+    example: 3420212
+]
+make object! [
+    start_line: 892875572
+    end_line: 892875576
+    html: {<p><a href="foo):">link</a></p>
+}
+    markdown: "[link](foo\)\:)^/"
+    section: "Links"
+    example: 3420213
+]
+make object! [
+    start_line: 892875829
+    end_line: 892875833
+    html: {<p><a href="foo%20b%C3%A4">link</a></p>
+}
+    markdown: "[link](foo%20b&auml;)^/"
+    section: "Links"
+    example: 3420214
+]
+make object! [
+    start_line: 892876085
+    end_line: 892876089
+    html: {<p><a href="%22title%22">link</a></p>
+}
+    markdown: {[link]("title")
+}
+    section: "Links"
+    example: 3420215
+]
+make object! [
+    start_line: 892876339
+    end_line: 892876593
+    html: {<p><a href="/url" title="title">link</a>
+<a href="/url" title="title">link</a>
+<a href="/url" title="title">link</a></p>
+}
+    markdown: {[link](/url "title")
+[link](/url 'title')
+[link](/url (title))
+}
+    section: "Links"
+    example: 3420216
+]
+make object! [
+    start_line: 892876597
+    end_line: 892876601
+    html: {<p><a href="/url" title="title &quot;&quot;">link</a></p>
+}
+    markdown: {[link](/url "title \"&quot;")
+}
+    section: "Links"
+    example: 3420217
+]
+make object! [
+    start_line: 892876851
+    end_line: 892876855
+    html: {<p>[link](/url &quot;title &quot;and&quot; title&quot;)</p>
+}
+    markdown: {[link](/url "title "and" title")
+}
+    section: "Links"
+    example: 3420464
+]
+make object! [
+    start_line: 892877105
+    end_line: 892877109
+    html: {<p><a href="/url" title="title &quot;and&quot; title">link</a></p>
+}
+    markdown: {[link](/url 'title "and" title')
+}
+    section: "Links"
+    example: 3420465
+]
+make object! [
+    start_line: 892940595
+    end_line: 892940600
+    html: {<p><a href="/uri" title="title">link</a></p>
+}
+    markdown: {[link](   /uri
+  "title"  )
+}
+    section: "Links"
+    example: 3420466
+]
+make object! [
+    start_line: 892940851
+    end_line: 892940855
+    html: "<p>[link] (/uri)</p>^/"
+    markdown: "[link] (/uri)^/"
+    section: "Links"
+    example: 3420467
+]
+make object! [
+    start_line: 892941106
+    end_line: 892941110
+    html: {<p><a href="/uri">link [foo [bar]]</a></p>
+}
+    markdown: "[link [foo [bar]]](/uri)^/"
+    section: "Links"
+    example: 3420468
+]
+make object! [
+    start_line: 892941112
+    end_line: 892941362
+    html: "<p>[link] bar](/uri)</p>^/"
+    markdown: "[link] bar](/uri)^/"
+    section: "Links"
+    example: 3420469
+]
+make object! [
+    start_line: 892941364
+    end_line: 892941368
+    html: {<p>[link <a href="/uri">bar</a></p>
+}
+    markdown: "[link [bar](/uri)^/"
+    section: "Links"
+    example: 3420470
+]
+make object! [
+    start_line: 892941616
+    end_line: 892941620
+    html: {<p><a href="/uri">link [bar</a></p>
+}
+    markdown: "[link \[bar](/uri)^/"
+    section: "Links"
+    example: 3420471
+]
+make object! [
+    start_line: 892941624
+    end_line: 892941874
+    html: {<p><a href="/uri">link <em>foo <strong>bar</strong> <code>#</code></em></a></p>
+}
+    markdown: "[link *foo **bar** `#`*](/uri)^/"
+    section: "Links"
+    example: 3420472
+]
+make object! [
+    start_line: 892941876
+    end_line: 892941880
+    html: {<p><a href="/uri"><img src="moon.jpg" alt="moon" /></a></p>
+}
+    markdown: "[![moon](moon.jpg)](/uri)^/"
+    section: "Links"
+    example: 3420473
+]
+make object! [
+    start_line: 892942130
+    end_line: 892942134
+    html: {<p>[foo <a href="/uri">bar</a>](/uri)</p>
+}
+    markdown: "[foo [bar](/uri)](/uri)^/"
+    section: "Links"
+    example: 3420720
+]
+make object! [
+    start_line: 892942136
+    end_line: 892942386
+    html: {<p>[foo <em>[bar <a href="/uri">baz</a>](/uri)</em>](/uri)</p>
+}
+    markdown: "[foo *[bar [baz](/uri)](/uri)*](/uri)^/"
+    section: "Links"
+    example: 3420721
+]
+make object! [
+    start_line: 892942388
+    end_line: 892942392
+    html: {<p><img src="uri3" alt="[foo](uri2)" /></p>
+}
+    markdown: "![[[foo](uri1)](uri2)](uri3)^/"
+    section: "Links"
+    example: 3420722
+]
+make object! [
+    start_line: 892942643
+    end_line: 892942647
+    html: {<p>*<a href="/uri">foo*</a></p>
+}
+    markdown: "*[foo*](/uri)^/"
+    section: "Links"
+    example: 3420723
+]
+make object! [
+    start_line: 892942649
+    end_line: 909127731
+    html: {<p><a href="baz*">foo *bar</a></p>
+}
+    markdown: "[foo *bar](baz*)^/"
+    section: "Links"
+    example: 3420724
+]
+make object! [
+    start_line: 909127736
+    end_line: 909127986
+    html: "<p><em>foo [bar</em> baz]</p>^/"
+    markdown: "*foo [bar* baz]^/"
+    section: "Links"
+    example: 3420725
+]
+make object! [
+    start_line: 909127991
+    end_line: 909128241
+    html: {<p>[foo <bar attr="](baz)"></p>
+}
+    markdown: {[foo <bar attr="](baz)">
+}
+    section: "Links"
+    example: 3420726
+]
+make object! [
+    start_line: 909128243
+    end_line: 909128247
+    html: "<p>[foo<code>](/uri)</code></p>^/"
+    markdown: "[foo`](/uri)`^/"
+    section: "Links"
+    example: 3420727
+]
+make object! [
+    start_line: 909128249
+    end_line: 909128499
+    html: {<p>[foo<a href="http://example.com/?search=%5D(uri)">http://example.com/?search=](uri)</a></p>
+}
+    markdown: "[foo<http://example.com/?search=](uri)>^/"
+    section: "Links"
+    example: 3420728
+]
+make object! [
+    start_line: 909129266
+    end_line: 909129272
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo][bar]
+
+[bar]: /url "title"
+}
+    section: "Links"
+    example: 3420729
+]
+make object! [
+    start_line: 909129526
+    end_line: 909129778
+    html: {<p><a href="/uri">link [foo [bar]]</a></p>
+}
+    markdown: {[link [foo [bar]]][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420976
+]
+make object! [
+    start_line: 909129780
+    end_line: 909130032
+    html: {<p><a href="/uri">link [bar</a></p>
+}
+    markdown: {[link \[bar][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420977
+]
+make object! [
+    start_line: 909130036
+    end_line: 909193264
+    html: {<p><a href="/uri">link <em>foo <strong>bar</strong> <code>#</code></em></a></p>
+}
+    markdown: {[link *foo **bar** `#`*][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420978
+]
+make object! [
+    start_line: 909193266
+    end_line: 909193272
+    html: {<p><a href="/uri"><img src="moon.jpg" alt="moon" /></a></p>
+}
+    markdown: {[![moon](moon.jpg)][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420979
+]
+make object! [
+    start_line: 909193522
+    end_line: 909193528
+    html: {<p>[foo <a href="/uri">bar</a>]<a href="/uri">ref</a></p>
+}
+    markdown: {[foo [bar](/uri)][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420980
+]
+make object! [
+    start_line: 909193776
+    end_line: 909193782
+    html: {<p>[foo <em>bar <a href="/uri">baz</a></em>]<a href="/uri">ref</a></p>
+}
+    markdown: {[foo *bar [baz][ref]*][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420981
+]
+make object! [
+    start_line: 909194036
+    end_line: 909194288
+    html: {<p>*<a href="/uri">foo*</a></p>
+}
+    markdown: {*[foo*][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420982
+]
+make object! [
+    start_line: 909194290
+    end_line: 909194296
+    html: {<p><a href="/uri">foo *bar</a></p>
+}
+    markdown: {[foo *bar][ref]
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420983
+]
+make object! [
+    start_line: 909194547
+    end_line: 909194553
+    html: {<p>[foo <bar attr="][ref]"></p>
+}
+    markdown: {[foo <bar attr="][ref]">
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420984
+]
+make object! [
+    start_line: 909194801
+    end_line: 909194807
+    html: "<p>[foo<code>][ref]</code></p>^/"
+    markdown: {[foo`][ref]`
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3420985
+]
+make object! [
+    start_line: 909194809
+    end_line: 909195061
+    html: {<p>[foo<a href="http://example.com/?search=%5D%5Bref%5D">http://example.com/?search=][ref]</a></p>
+}
+    markdown: {[foo<http://example.com/?search=][ref]>
+
+[ref]: /uri
+}
+    section: "Links"
+    example: 3421232
+]
+make object! [
+    start_line: 909195065
+    end_line: 909195317
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo][BaR]
+
+[bar]: /url "title"
+}
+    section: "Links"
+    example: 3421233
+]
+make object! [
+    start_line: 909195321
+    end_line: 909195573
+    html: {<p><a href="/url">Толпой</a> is a Russian word.</p>
+}
+    markdown: {[Толпой][Толпой] is a Russian word.
+
+[ТОЛПОЙ]: /url
+}
+    section: "Links"
+    example: 3421234
+]
+make object! [
+    start_line: 909258800
+    end_line: 909258807
+    html: {<p><a href="/url">Baz</a></p>
+}
+    markdown: {[Foo
+  bar]: /url
+
+[Baz][Foo bar]
+}
+    section: "Links"
+    example: 3421235
+]
+make object! [
+    start_line: 909259057
+    end_line: 909259063
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo] [bar]
+
+[bar]: /url "title"
+}
+    section: "Links"
+    example: 3421236
+]
+make object! [
+    start_line: 909259065
+    end_line: 909259318
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo]
+[bar]
+
+[bar]: /url "title"
+}
+    section: "Links"
+    example: 3421237
+]
+make object! [
+    start_line: 909259569
+    end_line: 909259577
+    html: {<p><a href="/url1">bar</a></p>
+}
+    markdown: {[foo]: /url1
+
+[foo]: /url2
+
+[bar][foo]
+}
+    section: "Links"
+    example: 3421238
+]
+make object! [
+    start_line: 909259829
+    end_line: 909260081
+    html: "<p>[bar][foo!]</p>^/"
+    markdown: {[bar][foo\!]
+
+[foo!]: /url
+}
+    section: "Links"
+    example: 3421239
+]
+make object! [
+    start_line: 909260086
+    end_line: 909260339
+    html: "<p>[foo][ref[]</p>^/<p>[ref[]: /uri</p>^/"
+    markdown: {[foo][ref[]
+
+[ref[]: /uri
+}
+    section: "Links"
+    example: 3421240
+]
+make object! [
+    start_line: 909260341
+    end_line: 909260594
+    html: "<p>[foo][ref[bar]]</p>^/<p>[ref[bar]]: /uri</p>^/"
+    markdown: {[foo][ref[bar]]
+
+[ref[bar]]: /uri
+}
+    section: "Links"
+    example: 3421241
+]
+make object! [
+    start_line: 909260596
+    end_line: 909260849
+    html: "<p>[[[foo]]]</p>^/<p>[[[foo]]]: /url</p>^/"
+    markdown: {[[[foo]]]
+
+[[[foo]]]: /url
+}
+    section: "Links"
+    example: 3421488
+]
+make object! [
+    start_line: 909260851
+    end_line: 909260857
+    html: {<p><a href="/uri">foo</a></p>
+}
+    markdown: {[foo][ref\[]
+
+[ref\[]: /uri
+}
+    section: "Links"
+    example: 3421489
+]
+make object! [
+    start_line: 909324336
+    end_line: 909324342
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo][]
+
+[foo]: /url "title"
+}
+    section: "Links"
+    example: 3421490
+]
+make object! [
+    start_line: 909324344
+    end_line: 909324596
+    html: {<p><a href="/url" title="title"><em>foo</em> bar</a></p>
+}
+    markdown: {[*foo* bar][]
+
+[*foo* bar]: /url "title"
+}
+    section: "Links"
+    example: 3421491
+]
+make object! [
+    start_line: 909324600
+    end_line: 909324852
+    html: {<p><a href="/url" title="title">Foo</a></p>
+}
+    markdown: {[Foo][]
+
+[foo]: /url "title"
+}
+    section: "Links"
+    example: 3421492
+]
+make object! [
+    start_line: 909325104
+    end_line: 909325111
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo] 
+[]
+
+[foo]: /url "title"
+}
+    section: "Links"
+    example: 3421493
+]
+make object! [
+    start_line: 909325368
+    end_line: 909325620
+    html: {<p><a href="/url" title="title">foo</a></p>
+}
+    markdown: {[foo]
+
+[foo]: /url "title"
+}
+    section: "Links"
+    example: 3421494
+]
+make object! [
+    start_line: 909325622
+    end_line: 909325874
+    html: {<p><a href="/url" title="title"><em>foo</em> bar</a></p>
+}
+    markdown: {[*foo* bar]
+
+[*foo* bar]: /url "title"
+}
+    section: "Links"
+    example: 3421495
+]
+make object! [
+    start_line: 909325876
+    end_line: 909326128
+    html: {<p>[<a href="/url" title="title"><em>foo</em> bar</a>]</p>
+}
+    markdown: {[[*foo* bar]]
+
+[*foo* bar]: /url "title"
+}
+    section: "Links"
+    example: 3421496
+]
+make object! [
+    start_line: 909326130
+    end_line: 909326136
+    html: {<p>[[bar <a href="/url">foo</a></p>
+}
+    markdown: {[[bar [foo]
+
+[foo]: /url
+}
+    section: "Links"
+    example: 3421497
+]
+make object! [
+    start_line: 909326386
+    end_line: 909326392
+    html: {<p><a href="/url" title="title">Foo</a></p>
+}
+    markdown: {[Foo]
+
+[foo]: /url "title"
+}
+    section: "Links"
+    example: 3421744
+]
+make object! [
+    start_line: 909326642
+    end_line: 909326648
+    html: {<p><a href="/url">foo</a> bar</p>
+}
+    markdown: {[foo] bar
+
+[foo]: /url
+}
+    section: "Links"
+    example: 3421745
+]
+make object! [
+    start_line: 909389875
+    end_line: 909389881
+    html: "<p>[foo]</p>^/"
+    markdown: {\[foo]
+
+[foo]: /url "title"
+}
+    section: "Links"
+    example: 3421746
+]
+make object! [
+    start_line: 909390132
+    end_line: 909390384
+    html: {<p>*<a href="/url">foo*</a></p>
+}
+    markdown: {[foo*]: /url
+
+*[foo*]
+}
+    section: "Links"
+    example: 3421747
+]
+make object! [
+    start_line: 909390388
+    end_line: 909390641
+    html: {<p><a href="/url2">foo</a></p>
+}
+    markdown: {[foo][bar]
+
+[foo]: /url1
+[bar]: /url2
+}
+    section: "Links"
+    example: 3421748
+]
+make object! [
+    start_line: 909390646
+    end_line: 909390898
+    html: {<p>[foo]<a href="/url">bar</a></p>
+}
+    markdown: {[foo][bar][baz]
+
+[baz]: /url
+}
+    section: "Links"
+    example: 3421749
+]
+make object! [
+    start_line: 909390903
+    end_line: 909391156
+    html: {<p><a href="/url2">foo</a><a href="/url1">baz</a></p>
+}
+    markdown: {[foo][bar][baz]
+
+[baz]: /url1
+[bar]: /url2
+}
+    section: "Links"
+    example: 3421750
+]
+make object! [
+    start_line: 909391161
+    end_line: 909391414
+    html: {<p>[foo]<a href="/url1">bar</a></p>
+}
+    markdown: {[foo][bar][baz]
+
+[baz]: /url1
+[foo]: /url2
+}
+    section: "Links"
+    example: 3421751
+]
+make object! [
+    start_line: 909391921
+    end_line: 909391925
+    html: {<p><img src="/url" alt="foo" title="title" /></p>
+}
+    markdown: {![foo](/url "title")
+}
+    section: "Images"
+    example: 3421752
+]
+make object! [
+    start_line: 909391927
+    end_line: 909392179
+    html: {<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
+}
+    markdown: {![foo *bar*]
+
+[foo *bar*]: train.jpg "train & tracks"
+}
+    section: "Images"
+    example: 3421753
+]
+make object! [
+    start_line: 909392181
+    end_line: 909392185
+    html: {<p><img src="/url2" alt="foo bar" /></p>
+}
+    markdown: "![foo ![bar](/url)](/url2)^/"
+    section: "Images"
+    example: 3422000
+]
+make object! [
+    start_line: 909455409
+    end_line: 909455413
+    html: {<p><img src="/url2" alt="foo bar" /></p>
+}
+    markdown: "![foo [bar](/url)](/url2)^/"
+    section: "Images"
+    example: 3422001
+]
+make object! [
+    start_line: 909455668
+    end_line: 909455920
+    html: {<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
+}
+    markdown: {![foo *bar*][]
+
+[foo *bar*]: train.jpg "train & tracks"
+}
+    section: "Images"
+    example: 3422002
+]
+make object! [
+    start_line: 909455922
+    end_line: 909455928
+    html: {<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
+}
+    markdown: {![foo *bar*][foobar]
+
+[FOOBAR]: train.jpg "train & tracks"
+}
+    section: "Images"
+    example: 3422003
+]
+make object! [
+    start_line: 909456176
+    end_line: 909456180
+    html: {<p><img src="train.jpg" alt="foo" /></p>
+}
+    markdown: "![foo](train.jpg)^/"
+    section: "Images"
+    example: 3422004
+]
+make object! [
+    start_line: 909456182
+    end_line: 909456432
+    html: {<p>My <img src="/path/to/train.jpg" alt="foo bar" title="title" /></p>
+}
+    markdown: {My ![foo bar](/path/to/train.jpg  "title"   )
+}
+    section: "Images"
+    example: 3422005
+]
+make object! [
+    start_line: 909456434
+    end_line: 909456438
+    html: {<p><img src="url" alt="foo" /></p>
+}
+    markdown: "![foo](<url>)^/"
+    section: "Images"
+    example: 3422006
+]
+make object! [
+    start_line: 909456440
+    end_line: 909456690
+    html: {<p><img src="/url" alt="" /></p>
+}
+    markdown: "![](/url)^/"
+    section: "Images"
+    example: 3422007
+]
+make object! [
+    start_line: 909456694
+    end_line: 909456946
+    html: {<p><img src="/url" alt="foo" /></p>
+}
+    markdown: {![foo] [bar]
+
+[bar]: /url
+}
+    section: "Images"
+    example: 3422008
+]
+make object! [
+    start_line: 909456948
+    end_line: 909457200
+    html: {<p><img src="/url" alt="foo" /></p>
+}
+    markdown: {![foo] [bar]
+
+[BAR]: /url
+}
+    section: "Images"
+    example: 3422009
+]
+make object! [
+    start_line: 909457204
+    end_line: 909457456
+    html: {<p><img src="/url" alt="foo" title="title" /></p>
+}
+    markdown: {![foo][]
+
+[foo]: /url "title"
+}
+    section: "Images"
+    example: 3422256
+]
+make object! [
+    start_line: 909457458
+    end_line: 909457464
+    html: {<p><img src="/url" alt="foo bar" title="title" /></p>
+}
+    markdown: {![*foo* bar][]
+
+[*foo* bar]: /url "title"
+}
+    section: "Images"
+    example: 3422257
+]
+make object! [
+    start_line: 909457714
+    end_line: 909457720
+    html: {<p><img src="/url" alt="Foo" title="title" /></p>
+}
+    markdown: {![Foo][]
+
+[foo]: /url "title"
+}
+    section: "Images"
+    example: 3422258
+]
+make object! [
+    start_line: 909520947
+    end_line: 909521200
+    html: {<p><img src="/url" alt="foo" title="title" /></p>
+}
+    markdown: {![foo] 
+[]
+
+[foo]: /url "title"
+}
+    section: "Images"
+    example: 3422259
+]
+make object! [
+    start_line: 909521204
+    end_line: 909521456
+    html: {<p><img src="/url" alt="foo" title="title" /></p>
+}
+    markdown: {![foo]
+
+[foo]: /url "title"
+}
+    section: "Images"
+    example: 3422260
+]
+make object! [
+    start_line: 909521458
+    end_line: 909521464
+    html: {<p><img src="/url" alt="foo bar" title="title" /></p>
+}
+    markdown: {![*foo* bar]
+
+[*foo* bar]: /url "title"
+}
+    section: "Images"
+    example: 3422261
+]
+make object! [
+    start_line: 909521714
+    end_line: 909521721
+    html: {<p>![[foo]]</p>
+<p>[[foo]]: /url &quot;title&quot;</p>
+}
+    markdown: {![[foo]]
+
+[[foo]]: /url "title"
+}
+    section: "Images"
+    example: 3422262
+]
+make object! [
+    start_line: 909521971
+    end_line: 909521977
+    html: {<p><img src="/url" alt="Foo" title="title" /></p>
+}
+    markdown: {![Foo]
+
+[foo]: /url "title"
+}
+    section: "Images"
+    example: 3422263
+]
+make object! [
+    start_line: 909522228
+    end_line: 909522480
+    html: "<p>![foo]</p>^/"
+    markdown: {\!\[foo]
+
+[foo]: /url "title"
+}
+    section: "Images"
+    example: 3422264
+]
+make object! [
+    start_line: 909522485
+    end_line: 909522737
+    html: {<p>!<a href="/url" title="title">foo</a></p>
+}
+    markdown: {\![foo]
+
+[foo]: /url "title"
+}
+    section: "Images"
+    example: 3422265
+]
+make object! [
+    start_line: 909586744
+    end_line: 909586994
+    html: {<p><a href="http://foo.bar.baz">http://foo.bar.baz</a></p>
+}
+    markdown: "<http://foo.bar.baz>^/"
+    section: "Autolinks"
+    example: 3422512
+]
+make object! [
+    start_line: 909586996
+    end_line: 909587000
+    html: {<p><a href="http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean">http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean</a></p>
+}
+    markdown: "<http://foo.bar.baz/test?q=hello&id=22&boolean>^/"
+    section: "Autolinks"
+    example: 3422513
+]
+make object! [
+    start_line: 909587248
+    end_line: 909587252
+    html: {<p><a href="irc://foo.bar:2233/baz">irc://foo.bar:2233/baz</a></p>
+}
+    markdown: "<irc://foo.bar:2233/baz>^/"
+    section: "Autolinks"
+    example: 3422514
+]
+make object! [
+    start_line: 909587256
+    end_line: 909587506
+    html: {<p><a href="MAILTO:FOO@BAR.BAZ">MAILTO:FOO@BAR.BAZ</a></p>
+}
+    markdown: "<MAILTO:FOO@BAR.BAZ>^/"
+    section: "Autolinks"
+    example: 3422515
+]
+make object! [
+    start_line: 909587510
+    end_line: 909587760
+    html: "<p>&lt;http://foo.bar/baz bim&gt;</p>^/"
+    markdown: "<http://foo.bar/baz bim>^/"
+    section: "Autolinks"
+    example: 3422516
+]
+make object! [
+    start_line: 909587764
+    end_line: 909587768
+    html: {<p><a href="http://example.com/%5C%5B%5C">http://example.com/\[\</a></p>
+}
+    markdown: "<http://example.com/\[\>^/"
+    section: "Autolinks"
+    example: 3422517
+]
+make object! [
+    start_line: 909588277
+    end_line: 909588281
+    html: {<p><a href="mailto:foo@bar.example.com">foo@bar.example.com</a></p>
+}
+    markdown: "<foo@bar.example.com>^/"
+    section: "Autolinks"
+    example: 3422518
+]
+make object! [
+    start_line: 909588529
+    end_line: 909588533
+    html: {<p><a href="mailto:foo+special@Bar.baz-bar0.com">foo+special@Bar.baz-bar0.com</a></p>
+}
+    markdown: "<foo+special@Bar.baz-bar0.com>^/"
+    section: "Autolinks"
+    example: 3422519
+]
+make object! [
+    start_line: 909588537
+    end_line: 909588787
+    html: "<p>&lt;foo+@bar.example.com&gt;</p>^/"
+    markdown: "<foo\+@bar.example.com>^/"
+    section: "Autolinks"
+    example: 3422520
+]
+make object! [
+    start_line: 909588791
+    end_line: 909652017
+    html: "<p>&lt;&gt;</p>^/"
+    markdown: "<>^/"
+    section: "Autolinks"
+    example: 3422521
+]
+make object! [
+    start_line: 909652019
+    end_line: 909652023
+    html: "<p>&lt;heck://bing.bong&gt;</p>^/"
+    markdown: "<heck://bing.bong>^/"
+    section: "Autolinks"
+    example: 3485744
+]
+make object! [
+    start_line: 909652025
+    end_line: 909652275
+    html: "<p>&lt; http://foo.bar &gt;</p>^/"
+    markdown: "< http://foo.bar >^/"
+    section: "Autolinks"
+    example: 3485745
+]
+make object! [
+    start_line: 909652277
+    end_line: 909652281
+    html: "<p>&lt;foo.bar.baz&gt;</p>^/"
+    markdown: "<foo.bar.baz>^/"
+    section: "Autolinks"
+    example: 3485746
+]
+make object! [
+    start_line: 909652529
+    end_line: 909652533
+    html: "<p>&lt;localhost:5001/foo&gt;</p>^/"
+    markdown: "<localhost:5001/foo>^/"
+    section: "Autolinks"
+    example: 3485747
+]
+make object! [
+    start_line: 909652535
+    end_line: 909652785
+    html: "<p>http://example.com</p>^/"
+    markdown: "http://example.com^/"
+    section: "Autolinks"
+    example: 3485748
+]
+make object! [
+    start_line: 909652787
+    end_line: 909652791
+    html: "<p>foo@bar.example.com</p>^/"
+    markdown: "foo@bar.example.com^/"
+    section: "Autolinks"
+    example: 3485749
+]
+make object! [
+    start_line: 909717811
+    end_line: 909717815
+    html: "<p><a><bab><c2c></p>^/"
+    markdown: "<a><bab><c2c>^/"
+    section: "Raw HTML"
+    example: 3485750
+]
+make object! [
+    start_line: 909718065
+    end_line: 909718069
+    html: "<p><a/><b2/></p>^/"
+    markdown: "<a/><b2/>^/"
+    section: "Raw HTML"
+    example: 3485751
+]
+make object! [
+    start_line: 909718073
+    end_line: 909718325
+    html: {<p><a  /><b2
+data="foo" ></p>
+}
+    markdown: {<a  /><b2
+data="foo" >
+}
+    section: "Raw HTML"
+    example: 3485752
+]
+make object! [
+    start_line: 909718329
+    end_line: 909718581
+    html: {<p><a foo="bar" bam = 'baz <em>"</em>'
+_boolean zoop:33=zoop:33 /></p>
+}
+    markdown: {<a foo="bar" bam = 'baz <em>"</em>'
+_boolean zoop:33=zoop:33 />
+}
+    section: "Raw HTML"
+    example: 3485753
+]
+make object! [
+    start_line: 909718585
+    end_line: 909718835
+    html: "<p>&lt;33&gt; &lt;__&gt;</p>^/"
+    markdown: "<33> <__>^/"
+    section: "Raw HTML"
+    example: 3486000
+]
+make object! [
+    start_line: 909718839
+    end_line: 909719089
+    html: "<p>&lt;a h*#ref=&quot;hi&quot;&gt;</p>^/"
+    markdown: {<a h*#ref="hi">
+}
+    section: "Raw HTML"
+    example: 3486001
+]
+make object! [
+    start_line: 909719093
+    end_line: 909719097
+    html: {<p>&lt;a href=&quot;hi'&gt; &lt;a href=hi'&gt;</p>
+}
+    markdown: {<a href="hi'> <a href=hi'>
+}
+    section: "Raw HTML"
+    example: 3486002
+]
+make object! [
+    start_line: 909719347
+    end_line: 909719353
+    html: "<p>&lt; a&gt;&lt;^/foo&gt;&lt;bar/ &gt;</p>^/"
+    markdown: "< a><^/foo><bar/ >^/"
+    section: "Raw HTML"
+    example: 3486003
+]
+make object! [
+    start_line: 909719603
+    end_line: 909719607
+    html: "<p>&lt;a href='bar'title=title&gt;</p>^/"
+    markdown: "<a href='bar'title=title>^/"
+    section: "Raw HTML"
+    example: 3486004
+]
+make object! [
+    start_line: 909719857
+    end_line: 909719863
+    html: "<p></a>^/</foo ></p>^/"
+    markdown: "</a>^/</foo >^/"
+    section: "Raw HTML"
+    example: 3486005
+]
+make object! [
+    start_line: 925904945
+    end_line: 925904949
+    html: "<p>&lt;/a href=&quot;foo&quot;&gt;</p>^/"
+    markdown: {</a href="foo">
+}
+    section: "Raw HTML"
+    example: 3486006
+]
+make object! [
+    start_line: 925904953
+    end_line: 925905205
+    html: {<p>foo <!-- this is a
+comment - with hyphen --></p>
+}
+    markdown: "foo <!-- this is a^/comment - with hyphen -->^/"
+    section: "Raw HTML"
+    example: 3486007
+]
+make object! [
+    start_line: 925905207
+    end_line: 925905457
+    html: {<p>foo &lt;!-- not a comment -- two hyphens --&gt;</p>
+}
+    markdown: "foo <!-- not a comment -- two hyphens -->^/"
+    section: "Raw HTML"
+    example: 3486008
+]
+make object! [
+    start_line: 925905461
+    end_line: 925905714
+    html: {<p>foo &lt;!--&gt; foo --&gt;</p>
+<p>foo &lt;!-- foo---&gt;</p>
+}
+    markdown: {foo <!--> foo -->
+
+foo <!-- foo--->
+}
+    section: "Raw HTML"
+    example: 3486009
+]
+make object! [
+    start_line: 925905718
+    end_line: 925905968
+    html: "<p>foo <?php echo $a; ?></p>^/"
+    markdown: "foo <?php echo $a; ?>^/"
+    section: "Raw HTML"
+    example: 3486256
+]
+make object! [
+    start_line: 925905972
+    end_line: 925905976
+    html: "<p>foo <!ELEMENT br EMPTY></p>^/"
+    markdown: "foo <!ELEMENT br EMPTY>^/"
+    section: "Raw HTML"
+    example: 3486257
+]
+make object! [
+    start_line: 925906226
+    end_line: 925906230
+    html: "<p>foo <![CDATA[>&<]]></p>^/"
+    markdown: "foo <![CDATA[>&<]]>^/"
+    section: "Raw HTML"
+    example: 3486258
+]
+make object! [
+    start_line: 925906480
+    end_line: 925906484
+    html: {<p><a href="&ouml;"></p>
+}
+    markdown: {<a href="&ouml;">
+}
+    section: "Raw HTML"
+    example: 3486259
+]
+make object! [
+    start_line: 925906488
+    end_line: 925906738
+    html: {<p><a href="\*"></p>
+}
+    markdown: {<a href="\*">
+}
+    section: "Raw HTML"
+    example: 3486260
+]
+make object! [
+    start_line: 925906740
+    end_line: 925906744
+    html: "<p>&lt;a href=&quot;&quot;&quot;&gt;</p>^/"
+    markdown: {<a href="\"">
+}
+    section: "Raw HTML"
+    example: 3486261
+]
+make object! [
+    start_line: 925906999
+    end_line: 925907251
+    html: "<p>foo<br />^/baz</p>^/"
+    markdown: "foo  ^/baz^/"
+    section: "Hard line breaks"
+    example: 3486262
+]
+make object! [
+    start_line: 925907256
+    end_line: 925970484
+    html: "<p>foo<br />^/baz</p>^/"
+    markdown: "foo\^/baz^/"
+    section: "Hard line breaks"
+    example: 3486263
+]
+make object! [
+    start_line: 925970488
+    end_line: 925970740
+    html: "<p>foo<br />^/baz</p>^/"
+    markdown: "foo       ^/baz^/"
+    section: "Hard line breaks"
+    example: 3486264
+]
+make object! [
+    start_line: 925970744
+    end_line: 925970996
+    html: "<p>foo<br />^/bar</p>^/"
+    markdown: "foo  ^/     bar^/"
+    section: "Hard line breaks"
+    example: 3486265
+]
+make object! [
+    start_line: 925970998
+    end_line: 925971250
+    html: "<p>foo<br />^/bar</p>^/"
+    markdown: "foo\^/     bar^/"
+    section: "Hard line breaks"
+    example: 3486512
+]
+make object! [
+    start_line: 925971255
+    end_line: 925971507
+    html: "<p><em>foo<br />^/bar</em></p>^/"
+    markdown: "*foo  ^/bar*^/"
+    section: "Hard line breaks"
+    example: 3486513
+]
+make object! [
+    start_line: 925971509
+    end_line: 925971761
+    html: "<p><em>foo<br />^/bar</em></p>^/"
+    markdown: "*foo\^/bar*^/"
+    section: "Hard line breaks"
+    example: 3486514
+]
+make object! [
+    start_line: 925971765
+    end_line: 925972016
+    html: "<p><code>code span</code></p>^/"
+    markdown: "`code  ^/span`^/"
+    section: "Hard line breaks"
+    example: 3486515
+]
+make object! [
+    start_line: 925972018
+    end_line: 925972023
+    html: "<p><code>code\ span</code></p>^/"
+    markdown: "`code\^/span`^/"
+    section: "Hard line breaks"
+    example: 3486516
+]
+make object! [
+    start_line: 925972273
+    end_line: 925972279
+    html: {<p><a href="foo  
+bar"></p>
+}
+    markdown: {<a href="foo  
+bar">
+}
+    section: "Hard line breaks"
+    example: 3486517
+]
+make object! [
+    start_line: 925972281
+    end_line: 925972533
+    html: {<p><a href="foo\
+bar"></p>
+}
+    markdown: {<a href="foo\
+bar">
+}
+    section: "Hard line breaks"
+    example: 3486518
+]
+make object! [
+    start_line: 925972785
+    end_line: 925972789
+    html: "<p>foo\</p>^/"
+    markdown: "foo\^/"
+    section: "Hard line breaks"
+    example: 3486519
+]
+make object! [
+    start_line: 925972791
+    end_line: 926036017
+    html: "<p>foo</p>^/"
+    markdown: "foo  ^/"
+    section: "Hard line breaks"
+    example: 3486520
+]
+make object! [
+    start_line: 926036019
+    end_line: 926036023
+    html: "<h3>foo\</h3>^/"
+    markdown: "### foo\^/"
+    section: "Hard line breaks"
+    example: 3486521
+]
+make object! [
+    start_line: 926036025
+    end_line: 926036275
+    html: "<h3>foo</h3>^/"
+    markdown: "### foo  ^/"
+    section: "Hard line breaks"
+    example: 3486768
+]
+make object! [
+    start_line: 926036531
+    end_line: 926036537
+    html: "<p>foo^/baz</p>^/"
+    markdown: "foo^/baz^/"
+    section: "Soft line breaks"
+    example: 3486769
+]
+make object! [
+    start_line: 926036788
+    end_line: 926037040
+    html: "<p>foo^/baz</p>^/"
+    markdown: "foo ^/ baz^/"
+    section: "Soft line breaks"
+    example: 3486770
+]
+make object! [
+    start_line: 926037299
+    end_line: 926037303
+    html: "<p>hello $.;'there</p>^/"
+    markdown: "hello $.;'there^/"
+    section: "Textual content"
+    example: 3486771
+]
+make object! [
+    start_line: 926037305
+    end_line: 926037555
+    html: "<p>Foo χρῆν</p>^/"
+    markdown: "Foo χρῆν^/"
+    section: "Textual content"
+    example: 3486772
+]
+make object! [
+    start_line: 926037559
+    end_line: 926037809
+    html: "<p>Multiple     spaces</p>^/"
+    markdown: "Multiple     spaces^/"
+    section: "Textual content"
+    example: 3486773
+]
