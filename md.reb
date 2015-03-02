@@ -38,7 +38,7 @@ rule: func [
 	rule 	[block!]		"PARSE rule"
 ][
 	if word? local [local: reduce [local]]
-	compile-rules use local reduce [rule]
+	use local reduce [rule]
 ]
 
 emit: func [data] [
@@ -158,17 +158,31 @@ link-rule: rule [text address value title] [
 ]
 
 em-rule: rule [mark text] [
-	copy mark ["**" | "__" | "*" | "_"]
+	copy mark ["*" | "_"]
 	(debug-print ["== EM rule matched with" mark])
 	not space
 	copy text
 	to mark mark
 	(
 		start-para
-		mark: either equal? length? mark 1 <em> <strong>
+		mark: <em>
 		emit ajoin [mark text close-tag mark]
 	)
 ]
+
+strong-rule: rule [mark text] [
+	copy mark ["**" | "__"]
+	(debug-print ["== EM rule matched with" mark])
+	not space
+	copy text
+	to mark mark
+	(
+		start-para
+		mark: <strong>
+		emit ajoin [mark text close-tag mark]
+	)
+]
+
 
 img-rule: rule [text address] [
 	#"!"
