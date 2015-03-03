@@ -9,6 +9,13 @@ select-test: func [id] [
 	]
 ]
 
+do-test: function [id] [
+	test: select-test id
+	print test/markdown
+	print test/html
+	print markdown test/markdown 
+]
+
 do %md.reb
 
 tests: reduce load %tests
@@ -27,10 +34,12 @@ foreach test tests [
 ]
 
 print [
+	"=============================" newline
 	length? passed "tests passed," length? failed "tests failed." newline
+	"CommonMark.reb is" round/to to percent! divide length? passed length? tests 0.01% "ready." 
 	newline
 	subtract length? passed length? results/passed "improvements" newline
-	regressions: max 0 subtract length? results/failed length? failed "regressions" newline
+	regressions: max 0 subtract length? failed length? results/failed "regressions" newline
 	either zero? regressions "" [join "Check these regressions: " mold difference results/failed failed]
 ]
 
