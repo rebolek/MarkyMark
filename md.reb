@@ -24,13 +24,19 @@ debug-print: func [value] [if debug? [print value]]
 
 open-para: close-para: none
 
-line-index: has [pos] [
+line-index: has [pos pos2] [
+	; TODO: can I do it in one pass?
+
 	; find last newline if present
 	pos: find/last md-buffer newline
-	unless pos [pos: md-buffer]
+	default pos md-buffer
+	pos: copy/part pos length? pos 	; take just what's after newline
+	debug-print ["I-" mold next pos]
 	; find last tag if present
-	pos: find/last pos #">"
-	length? either pos [next pos] [md-buffer]
+	pos2: find/last pos #">"
+	default pos2 pos
+	debug-print ["I+" mold next pos2]
+	length? next pos2
 ]
 
 ; -----
@@ -308,6 +314,7 @@ code-line: rule [value length] [
 		entities
 	|	[newline | end] (emit newline) break
 	|	tab (
+			debug-print ["found tab:" line-index "," 4 - (line-index // 4)] 
 			length: 4 - (line-index // 4)
 			emit rejoin array/initial length space
 		)
