@@ -22,11 +22,16 @@ md-buffer: make string! 1000
 debug?: false
 debug-print: func [value] [if debug? [print value]]
 
-; FIXME: hacky switch to determine wheter to emit <p> or not (for snippets)
-
-para?: false
-
 open-para: close-para: none
+
+line-index: has [pos] [
+	; find last newline if present
+	pos: find/last md-buffer newline
+	unless pos [pos: md-buffer]
+	; find last tag if present
+	pos: find/last pos #">"
+	length? either pos [next pos] [md-buffer]
+]
 
 ; -----
 
@@ -298,10 +303,14 @@ inline-code-rule: rule [code value] [
 	]
 ]
 
-code-line: rule [value][
+code-line: rule [value length] [
 	some [
 		entities
 	|	[newline | end] (emit newline) break
+	|	tab (
+			length: 4 - (line-index // 4)
+			emit rejoin array/initial length space
+		)
 	|	set value skip (emit value)	
 	]
 ]
@@ -314,7 +323,7 @@ code-rule: rule [text] [
 		[4 space | tab]
 		code-line
 	]
-	(emit ajoin [</code></pre>])
+	(emit ajoin [</code></pre> newline])
 	(end-para?: false)
 ]
 
