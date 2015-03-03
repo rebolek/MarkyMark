@@ -263,7 +263,7 @@ list-rule: rule [continue tag item] [
 			[newline | end]
 			(emit ajoin [</li> newline])
 		]
-		(emit close-tag tag)
+		(emit close-tag tag emit newline)
 	]
 ]
 
