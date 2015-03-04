@@ -181,6 +181,7 @@ em-rule: rule [mark text pos] [
 	copy text
 	to mark mark
 	(
+		debug-print ["==EM rule matched"]
 		start-para
 		mark: <em>
 		emit ajoin [mark text close-tag mark]
@@ -189,7 +190,7 @@ em-rule: rule [mark text pos] [
 
 strong-rule: rule [mark text] [
 	copy mark ["**" | "__"]
-	(debug-print ["==STRONG rule matched with" mark])
+	(debug-print ["==STRONG rule start matched with" mark])
 	not space
 	pos:
 	some not-newline mark
@@ -197,6 +198,7 @@ strong-rule: rule [mark text] [
 	copy text
 	to mark mark
 	(
+		debug-print ["==STRONG rule matched"]
 		start-para
 		mark: <strong>
 		emit ajoin [mark text close-tag mark]
@@ -352,7 +354,7 @@ newline-rule: [
 		emit ajoin [close-para newline newline]
 		start-para?: true
 	)
-|	newline ;(emit newline)	
+|	newline (emit newline)	
 ]
 
 line-break-rule: [
@@ -409,8 +411,8 @@ rules: [
 	|	entities
 	|	escapes
 	|	line-break-rule
-	|	newline-rule
-	|	end (if end-para? [debug-print "::EMIT close-para" end-para?: false emit ajoin [close-para newline]])
+	|	[newline end | end] (if end-para? [debug-print "::EMIT close-para" end-para?: false emit ajoin [close-para newline]])
+	|	newline-rule	
 	|	leading-spaces
 	|	set value skip (
 			start-para
