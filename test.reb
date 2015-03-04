@@ -21,12 +21,16 @@ do %md.reb
 tests: reduce load %tests
 results: if exists? %results [do %results]
 default results context [
-	passed:	make block! 0
-	failed:		make block! 0
+	script-checksum:	checksum/method to binary! mold read %md.reb 'SHA1
+	tests-checksum:		checksum/method to binary! mold read %tests 'SHA1
+	passed:				make block! 0
+	failed:					make block! 0
 ]
 
-passed: make block! length? tests
-failed: make block! length? tests
+passed: 				make block! length? tests
+failed: 				make block! length? tests
+script-checksum:	checksum/method to binary! mold read %md.reb 'SHA1
+tests-checksum:		checksum/method to binary! mold read %tests 'SHA1
 
 foreach test tests [
 	result: equal? test/html markdown test/markdown
@@ -35,15 +39,27 @@ foreach test tests [
 
 print [
 	"=============================" newline
+	"Script checksum:" enbase script-checksum newline
+	"Tests checksum:" enbase tests-checksum newline
+	"=============================" newline
 	length? passed "tests passed," length? failed "tests failed." newline
 	"CommonMark.reb is" round/to to percent! divide length? passed length? tests 0.01% "ready." 
 	newline
-	subtract length? passed length? results/passed "improvements" newline
+	improvements: subtract length? passed length? results/passed "improvements" newline
 	regressions: max 0 subtract length? failed length? results/failed "regressions" newline
 	either zero? regressions "" [join "Check these regressions: " mold difference results/failed failed]
 ]
 
-save %results context compose/only [
-	passed: (passed) 
-	failed: (failed)
+if any [
+	not zero? improvements
+	not zero? regressions
+	not equal? script-checksum results/script-checksum
+	not equal? tests-checksum results/tests-checksum
+] [
+	save %results context compose/only [
+		script-checksum: 	(script-checksum)
+		tests-checksum: 	(tests-checksum)
+		passed: 				(passed) 
+		failed: 				(failed)
+	]
 ]
