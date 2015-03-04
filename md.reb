@@ -224,6 +224,7 @@ img-rule: rule [text address] [
 horizontal-mark: [minus | asterisk | underscore]
 
 horizontal-rule: [
+	any space
 	horizontal-mark
 	any space
 	horizontal-mark
