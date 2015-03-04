@@ -224,7 +224,7 @@ img-rule: rule [text address] [
 horizontal-mark: [minus | asterisk | underscore]
 
 horizontal-rule: [
-	any space
+	0 3 space
 	horizontal-mark
 	any space
 	horizontal-mark
@@ -332,9 +332,14 @@ code-line: rule [value length] [
 	]
 ]
 
-code-rule: rule [text] [
-	[4 space | tab]
-	(emit ajoin [<pre><code>])
+code-rule: rule [pos text continue] [
+	pos:
+	(continue: either/only any [head? pos equal? "^/^/" back back pos] [4 space | tab] [fail])
+	continue
+	(
+		debug-print "==CODE: 4x space or tab matched"
+		emit ajoin [<pre><code>]
+	)
 	code-line
 	any [
 		[4 space | tab]
@@ -352,10 +357,14 @@ newline-rule: [
 	some newline 
 	any [space | tab]
 	(
+		debug-print "==NEWLINE para"
 		emit ajoin [close-para newline newline]
 		start-para?: true
 	)
-|	newline (emit newline)	
+|	newline (
+		debug-print "==NEWLINE only"
+		emit newline
+	)
 ]
 
 line-break-rule: [
@@ -402,10 +411,10 @@ rules: [
 	|	img-rule
 	|	list-rule
 	|	blockquote-rule
+	|	horizontal-rule
 	|	inline-code-rule
 	|	code-rule
 	|	asterisk-rule
-	|	horizontal-rule
 	|	em-rule
 	|	strong-rule
 	|	header-rule
