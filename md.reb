@@ -80,6 +80,7 @@ escapes: rule [escape] [
 	(emit escape)
 ]
 numbers: charset [#"0" - #"9"]
+not-newline: complement charset newline
 ; some "longer, but readable" stuff
 plus: #"+"
 minus: #"-"
@@ -170,10 +171,13 @@ link-rule: rule [text address value title] [
 	)
 ]
 
-em-rule: rule [mark text] [
+em-rule: rule [mark text pos] [
 	copy mark ["*" | "_"]
 	(debug-print ["==EM rule matched with" mark])
 	not space
+	pos:
+	some not-newline mark
+	:pos
 	copy text
 	to mark mark
 	(
@@ -187,6 +191,9 @@ strong-rule: rule [mark text] [
 	copy mark ["**" | "__"]
 	(debug-print ["==STRONG rule matched with" mark])
 	not space
+	pos:
+	some not-newline mark
+	:pos
 	copy text
 	to mark mark
 	(
