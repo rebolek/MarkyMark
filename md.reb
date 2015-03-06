@@ -8,8 +8,10 @@ REBOL[
 	Options: [isolate]
 	To-do: [
 		"function to produce rule wheter to continue on start-para or not"
+		"EMIT-NEWLINE: to emit neline AND setsome bit that newline was emitted"
 	]
 	Known-bugs: [
+
 	]
 	Notes: ["For mardown specification, see http://johnmacfarlane.net/babelmark2/faq.html"]
 ]
@@ -17,6 +19,7 @@ REBOL[
 xml?: true
 start-para?: true
 end-para?: true
+newline?: true
 md-buffer: make string! 1000
 
 debug?: false
@@ -56,7 +59,13 @@ emit: func [data] [
 ;	print "***wrong emit***" 
 	append md-buffer data
 ]
+
 close-tag: func [tag] [head insert copy tag #"/"]
+
+emit-newline: does [
+	append md-buffer newline
+	newline?: true
+]
 
 start-para: does [
 	if start-para? [
@@ -239,7 +248,7 @@ horizontal-rule: [
 	(
 		end-para?: false
 		emit either xml? <hr /><hr>
-		emit newline
+		emit-newline
 	)
 ]
 
@@ -271,9 +280,10 @@ list-rule: rule [continue tag item] [
 			(emit <li>)
 			line-rules
 			[newline | end]
-			(emit ajoin [</li> newline])
+			(emit </li>)
+			(emit-newline)
 		]
-		(emit close-tag tag emit newline)
+		(emit close-tag tag emit-newline)
 	]
 ]
 
@@ -282,14 +292,14 @@ blockquote-rule: rule [continue] [
 	continue
 	(emit ajoin [<blockquote> newline])
 	line-rules
-	[[newline (emit newline)] | end]
+	[[newline (emit-newline)] | end]
 	any [
 		; FIXME: what an ugly hack
 		[newline ] (remove back tail md-buffer emit ajoin [close-para newline newline open-para])
 	|	[
 			continue
 			opt line-rules
-			[newline (emit newline) | end]
+			[newline (emit-newline) | end]
 		]
 	]
 	(end-para?: false)
@@ -322,7 +332,7 @@ inline-code-rule: rule [code value] [
 code-line: rule [value length] [
 	some [
 		entities
-	|	[newline | end] (emit newline) break
+	|	[newline | end] (emit-newline) break
 	|	tab (
 			debug-print ["found tab:" line-index "," 4 - (line-index // 4)] 
 			length: 4 - (line-index // 4)
@@ -358,12 +368,14 @@ newline-rule: [
 	any [space | tab]
 	(
 		debug-print "==NEWLINE para"
-		emit ajoin [close-para newline newline]
+		emit close-para 
+		emit-newline 
+		emit-newline
 		start-para?: true
 	)
 |	newline (
 		debug-print "==NEWLINE only"
-		emit newline
+		emit-newline
 	)
 ]
 
@@ -371,13 +383,15 @@ line-break-rule: [
 	space
 	some space
 	newline
-	(emit ajoin [either xml? <br /> <br> newline])
+	(emit ajoin [either xml? <br /> <br>])
+	(emit-newline)
 ]
 
 leading-spaces: rule [continue] [
 	(continue: either/only start-para? [some space] [fail])
 	continue
 	(start-para)
+	(newline?: false)
 ]
 
 ; simplified rules used as sub-rule in some rules
@@ -429,7 +443,6 @@ rules: [
 			emit value
 		)	
 	]
-;	(emit newline)		; FIXME: is it always required?
 ]
 
 markdown: func [
