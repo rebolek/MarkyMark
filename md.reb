@@ -428,9 +428,9 @@ rules: [
 		link-rule
 	|	autolink-rule
 	|	img-rule
+	|	horizontal-rule
 	|	list-rule
 	|	blockquote-rule
-	|	horizontal-rule
 	|	inline-code-rule
 	|	code-rule
 	|	asterisk-rule
@@ -444,6 +444,7 @@ rules: [
 	|	newline-rule	
 	|	leading-spaces
 	|	set value skip (
+			newline?: false
 			debug-print ["::EMIT char" value]
 			start-para
 			emit value
@@ -463,6 +464,7 @@ markdown: func [
 ] [
 	start-para?: true
 	end-para?: true
+	newline?: true
 	set [open-para close-para] either snippet [["" ""]] [[<p></p>]]
 	debug?: debug
 	clear head md-buffer
