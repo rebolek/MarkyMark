@@ -182,13 +182,16 @@ link-rule: rule [text address value title] [
 	)
 ]
 
-em-rule: rule [mark text pos] [
+em-rule: rule [mark text pos content] [
 	copy mark ["*" | "_"]
+	(content: complement charset reduce [newline mark])
 	(debug-print ["==EM rule matched with" mark])
 	not space
+	(debug-print "==EM rule, no space")
 	pos:
-	some not-newline mark
+	some content mark
 	:pos
+	(debug-print "==EM rule, found end")
 	copy text
 	to mark mark
 	(
@@ -199,12 +202,13 @@ em-rule: rule [mark text pos] [
 	)
 ]
 
-strong-rule: rule [mark text] [
+strong-rule: rule [mark text content pos] [
 	copy mark ["**" | "__"]
+	(content: complement charset reduce [newline first mark])
 	(debug-print ["==STRONG rule start matched with" mark])
 	not space
 	pos:
-	some not-newline mark
+	some content mark
 	:pos
 	copy text
 	to mark mark
@@ -234,17 +238,17 @@ img-rule: rule [text address] [
 ; TODO: make it bitset!
 horizontal-mark: [minus | asterisk | underscore]
 
-horizontal-rule: [
+horizontal-rule: rule [mark] [
 	if (newline?)
 	0 3 space
-	horizontal-mark
+	set mark horizontal-mark
 	any space
-	horizontal-mark
+	mark
 	any space
-	horizontal-mark
+	mark
 	(debug-print "==HORIZONTAL rule matched")
 	any [
-		horizontal-mark
+		mark
 	|	space
 	]
 	newline
