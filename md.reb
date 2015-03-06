@@ -372,7 +372,6 @@ newline-rule: [
 	(
 		debug-print "==NEWLINE para"
 		emit close-para 
-		emit-newline 
 		emit-newline
 		start-para?: true
 		debug-print "__START PARA"
