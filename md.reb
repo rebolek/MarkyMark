@@ -253,6 +253,7 @@ horizontal-rule: rule [mark] [
 	]
 	newline
 	(
+		start-para?: true
 		end-para?: false
 		emit either xml? <hr /><hr>
 		emit-newline
@@ -271,20 +272,27 @@ list-rule: rule [continue tag item] [
 			ordered (item: ordered tag: <ol>)
 		|	unordered (item: unordered tag: <ul>)
 		]
+		(debug-print ["==LIST rule start:" tag])
 		(start-para?: end-para?: false)
 		(emit ajoin [tag newline <li>])
+		(debug-print ["==LIST item"])
 		line-rules
 		newline
-		(emit ajoin [</li> newline])
-		some [
+		(emit </li>)
+		(emit-newline)
+		(debug-print ["==LIST item end"])
+		any [
 			item
 			(emit <li>)
+			(debug-print ["==LIST item"])
 			line-rules
 			[newline | end]
 			(emit </li>)
 			(emit-newline)
+			(debug-print ["==LIST item end"])
 		]
 		(emit close-tag tag emit-newline)
+		(debug-print ["==LIST rule end:" tag])
 	]
 ]
 
@@ -405,6 +413,8 @@ line-rules: [
 	|	link-rule
 	|	header-rule
 	|	not newline set value skip (
+		newline?: false
+		debug-print ["::EMIT[line] char" value]		
 		start-para
 		emit value
 	)
