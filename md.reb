@@ -108,6 +108,7 @@ header-underscore: rule [text tag] [
 	(debug-print ["==HEADER matched with" tag])
 	[newline | end]
 	(
+		debug-print "__START PARA"
 		end-para?: false
 		start-para?: true
 		emit ajoin [tag text close-tag tag]
@@ -130,6 +131,7 @@ header-hash: rule [value continue trailing mark tag] [
 			[newline | end] 
 			(end-para?: false)
 			(start-para?: true)
+			(debug-print "__START PARA")
 			(emit ajoin [close-tag tag trailing])
 		]
 		break
@@ -233,6 +235,7 @@ img-rule: rule [text address] [
 horizontal-mark: [minus | asterisk | underscore]
 
 horizontal-rule: [
+	if (newline?)
 	0 3 space
 	horizontal-mark
 	any space
@@ -372,6 +375,7 @@ newline-rule: [
 		emit-newline 
 		emit-newline
 		start-para?: true
+		debug-print "__START PARA"
 	)
 |	newline (
 		debug-print "==NEWLINE only"
@@ -387,9 +391,10 @@ line-break-rule: [
 	(emit-newline)
 ]
 
-leading-spaces: rule [continue] [
-	(continue: either/only start-para? [some space] [fail])
-	continue
+leading-spaces: rule [] [
+	if (newline?)
+	[some space]
+	(debug-print "==LEADING SPACES")
 	(start-para)
 	(newline?: false)
 ]
@@ -439,6 +444,7 @@ rules: [
 	|	newline-rule	
 	|	leading-spaces
 	|	set value skip (
+			debug-print ["::EMIT char" value]
 			start-para
 			emit value
 		)	
