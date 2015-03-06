@@ -266,17 +266,11 @@ ordered: [any space some numbers dot space]
 
 list-rule: rule [continue tag item] [
 	some [
-		(
-			continue: either start-para? [
-				[
-					ordered (item: ordered tag: <ol>)
-				|	unordered (item: unordered tag: <ul>)
-				]
-			] [
-				[fail]
-			]
-		)
-		continue
+		if (start-para?)
+		[
+			ordered (item: ordered tag: <ol>)
+		|	unordered (item: unordered tag: <ul>)
+		]
 		(start-para?: end-para?: false)
 		(emit ajoin [tag newline <li>])
 		line-rules
