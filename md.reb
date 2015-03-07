@@ -124,7 +124,7 @@ header-hash: rule [value continue trailing mark tag] [
 		mark: clear ""
 	)
 	continue
-	copy mark some hash
+	copy mark 1 6 hash
 	space 
 	(emit tag: to tag! compose [h (length? mark)])
 	some [
