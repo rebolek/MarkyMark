@@ -125,8 +125,6 @@ header-hash: rule [value trailing mark tag] [
 	0 3 space
 	copy mark 1 6 hash
 	some space 
-	(emit tag: to tag! compose [h (length? mark)])
-	(debug-print "==START HEADER")
 	(start-para?: false)
 	(
 		debug-print ["??check for end-para" end-para?]
@@ -137,6 +135,8 @@ header-hash: rule [value trailing mark tag] [
 			emit-newline
 		]
 	)
+	(emit tag: to tag! compose [h (length? mark)])
+	(debug-print "==START HEADER")
 	some [
 		[
 			(trailing: "")
