@@ -130,7 +130,7 @@ header-hash: rule [value trailing mark tag] [
 	some [
 		[
 			(trailing: "")
-			[[any space opt mark] | [opt [2 space (trailing: join newline newline)]]]
+			[[any space any hash any space] | [opt [2 space (trailing: join newline newline)]]]
 			[newline | end] 
 			(end-para?: false)
 			(debug-print "==END HEADER")
