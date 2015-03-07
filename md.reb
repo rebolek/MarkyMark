@@ -121,9 +121,11 @@ header-underscore: rule [text tag] [
 ]
 
 header-hash: rule [value trailing mark tag] [
+	(debug-print ["??newline?" newline?])
 	if (newline?)
 	0 3 space
 	copy mark 1 6 hash
+	not hash
 	some space 
 	(start-para?: false)
 	(
@@ -137,7 +139,7 @@ header-hash: rule [value trailing mark tag] [
 	)
 	(emit tag: to tag! compose [h (length? mark)])
 	(debug-print "==START HEADER")
-	some [
+	any [
 		[
 			(trailing: "")
 			[[some space any hash any space] | [opt [2 space (trailing: join newline newline)]]]
@@ -148,7 +150,6 @@ header-hash: rule [value trailing mark tag] [
 			(emit-newline)
 		]
 		break
-;	|	set value skip (emit value)	
 	|	inline-rules
 	]
 	(start-para?: true)
