@@ -64,6 +64,7 @@ emit: func [data] [
 close-tag: func [tag] [head insert copy tag #"/"]
 
 emit-newline: does [
+	debug-print "::EMIT newline"
 	append md-buffer newline
 	newline?: true
 	end-line?: false
@@ -125,16 +126,17 @@ header-hash: rule [value continue trailing mark tag] [
 	)
 	continue
 	copy mark 1 6 hash
-	space 
+	some space 
 	(emit tag: to tag! compose [h (length? mark)])
+	(debug-print "==START HEADER")
 	(start-para?: false)
 	some [
 		[
 			(trailing: "")
-			[[any space mark] | [opt [2 space (trailing: join newline newline)]]]
+			[[any space opt mark] | [opt [2 space (trailing: join newline newline)]]]
 			[newline | end] 
 			(end-para?: false)
-	;		(debug-print "__START PARA")
+			(debug-print "==END HEADER")
 			(emit ajoin [close-tag tag trailing])
 			(emit-newline)
 		]
@@ -447,16 +449,14 @@ line-rules: [
 ]
 
 inline-rules: [
-	some [
-		em-rule
-	|	strong-rule
-	|	asterisk-rule
-	|	not newline set value skip (
+	em-rule
+|	strong-rule
+|	asterisk-rule
+|	not newline set value skip (
 		newline?: false
 		debug-print ["::EMIT[inline] char" value]	
 		emit value
 	)
-	]
 ]
 
 ; other set of sub-rules
