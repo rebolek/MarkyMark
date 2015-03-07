@@ -136,6 +136,7 @@ header-hash: rule [value continue trailing mark tag] [
 			(start-para?: true)
 			(debug-print "__START PARA")
 			(emit ajoin [close-tag tag trailing])
+			(emit-newline)
 		]
 		break
 	|	set value skip (emit value)	
