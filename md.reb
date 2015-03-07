@@ -106,12 +106,13 @@ lt: #"<"
 gt: #">"
 
 header-underscore: rule [text tag] [
+	(debug-print ["??newline?" newline?])
 	copy text to newline 
 	newline
 	some [eq (tag: <h1>) | minus (tag: <h2>)]
-	(debug-print ["==HEADER matched with" tag])
 	[newline | end]
 	(
+		debug-print ["==HEADER matched with" tag]
 		debug-print "__START PARA"
 		end-para?: false
 		start-para?: true
@@ -254,9 +255,12 @@ img-rule: rule [text address] [
 horizontal-mark: [minus | asterisk | underscore]
 
 match-horizontal: [
+	(debug-print ["#####hori1" newline?])
 	if (newline?)
+	(debug-print "#####hori2")
 	0 3 space
 	set mark horizontal-mark
+	(debug-print "#####hori3")
 	any space
 	mark
 	any space
@@ -301,9 +305,12 @@ list-rule: rule [continue? tag item] [
 		(continue?: true)
 		(debug-print ["==LIST rule start:" tag])
 		(start-para?: end-para?: false)
-		(emit ajoin [tag newline <li>])
+		(emit tag)
+		(emit-newline) 
+		(emit <li>)
 		(end-line?: true)
 		(debug-print ["==LIST item #1"])
+		(newline?: true)
 		line-rules
 		newline
 		(emit </li>)
@@ -315,6 +322,7 @@ list-rule: rule [continue? tag item] [
 				item
 				(emit <li>)
 				(end-line?: true)
+				(newline?: true)
 				(debug-print ["==LIST item"])
 				line-rules
 				[newline | end]
@@ -443,7 +451,7 @@ leading-spaces: rule [] [
 line-rules: [
 	some [
 		header-rule
-	|	horizontal-rule	
+	|	horizontal-rule
 	|	em-rule
 	|	strong-rule
 	|	link-rule
