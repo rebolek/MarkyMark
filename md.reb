@@ -253,6 +253,12 @@ horizontal-rule: rule [mark] [
 	]
 	newline
 	(
+		if end-para? [
+			; get rid of last newline before closing para
+			if equal? newline last md-buffer [remove back tail md-buffer]
+			emit close-para
+			emit-newline
+		]
 		start-para?: true
 		end-para?: false
 		emit either xml? <hr /><hr>
@@ -376,7 +382,7 @@ newline-rule: [
 	some newline 
 	any [space | tab]
 	(
-		debug-print "==NEWLINE para"
+		debug-print "==NEWLINE para"	
 		emit close-para 
 		emit-newline
 		start-para?: true
@@ -470,7 +476,7 @@ markdown: func [
 	/debug "Turn on debugging"
 ] [
 	start-para?: true
-	end-para?: true
+	end-para?: false
 	newline?: true
 	set [open-para close-para] either snippet [["" ""]] [[<p></p>]]
 	debug?: debug
