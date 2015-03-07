@@ -239,7 +239,7 @@ img-rule: rule [text address] [
 ; TODO: make it bitset!
 horizontal-mark: [minus | asterisk | underscore]
 
-horizontal-rule: rule [mark] [
+match-horizontal: [
 	if (newline?)
 	0 3 space
 	set mark horizontal-mark
@@ -253,6 +253,10 @@ horizontal-rule: rule [mark] [
 	|	space
 	]
 	newline
+]
+
+horizontal-rule: rule [mark] [
+	match-horizontal
 	(
 		if end-para? [
 			; get rid of last newline before closing para
@@ -272,31 +276,35 @@ ordered: [any space some numbers dot space]
 
 ; TODO: recursion for lists
 
-list-rule: rule [continue tag item] [
+list-rule: rule [continue? tag item] [
 	some [
 		if (start-para?)
 		[
 			ordered (item: ordered tag: <ol>)
 		|	unordered (item: unordered tag: <ul>)
 		]
+		(continue?: true)
 		(debug-print ["==LIST rule start:" tag])
 		(start-para?: end-para?: false)
 		(emit ajoin [tag newline <li>])
-		(debug-print ["==LIST item"])
+		(debug-print ["==LIST item #1"])
 		line-rules
 		newline
 		(emit </li>)
 		(emit-newline)
-		(debug-print ["==LIST item end"])
+		(debug-print ["==LIST item #1 end"])
 		any [
-			item
-			(emit <li>)
-			(debug-print ["==LIST item"])
-			line-rules
-			[newline | end]
-			(emit </li>)
-			(emit-newline)
-			(debug-print ["==LIST item end"])
+			[pos: match-horizontal :pos]
+		|	[
+				item
+				(emit <li>)
+				(debug-print ["==LIST item"])
+				line-rules
+				[newline | end]
+				(emit </li>)
+				(emit-newline)
+				(debug-print ["==LIST item end"])
+			]
 		]
 		(emit close-tag tag emit-newline)
 		(debug-print ["==LIST rule end:" tag])
