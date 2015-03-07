@@ -18,8 +18,9 @@ REBOL[
 
 xml?: true
 start-para?: true
-end-para?: true
+end-para?: false
 newline?: true
+end-line?: false
 md-buffer: make string! 1000
 
 debug?: false
@@ -65,6 +66,7 @@ close-tag: func [tag] [head insert copy tag #"/"]
 emit-newline: does [
 	append md-buffer newline
 	newline?: true
+	end-line?: false
 ]
 
 start-para: does [
@@ -264,6 +266,7 @@ horizontal-rule: rule [mark] [
 			emit close-para
 			emit-newline
 		]
+		if end-line? [emit-newline]
 		start-para?: true
 		end-para?: false
 		emit either xml? <hr /><hr>
@@ -287,6 +290,7 @@ list-rule: rule [continue? tag item] [
 		(debug-print ["==LIST rule start:" tag])
 		(start-para?: end-para?: false)
 		(emit ajoin [tag newline <li>])
+		(end-line?: true)
 		(debug-print ["==LIST item #1"])
 		line-rules
 		newline
@@ -298,6 +302,7 @@ list-rule: rule [continue? tag item] [
 		|	[
 				item
 				(emit <li>)
+				(end-line?: true)
 				(debug-print ["==LIST item"])
 				line-rules
 				[newline | end]
@@ -423,10 +428,11 @@ leading-spaces: rule [] [
 
 line-rules: [
 	some [
-		em-rule
+		header-rule
+	|	horizontal-rule	
+	|	em-rule
 	|	strong-rule
 	|	link-rule
-	|	header-rule
 	|	not newline set value skip (
 		newline?: false
 		debug-print ["::EMIT[line] char" value]		
@@ -486,6 +492,7 @@ markdown: func [
 ] [
 	start-para?: true
 	end-para?: false
+	end-line?: false
 	newline?: true
 	set [open-para close-para] either snippet [["" ""]] [[<p></p>]]
 	debug?: debug
