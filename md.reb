@@ -119,12 +119,9 @@ header-underscore: rule [text tag] [
 	)
 ]
 
-header-hash: rule [value continue trailing mark tag] [
-	(
-		continue: either/only start-para? [not space] [fail]
-		mark: clear ""
-	)
-	continue
+header-hash: rule [value trailing mark tag] [
+	if (start-para?)
+	0 3 space
 	copy mark 1 6 hash
 	some space 
 	(emit tag: to tag! compose [h (length? mark)])
