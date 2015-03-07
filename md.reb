@@ -58,6 +58,7 @@ rule: func [
 
 emit: func [data] [
 ;	print "***wrong emit***" 
+	newline?: false
 	append md-buffer data
 ]
 
@@ -120,13 +121,22 @@ header-underscore: rule [text tag] [
 ]
 
 header-hash: rule [value trailing mark tag] [
-	if (start-para?)
+	if (newline?)
 	0 3 space
 	copy mark 1 6 hash
 	some space 
 	(emit tag: to tag! compose [h (length? mark)])
 	(debug-print "==START HEADER")
 	(start-para?: false)
+	(
+		debug-print ["??check for end-para" end-para?]
+		if end-para? [
+			; get rid of last newline before closing para
+			if equal? newline last md-buffer [remove back tail md-buffer]
+			emit close-para
+			emit-newline
+		]
+	)
 	some [
 		[
 			(trailing: "")
