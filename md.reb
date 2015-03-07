@@ -392,6 +392,8 @@ code-rule: rule [pos text continue] [
 
 asterisk-rule: ["\*" (emit "*")]
 
+hash-rule: ["\#" (emit "#")]
+
 newline-rule: [
 	newline 
 	any [space | tab] 
@@ -449,6 +451,7 @@ inline-rules: [
 	em-rule
 |	strong-rule
 |	asterisk-rule
+|	hash-rule
 |	not newline set value skip (
 		newline?: false
 		debug-print ["::EMIT[inline] char" value]	
