@@ -112,6 +112,7 @@ header-underscore: rule [text tag] [
 		end-para?: false
 		start-para?: true
 		emit ajoin [tag text close-tag tag]
+		emit-newline
 	)
 ]
 
