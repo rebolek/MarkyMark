@@ -127,20 +127,22 @@ header-hash: rule [value continue trailing mark tag] [
 	copy mark 1 6 hash
 	space 
 	(emit tag: to tag! compose [h (length? mark)])
+	(start-para?: false)
 	some [
 		[
 			(trailing: "")
 			[[any space mark] | [opt [2 space (trailing: join newline newline)]]]
 			[newline | end] 
 			(end-para?: false)
-			(start-para?: true)
-			(debug-print "__START PARA")
+	;		(debug-print "__START PARA")
 			(emit ajoin [close-tag tag trailing])
 			(emit-newline)
 		]
 		break
-	|	set value skip (emit value)	
+;	|	set value skip (emit value)	
+	|	inline-rules
 	]
+	(start-para?: true)
 ]
 
 header-rule: [
@@ -434,10 +436,24 @@ line-rules: [
 	|	em-rule
 	|	strong-rule
 	|	link-rule
+	|	asterisk-rule
 	|	not newline set value skip (
 		newline?: false
 		debug-print ["::EMIT[line] char" value]		
 		start-para
+		emit value
+	)
+	]
+]
+
+inline-rules: [
+	some [
+		em-rule
+	|	strong-rule
+	|	asterisk-rule
+	|	not newline set value skip (
+		newline?: false
+		debug-print ["::EMIT[inline] char" value]	
 		emit value
 	)
 	]
