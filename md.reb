@@ -106,7 +106,6 @@ lt: #"<"
 gt: #">"
 
 header-underscore: rule [text tag] [
-	(debug-print ["??newline?" newline?])
 	copy text to newline 
 	newline
 	some [eq (tag: <h1>) | minus (tag: <h2>)]
@@ -255,12 +254,9 @@ img-rule: rule [text address] [
 horizontal-mark: [minus | asterisk | underscore]
 
 match-horizontal: [
-	(debug-print ["#####hori1" newline?])
 	if (newline?)
-	(debug-print "#####hori2")
 	0 3 space
 	set mark horizontal-mark
-	(debug-print "#####hori3")
 	any space
 	mark
 	any space
