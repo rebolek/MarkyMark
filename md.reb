@@ -118,6 +118,23 @@ gt: #">"
 whitespace: [space | tab | newline |  #"^K" | #"^L" | #"^M"]
 blank-line: [some [space | tab]]
 
+char-rule: rule [value] [
+	set value skip (
+		newline?: false
+		debug-print ["::EMIT character:" value]
+		emit value
+	)
+]
+
+para-char-rule: rule [value] [
+	set value skip (
+		newline?: false
+		debug-print ["::EMIT[line] char" value]
+		start-para
+		emit value
+	)
+]
+
 header-setext: rule [tag continue?] [
 	; something about lazy continuation lines?
 	if (all [lazy? start-para?])
@@ -440,7 +457,7 @@ inline-code-rule: rule [code value] [
 		some [
 			"``" (emit </code>) break ; end rule
 		|	entities
-		|	set value skip (emit value)
+		|	char-rule
 		]
 	]
 |	[
@@ -452,7 +469,7 @@ inline-code-rule: rule [code value] [
 		some [
 			"`" (emit </code>) break ; end rule
 		|	entities
-		|	set value skip (emit value)
+		|	char-rule
 		]
 	]
 ]
@@ -460,25 +477,25 @@ inline-code-rule: rule [code value] [
 code-line: rule [value length] [
 	some [
 		entities
+	|	if (newline?) newline (debug-print "==NEWLINE in CODE to be skipped") break
 	|	[newline | end] (emit-newline) break
 	|	tab (
 			debug-print ["found tab:" line-index "," 4 - (line-index // 4)] 
 			length: 4 - (line-index // 4)
 			emit rejoin array/initial length space
 		)
-	|	set value skip (emit value)	
+	|	char-rule
 	]
 ]
 
-code-prefix: [4 space | tab]
+code-prefix: [[4 space | tab] (debug-print "==CODE: 4x space or tab matched")]
 
 code-rule: rule [pos text] [
 	if (all [newline? start-para?])
+	(debug-print "==CODE rule can run")
+	any newline
 	code-prefix
-	(
-		debug-print "==CODE: 4x space or tab matched"
-		emit ajoin [<pre><code>]
-	)
+	(emit ajoin [<pre><code>] newline?: true)
 	code-line
 	any [
 		code-prefix
@@ -548,12 +565,7 @@ line-rules: [
 	|	link-rule
 	|	escape-entity
 	|	escapes
-	|	not newline set value skip (
-		newline?: false
-		debug-print ["::EMIT[line] char" value]		
-		start-para
-		emit value
-	)
+	|	not newline para-char-rule
 	]
 ]
 
@@ -563,11 +575,7 @@ inline-rules: [
 |	escape-entity
 |	escapes
 |	entities
-|	not [newline | space] set value skip (
-		newline?: false
-		debug-print ["::EMIT[inline] char" value]	
-		emit value
-	)
+|	not [newline | space] char-rule
 ]
 
 ; other set of sub-rules
@@ -600,12 +608,7 @@ rules: [
 	|	line-break-rule
 	|	newline-rule
 	|	leading-spaces
-	|	set value skip (
-			newline?: false
-			debug-print ["::EMIT char" value]
-			start-para
-			emit value
-		)	
+	|	para-char-rule
 	]
 ]
 
