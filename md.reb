@@ -21,6 +21,7 @@ start-para?: true
 end-para?: false
 newline?: true
 end-line?: false
+blockquote?: false
 md-buffer: make string! 1000
 
 debug?: false
@@ -62,14 +63,18 @@ emit: func [data] [
 	append md-buffer data
 ]
 
-close-tag: func [tag] [head insert copy tag #"/"]
-
 emit-newline: does [
 	debug-print "::EMIT newline"
 	append md-buffer newline
 	newline?: true
 	end-line?: false
 ]
+
+remove-last-newline: does [
+	if equal? newline last md-buffer [remove back tail md-buffer]
+]
+
+close-tag: func [tag] [head insert copy tag #"/"]
 
 start-para: does [
 	if start-para? [
@@ -109,6 +114,8 @@ whitespace: [space | tab | newline |  #"^K" | #"^L" | #"^M"]
 blank-line: [some [space | tab]]
 
 header-setext: rule [tag continue?] [
+	; something about lazy continuation lines?
+	if (not blockquote?)
 	; just check if the rule is fine
 	(continue?: true)
 	and [
@@ -171,7 +178,7 @@ header-atx: rule [mark continue? space?] [
 		start-para?: false
 		if end-para? [
 			; get rid of last newline before closing para
-			if equal? newline last md-buffer [remove back tail md-buffer]
+			remove-last-newline
 			debug-print "::EMIT close-para (header-atx)"
 			emit close-para
 			emit-newline
@@ -329,7 +336,7 @@ horizontal-rule: rule [mark] [
 	(
 		if end-para? [
 			; get rid of last newline before closing para
-			if equal? newline last md-buffer [remove back tail md-buffer]
+			remove-last-newline
 			debug-print "::EMIT close-para (header-setext)"
 			emit close-para
 			emit-newline
@@ -388,10 +395,13 @@ list-rule: rule [continue? tag item] [
 	]
 ]
 
+blockquote-prefix: [gt any space]
+
 blockquote-rule: rule [continue] [
-	(continue: either/only start-para? [gt any space] [fail])
-	continue
+	if (start-para?)
+	blockquote-prefix
 	(emit ajoin [<blockquote> newline])
+	(blockquote?: true)
 	line-rules
 	[[newline (emit-newline)] | end]
 	any [
@@ -402,14 +412,17 @@ blockquote-rule: rule [continue] [
 			emit ajoin [close-para newline newline open-para]
 		)
 	|	[
-			continue
+			blockquote-prefix
 			opt line-rules
 			[newline (emit-newline) | end]
 		]
 	]
 	(end-para?: false)
-	(debug-print "::EMIT close-para (blockquote #1)")
+	(blockquote?: false)
+	(debug-print "::EMIT close-para (blockquote #2)")
+	(if equal? newline last md-buffer [remove back tail md-buffer])
 	(emit ajoin [close-para newline </blockquote>])
+	(emit-newline)
 ]
 
 inline-code-rule: rule [code value] [
@@ -596,6 +609,7 @@ markdown: func [
 	end-para?: false
 	end-line?: false
 	newline?: true
+	blockquote?: false
 	set [open-para close-para] either snippet [["" ""]] [[<p></p>]]
 	debug?: debug
 	clear head md-buffer
