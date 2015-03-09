@@ -94,9 +94,14 @@ entities: [
 escape-set: charset "\`*_{}[]()#+-.!"
 escapes: rule [escape] [
 	#"\"
+	(debug-print "==ESCAPE matched")
 	(start-para)
 	set escape escape-set
+	(debug-print ["==ESCAPE:" escape])
 	(emit escape)
+]
+escape-entity: [
+	#"\" entities
 ]
 numbers: charset [#"0" - #"9"]
 not-newline: complement charset newline
@@ -119,13 +124,15 @@ header-setext: rule [tag continue?] [
 	; just check if the rule is fine
 	(continue?: true)
 	and [
-		some not-newline
+		not code-prefix		; Setext header text lines must not be interpretable as block constructs other than paragraphs.
+		some not-newline	; Setext headers cannot be empty
 		newline
 		0 3 space
 		some [eq (tag: <h1>) | minus (tag: <h2>)]
 		any space
 		[newline | end]
 	]
+	(debug-print ["==HEADER matched with" tag])
 	; rule can be matched, generate output
 	(start-para?: false)
 	(emit tag)
@@ -142,7 +149,6 @@ header-setext: rule [tag continue?] [
 	|	if (continue?) space (emit space)
 	]
 	(
-		debug-print ["==HEADER matched with" tag]
 		debug-print "__START PARA"
 		end-para?: false
 		start-para?: true
@@ -535,7 +541,9 @@ line-rules: [
 	|	em-rule
 	|	strong-rule
 	|	link-rule
-	|	asterisk-rule
+;	|	asterisk-rule
+	|	escape-entity
+	|	escapes
 	|	not newline set value skip (
 		newline?: false
 		debug-print ["::EMIT[line] char" value]		
@@ -548,8 +556,8 @@ line-rules: [
 inline-rules: [
 	em-rule
 |	strong-rule
-|	asterisk-rule
-|	hash-rule
+|	escape-entity
+|	escapes
 |	entities
 |	not [newline | space] set value skip (
 		newline?: false
@@ -577,13 +585,14 @@ rules: [
 	|	header-rule
 	|	inline-code-rule
 	|	code-rule
-	|	asterisk-rule
+	|	escape-entity
+	|	escapes
+;	|	asterisk-rule
 	|	em-rule
 	|	strong-rule
 	|	autolink-rule
 	|	link-rule
 	|	entities
-	|	escapes
 	|	line-break-rule
 	|	[newline end | end] (if end-para? [debug-print "::EMIT close-para (rules/newline)" end-para?: false emit ajoin [close-para newline]])
 	|	newline-rule	
