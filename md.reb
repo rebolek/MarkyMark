@@ -122,45 +122,60 @@ header-underscore: rule [text tag] [
 	)
 ]
 
-header-hash: rule [value trailing mark tag] [
-	(debug-print ["??newline?" newline?])
+header-atx: rule [mark continue? space?] [
+	(continue?: true)
+	(space?: false)
 	if (newline?)
-	0 3 space
-	copy mark 1 6 hash
-	not hash
-	and [whitespace | end]
-	any space 
-	(start-para?: false)
+	0 3 space 						; The opening # character may be indented 0-3 spaces.
+	copy mark 1 6 hash 			; between an opening sequence of 1–6 unescaped # characters
+	not hash 						; dtto
+	and [whitespace | end] 		; The opening sequence of # characters cannot be followed directly by a non-space character.
+	any space  (space?: true)			; dtto
 	(
-		debug-print ["??check for end-para" end-para?]
+		start-para?: false
 		if end-para? [
 			; get rid of last newline before closing para
 			if equal? newline last md-buffer [remove back tail md-buffer]
 			emit close-para
 			emit-newline
 		]
-	)
-	(emit tag: to tag! compose [h (length? mark)])
-	(debug-print "==START HEADER")
-	any [
+		emit tag: to tag! compose [h (length? mark)]
+		debug-print ["==ATX: start" length? mark]
+	)	
+
+	some [
 		[
-			(trailing: "")
-			[[some space any hash any space] | [opt [2 space (trailing: join newline newline)]]]
-			[newline | end] 
-			(end-para?: false)
-			(debug-print "==END HEADER")
-			(emit ajoin [close-tag tag trailing])
-			(emit-newline)
+			if (continue?)	
+			[some space | if (space?)] 			; The optional closing sequence of #s must be preceded by a space
+			some hash 			; optional closing sequence of any number of # characters
+			and [any space newline]
+			(debug-print "==ATX: closing seq")
 		]
-		break
-	|	inline-rules
+	|	[
+			; ... may be followed by spaces only. 
+			pos:
+			[any space (debug-print "%%__") | if (space?)] 
+			pos:
+			newline 
+			pos: (
+				end-para?: false
+				start-para?: true
+				debug-print "==ATX: end"
+				print mold pos
+				emit close-tag tag 
+				emit-newline
+				continue?: false
+			)
+			break
+		]
+	|	[if (continue?) (space?: false) inline-rules]
+	|	[if (continue?) space (emit space)]
 	]
-	(start-para?: true)
 ]
 
 header-rule: [
 	header-underscore
-|	header-hash	
+|	header-atx
 ]
 
 autolink-rule: rule [address] [
@@ -201,7 +216,7 @@ link-rule: rule [text address value title] [
 	)
 ]
 
-em-rule: rule [mark text pos content] [
+em-rule: rule [mark text content] [
 	copy mark ["*" | "_"]
 	(content: complement charset reduce [newline mark])
 	(debug-print ["==EM rule matched with" mark])
@@ -468,7 +483,7 @@ inline-rules: [
 |	strong-rule
 |	asterisk-rule
 |	hash-rule
-|	not newline set value skip (
+|	not [newline | space] set value skip (
 		newline?: false
 		debug-print ["::EMIT[inline] char" value]	
 		emit value
