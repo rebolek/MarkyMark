@@ -204,15 +204,12 @@ header-atx: rule [mark continue? space?] [
 		]
 	|	[
 			; ... may be followed by spaces only. 
-			pos:
-			[any space (debug-print "%%__") | if (space?)] 
-			pos:
+			[any space | if (space?)] 
 			newline 
-			pos: (
+			(
 				end-para?: false
 				start-para?: true
 				debug-print "==ATX: end"
-				print mold pos
 				emit close-tag tag 
 				emit-newline
 				continue?: false
@@ -429,7 +426,7 @@ blockquote-rule: rule [continue] [
 	(end-para?: false)
 	(lazy?: true)
 	(debug-print "::EMIT close-para (blockquote #2)")
-	(if equal? newline last md-buffer [remove back tail md-buffer])
+	(remove-last-newline)
 	(emit ajoin [close-para newline </blockquote>])
 	(emit-newline)
 ]
@@ -476,8 +473,7 @@ code-line: rule [value length] [
 code-prefix: [4 space | tab]
 
 code-rule: rule [pos text] [
-	pos:
-	if (any [head? pos equal? "^/^/" back back pos])
+	if (all [newline? start-para?])
 	code-prefix
 	(
 		debug-print "==CODE: 4x space or tab matched"
@@ -505,11 +501,20 @@ newline-rule: [
 	any [space | tab]
 	(
 		debug-print "==EMIT close-para (newline)"	
-		emit close-para 
+		if end-para? [emit close-para]
 		emit-newline
 		start-para?: true
+		end-para?: false
 		debug-print "__START PARA"
 	)
+|	[newline end | end] (
+		if end-para? [
+			debug-print "::EMIT close-para (rules/newline)" 
+			end-para?: false 
+			emit close-para 
+			emit-newline
+		]
+	)	
 |	newline (
 		debug-print ["==NEWLINE only" newline?]
 		unless newline? [emit-newline]
@@ -541,7 +546,6 @@ line-rules: [
 	|	em-rule
 	|	strong-rule
 	|	link-rule
-;	|	asterisk-rule
 	|	escape-entity
 	|	escapes
 	|	not newline set value skip (
@@ -594,8 +598,7 @@ rules: [
 	|	link-rule
 	|	entities
 	|	line-break-rule
-	|	[newline end | end] (if end-para? [debug-print "::EMIT close-para (rules/newline)" end-para?: false emit ajoin [close-para newline]])
-	|	newline-rule	
+	|	newline-rule
 	|	leading-spaces
 	|	set value skip (
 			newline?: false
