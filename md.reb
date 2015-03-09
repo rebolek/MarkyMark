@@ -487,7 +487,7 @@ code-rule: rule [pos text] [
 	any [
 		code-prefix
 		code-line
-	|	newline (emit-newline)	
+	|	any space newline (emit-newline)	
 	]
 	(emit ajoin [</code></pre>])
 	(emit-newline)
