@@ -115,7 +115,7 @@ blank-line: [some [space | tab]]
 
 header-setext: rule [tag continue?] [
 	; something about lazy continuation lines?
-	if (lazy?)
+	if (all [lazy? start-para?])
 	; just check if the rule is fine
 	(continue?: true)
 	and [
@@ -315,7 +315,6 @@ img-rule: rule [text address] [
 horizontal-mark: [minus | asterisk | underscore]
 
 match-horizontal: [
-	(debug-print ["??newline" newline?])
 	if (newline?)
 	0 3 space
 	set mark horizontal-mark
@@ -344,6 +343,7 @@ horizontal-rule: rule [mark] [
 		if end-line? [emit-newline]
 		start-para?: true
 		end-para?: false
+		(debug-print "::EMIT horizontal rule")
 		emit either xml? <hr /><hr>
 		emit-newline
 	)
@@ -498,15 +498,14 @@ newline-rule: [
 	any [space | tab]
 	(
 		debug-print "==EMIT close-para (newline)"	
-
 		emit close-para 
 		emit-newline
 		start-para?: true
 		debug-print "__START PARA"
 	)
 |	newline (
-		debug-print "==NEWLINE only"
-		emit-newline
+		debug-print ["==NEWLINE only" newline?]
+		unless newline? [emit-newline]
 	)
 ]
 
