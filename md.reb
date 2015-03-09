@@ -84,6 +84,7 @@ entities: [
 	#"<" (emit "&lt;")
 |	#">" (emit "&gt;")
 |	#"&" (emit "&amp;")
+|	#"^"" (emit "&quot;")
 ]
 escape-set: charset "\`*_{}[]()#+-.!"
 escapes: rule [escape] [
@@ -106,6 +107,41 @@ lt: #"<"
 gt: #">"
 whitespace: [space | tab | newline |  #"^K" | #"^L" | #"^M"]
 blank-line: [some [space | tab]]
+
+header-setext: rule [tag continue?] [
+	; just check if the rule is fine
+	(continue?: true)
+	and [
+		thru newline 			; NOTE: is this enough?
+		0 3 space
+		some [eq (tag: <h1>) | minus (tag: <h2>)]
+		any space
+		[newline | end]
+	]
+	; rule can be matched, generate output
+	(start-para?: false)
+	(emit tag)
+	0 3 space
+	some [
+		[
+			any space
+			newline
+			thru [newline | end]
+			opt newline
+			(continue?: false)
+		]	
+	|	if (continue?) inline-rules
+	|	if (continue?) space (emit space)
+	]
+	(
+		debug-print ["==HEADER matched with" tag]
+		debug-print "__START PARA"
+		end-para?: false
+		start-para?: true
+		emit close-tag tag
+		emit-newline
+	)	
+]
 
 header-underscore: rule [text tag] [
 	copy text to newline 
@@ -136,6 +172,7 @@ header-atx: rule [mark continue? space?] [
 		if end-para? [
 			; get rid of last newline before closing para
 			if equal? newline last md-buffer [remove back tail md-buffer]
+			debug-print "::EMIT close-para (header-atx)"
 			emit close-para
 			emit-newline
 		]
@@ -174,7 +211,8 @@ header-atx: rule [mark continue? space?] [
 ]
 
 header-rule: [
-	header-underscore
+;	header-underscore
+	header-setext
 |	header-atx
 ]
 
@@ -183,6 +221,7 @@ autolink-rule: rule [address] [
 	copy address ; TODO: Parse address to match email
 	to gt skip
 	(
+		debug-print "==AUTOLINK RULE"
 		start-para
 		emit ajoin [{<a href="} address {">} address </a>]
 	)
@@ -269,6 +308,7 @@ img-rule: rule [text address] [
 horizontal-mark: [minus | asterisk | underscore]
 
 match-horizontal: [
+	(debug-print ["??newline" newline?])
 	if (newline?)
 	0 3 space
 	set mark horizontal-mark
@@ -290,6 +330,7 @@ horizontal-rule: rule [mark] [
 		if end-para? [
 			; get rid of last newline before closing para
 			if equal? newline last md-buffer [remove back tail md-buffer]
+			debug-print "::EMIT close-para (header-setext)"
 			emit close-para
 			emit-newline
 		]
@@ -355,7 +396,11 @@ blockquote-rule: rule [continue] [
 	[[newline (emit-newline)] | end]
 	any [
 		; FIXME: what an ugly hack
-		[newline ] (remove back tail md-buffer emit ajoin [close-para newline newline open-para])
+		[newline ] (
+			debug-print "::EMIT close-para (blockquote #1)"
+			remove back tail md-buffer 
+			emit ajoin [close-para newline newline open-para]
+		)
 	|	[
 			continue
 			opt line-rules
@@ -363,6 +408,7 @@ blockquote-rule: rule [continue] [
 		]
 	]
 	(end-para?: false)
+	(debug-print "::EMIT close-para (blockquote #1)")
 	(emit ajoin [close-para newline </blockquote>])
 ]
 
@@ -371,6 +417,7 @@ inline-code-rule: rule [code value] [
 		"``" 
 		(start-para)
 		(emit <code>)
+		(debug-print "==INLINE-CODE")
 		some [
 			"``" (emit </code>) break ; end rule
 		|	entities
@@ -378,8 +425,10 @@ inline-code-rule: rule [code value] [
 		]
 	]
 |	[
+		and ["`" to "`"]
 		"`"
-		(start-para)
+;		(start-para)
+;		(end-para?: false)
 		(emit <code>)
 		some [
 			"`" (emit </code>) break ; end rule
@@ -416,8 +465,10 @@ code-rule: rule [pos text] [
 	any [
 		code-prefix
 		code-line
+	|	newline (emit-newline)	
 	]
-	(emit ajoin [</code></pre> newline])
+	(emit ajoin [</code></pre>])
+	(emit-newline)
 	(end-para?: false)
 ]
 
@@ -431,7 +482,8 @@ newline-rule: [
 	some newline 
 	any [space | tab]
 	(
-		debug-print "==NEWLINE para"	
+		debug-print "==EMIT close-para (newline)"	
+
 		emit close-para 
 		emit-newline
 		start-para?: true
@@ -483,6 +535,7 @@ inline-rules: [
 |	strong-rule
 |	asterisk-rule
 |	hash-rule
+|	entities
 |	not [newline | space] set value skip (
 		newline?: false
 		debug-print ["::EMIT[inline] char" value]	
@@ -501,22 +554,23 @@ sub-rules: [
 rules: [
 ;	any space
 	some [	
-		link-rule
-	|	autolink-rule
-	|	img-rule
+		
+		img-rule
 	|	horizontal-rule
 	|	list-rule
 	|	blockquote-rule
+	|	header-rule
 	|	inline-code-rule
 	|	code-rule
 	|	asterisk-rule
 	|	em-rule
 	|	strong-rule
-	|	header-rule
+	|	autolink-rule
+	|	link-rule
 	|	entities
 	|	escapes
 	|	line-break-rule
-	|	[newline end | end] (if end-para? [debug-print "::EMIT close-para" end-para?: false emit ajoin [close-para newline]])
+	|	[newline end | end] (if end-para? [debug-print "::EMIT close-para (rules/newline)" end-para?: false emit ajoin [close-para newline]])
 	|	newline-rule	
 	|	leading-spaces
 	|	set value skip (
