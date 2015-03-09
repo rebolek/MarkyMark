@@ -104,6 +104,8 @@ dot: #"."
 eq: #"="
 lt: #"<"
 gt: #">"
+whitespace: [space | tab | newline |  #"^K" | #"^L" | #"^M"]
+blank-line: [some [space | tab]]
 
 header-underscore: rule [text tag] [
 	copy text to newline 
@@ -126,7 +128,8 @@ header-hash: rule [value trailing mark tag] [
 	0 3 space
 	copy mark 1 6 hash
 	not hash
-	some space 
+	and [whitespace | end]
+	any space 
 	(start-para?: false)
 	(
 		debug-print ["??check for end-para" end-para?]
