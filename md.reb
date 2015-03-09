@@ -207,9 +207,7 @@ em-rule: rule [mark text pos content] [
 	(debug-print ["==EM rule matched with" mark])
 	not space
 	(debug-print "==EM rule, no space")
-	pos:
-	some content mark
-	:pos
+	and [some content mark]
 	(debug-print "==EM rule, found end")
 	copy text
 	to mark mark
@@ -226,9 +224,7 @@ strong-rule: rule [mark text content pos] [
 	(content: complement charset reduce [newline first mark])
 	(debug-print ["==STRONG rule start matched with" mark])
 	not space
-	pos:
-	some content mark
-	:pos
+	and [some content mark]
 	copy text
 	to mark mark
 	(
@@ -317,7 +313,7 @@ list-rule: rule [continue? tag item] [
 		(emit-newline)
 		(debug-print ["==LIST item #1 end"])
 		any [
-			[pos: match-horizontal :pos]
+			and match-horizontal
 		|	[
 				item
 				(emit <li>)
@@ -391,17 +387,19 @@ code-line: rule [value length] [
 	]
 ]
 
-code-rule: rule [pos text continue] [
+code-prefix: [4 space | tab]
+
+code-rule: rule [pos text] [
 	pos:
-	(continue: either/only any [head? pos equal? "^/^/" back back pos] [4 space | tab] [fail])
-	continue
+	if (any [head? pos equal? "^/^/" back back pos])
+	code-prefix
 	(
 		debug-print "==CODE: 4x space or tab matched"
 		emit ajoin [<pre><code>]
 	)
 	code-line
 	any [
-		[4 space | tab]
+		code-prefix
 		code-line
 	]
 	(emit ajoin [</code></pre> newline])
