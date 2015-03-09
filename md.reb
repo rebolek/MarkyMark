@@ -21,7 +21,7 @@ start-para?: true
 end-para?: false
 newline?: true
 end-line?: false
-blockquote?: false
+lazy?: true
 md-buffer: make string! 1000
 
 debug?: false
@@ -115,7 +115,7 @@ blank-line: [some [space | tab]]
 
 header-setext: rule [tag continue?] [
 	; something about lazy continuation lines?
-	if (not blockquote?)
+	if (lazy?)
 	; just check if the rule is fine
 	(continue?: true)
 	and [
@@ -362,6 +362,7 @@ list-rule: rule [continue? tag item] [
 		|	unordered (item: unordered tag: <ul>)
 		]
 		(continue?: true)
+		(lazy?: false)
 		(debug-print ["==LIST rule start:" tag])
 		(start-para?: end-para?: false)
 		(emit tag)
@@ -390,6 +391,7 @@ list-rule: rule [continue? tag item] [
 				(debug-print ["==LIST item end"])
 			]
 		]
+		(lazy?: true)
 		(emit close-tag tag emit-newline)
 		(debug-print ["==LIST rule end:" tag])
 	]
@@ -401,7 +403,7 @@ blockquote-rule: rule [continue] [
 	if (start-para?)
 	blockquote-prefix
 	(emit ajoin [<blockquote> newline])
-	(blockquote?: true)
+	(lazy?: false)
 	line-rules
 	[[newline (emit-newline)] | end]
 	any [
@@ -418,7 +420,7 @@ blockquote-rule: rule [continue] [
 		]
 	]
 	(end-para?: false)
-	(blockquote?: false)
+	(lazy?: true)
 	(debug-print "::EMIT close-para (blockquote #2)")
 	(if equal? newline last md-buffer [remove back tail md-buffer])
 	(emit ajoin [close-para newline </blockquote>])
@@ -609,7 +611,7 @@ markdown: func [
 	end-para?: false
 	end-line?: false
 	newline?: true
-	blockquote?: false
+	lazy?: true
 	set [open-para close-para] either snippet [["" ""]] [[<p></p>]]
 	debug?: debug
 	clear head md-buffer
