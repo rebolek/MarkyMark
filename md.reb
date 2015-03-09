@@ -119,7 +119,8 @@ header-setext: rule [tag continue?] [
 	; just check if the rule is fine
 	(continue?: true)
 	and [
-		thru newline 			; NOTE: is this enough?
+		some not-newline
+		newline
 		0 3 space
 		some [eq (tag: <h1>) | minus (tag: <h2>)]
 		any space
