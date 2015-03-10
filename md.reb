@@ -526,9 +526,22 @@ code-rule: rule [pos text] [
 	(end-para?: false)
 ]
 
-asterisk-rule: ["\*" (emit "*")]
-
-hash-rule: ["\#" (emit "#")]
+fenced-code-rule: rule [mark] [
+	if (all [newline? start-para?])
+	(debug-print "==CODE rule can run")
+	copy mark ["```" | "~~~"]
+	(emit ajoin [<pre><code>] newline?: true)
+	(debug-print "==FENCED CODE rule matched")
+	any [
+		mark break
+	|	code-line
+	|	any space newline (emit-newline)	
+	]
+	(debug-print "==FENCED CODE rule ended")
+	(emit ajoin [</code></pre>])
+	(emit-newline)
+	(end-para?: false)
+]
 
 newline-rule: [
 	newline 
@@ -620,11 +633,11 @@ rules: [
 	|	list-rule
 	|	blockquote-rule
 	|	header-rule
+	|	fenced-code-rule
 	|	inline-code-rule
 	|	code-rule
 	|	escape-entity
 	|	escapes
-;	|	asterisk-rule
 	|	em-rule
 	|	strong-rule
 	|	autolink-rule
