@@ -85,6 +85,18 @@ start-para: does [
 	]
 ]
 
+end-para: does [
+	if end-para? [
+		; get rid of last newline before closing para
+		remove-last-newline
+		debug-print "::EMIT close-para (function)"
+		emit close-para
+		emit-newline
+		start-para?: true
+		end-para?: false
+	]
+]
+
 entities: [
 	#"<" (emit "&lt;")
 |	#">" (emit "&gt;")
@@ -290,14 +302,18 @@ em-rule: rule [mark text content] [
 	not space
 	(debug-print "==EM rule, no space")
 	and [some content mark]
-	(debug-print "==EM rule, found end")
-	copy text
-	to mark mark
+	(start-para)
+	(emit <em>)
+	(start-para?: false)
+	(debug-print ["==EM rule started"])
+	some [
+		mark break
+	|	char-rule	
+	]
 	(
-		debug-print ["==EM rule matched"]
-		start-para
-		mark: <em>
-		emit ajoin [mark text close-tag mark]
+		debug-print ["==EM rule ended"]
+		emit </em>
+;		end-para
 	)
 ]
 
@@ -307,13 +323,18 @@ strong-rule: rule [mark text content pos] [
 	(debug-print ["==STRONG rule start matched with" mark])
 	not space
 	and [some content mark]
-	copy text
-	to mark mark
+	(start-para)
+	(emit <strong>)
+	(start-para?: false)
+	(debug-print ["==STRONG rule started"])
+	some [
+		mark break
+	|	char-rule	
+	]
 	(
-		debug-print ["==STRONG rule matched"]
-		start-para
-		mark: <strong>
-		emit ajoin [mark text close-tag mark]
+		debug-print ["==STRONG rule ended"]
+		emit </strong>
+;		end-para
 	)
 ]
 
