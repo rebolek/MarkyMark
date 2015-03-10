@@ -85,16 +85,18 @@ start-para: does [
 	]
 ]
 
-end-para: does [
+end-para: func [
+	/trim
+] [
 	if end-para? [
 		; get rid of last newline before closing para
-		remove-last-newline
+		if trim [remove-last-newline]
 		debug-print "::EMIT close-para (function)"
 		emit close-para
 		emit-newline
-		start-para?: true
-		end-para?: false
 	]
+	start-para?: true
+	end-para?: false
 ]
 
 entities: [
@@ -313,7 +315,6 @@ em-rule: rule [mark text content] [
 	(
 		debug-print ["==EM rule ended"]
 		emit </em>
-;		end-para
 	)
 ]
 
@@ -334,7 +335,6 @@ strong-rule: rule [mark text content pos] [
 	(
 		debug-print ["==STRONG rule ended"]
 		emit </strong>
-;		end-para
 	)
 ]
 
@@ -375,16 +375,8 @@ match-horizontal: [
 horizontal-rule: rule [mark] [
 	match-horizontal
 	(
-		if end-para? [
-			; get rid of last newline before closing para
-			remove-last-newline
-			debug-print "::EMIT close-para (header-setext)"
-			emit close-para
-			emit-newline
-		]
+		end-para/trim
 		if end-line? [emit-newline]
-		start-para?: true
-		end-para?: false
 		(debug-print "::EMIT horizontal rule")
 		emit either xml? <hr /><hr>
 		emit-newline
@@ -537,22 +529,9 @@ newline-rule: [
 	any [space | tab] 
 	some newline 
 	any [space | tab]
-	(
-		debug-print "==EMIT close-para (newline)"	
-		if end-para? [emit close-para]
-		emit-newline
-		start-para?: true
-		end-para?: false
-		debug-print "__START PARA"
-	)
-|	[newline end | end] (
-		if end-para? [
-			debug-print "::EMIT close-para (rules/newline)" 
-			end-para?: false 
-			emit close-para 
-			emit-newline
-		]
-	)	
+	(end-para)
+|	[newline end | end] 
+	(end-para)	
 |	newline (
 		debug-print ["==NEWLINE only" newline?]
 		unless newline? [emit-newline]
