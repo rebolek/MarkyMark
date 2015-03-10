@@ -578,6 +578,25 @@ inline-rules: [
 |	not [newline | space] char-rule
 ]
 
+; TODO: simplify and make it work
+
+strong-content: [
+	em-rule
+|	escape-entity
+|	escapes
+|	entities
+|	not [newline | space | "**" | "__"] char-rule
+]
+
+em-content: [
+	strong-rule
+|	escape-entity
+|	escapes
+|	entities
+|	not [newline | space | "*" | "_"] char-rule
+]
+
+
 ; other set of sub-rules
 
 sub-rules: [
