@@ -515,6 +515,12 @@ code-rule: rule [pos text] [
 		code-line
 	|	any space newline (emit-newline)	
 	]
+	; remove trailing newlines (not a best solution...)
+	(
+		while [equal? newline last md-buffer] [take/last md-buffer]
+		emit-newline
+	)
+	; ---
 	(emit ajoin [</code></pre>])
 	(emit-newline)
 	(end-para?: false)
