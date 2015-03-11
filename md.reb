@@ -99,11 +99,19 @@ end-para: func [
 	end-para?: false
 ]
 
+; TOD: generate two following rules to simplify maintance
+
+entity-descriptors: [
+	"&lt;" 		(emit "&lt;")
+|	"&gt;" 	(emit "&gt;")
+|	"&amp;" 	(emit "&amp;")
+|	"&quot;" 	(emit "&quot;")
+]
 entities: [
-	#"<" (emit "&lt;")
-|	#">" (emit "&gt;")
-|	#"&" (emit "&amp;")
-|	#"^"" (emit "&quot;")
+	#"<" 		(emit "&lt;")
+|	#">" 		(emit "&gt;")
+|	#"&" 		(emit "&amp;")
+|	#"^"" 		(emit "&quot;")
 ]
 escape-set: charset "\`*_{}[]()#+-.!"
 escapes: rule [escape] [
@@ -116,6 +124,12 @@ escapes: rule [escape] [
 ]
 escape-entity: [
 	#"\" entities
+]
+entity-rule: [
+	escape-entity
+|	escapes
+|	entity-descriptors
+|	entities
 ]
 numbers: charset [#"0" - #"9"]
 not-newline: complement charset newline
@@ -469,6 +483,7 @@ inline-code-rule: rule [code value] [
 		(debug-print "==INLINE-CODE")
 		some [
 			"``" (emit </code>) break ; end rule
+		|	entity-descriptors	
 		|	entities
 		|	char-rule
 		]
@@ -481,6 +496,7 @@ inline-code-rule: rule [code value] [
 		(emit <code>)
 		some [
 			"`" (emit </code>) break ; end rule
+		|	entity-descriptors	
 		|	entities
 		|	char-rule
 		]
@@ -489,7 +505,8 @@ inline-code-rule: rule [code value] [
 
 code-line: rule [value length] [
 	some [
-		entities
+		entity-descriptors	
+	|	entities
 	|	if (newline?) newline (debug-print "==NEWLINE in CODE to be skipped") break
 	|	[newline | end] (emit-newline) break
 	|	tab (
@@ -602,9 +619,7 @@ line-rules: [
 inline-rules: [
 	em-rule
 |	strong-rule
-|	escape-entity
-|	escapes
-|	entities
+|	entity-rule
 |	not [newline | space] char-rule
 ]
 
@@ -612,17 +627,13 @@ inline-rules: [
 
 strong-content: [
 	em-rule
-|	escape-entity
-|	escapes
-|	entities
+|	entity-rule
 |	not [newline | space | "**" | "__"] char-rule
 ]
 
 em-content: [
 	strong-rule
-|	escape-entity
-|	escapes
-|	entities
+|	entity-rule
 |	not [newline | space | "*" | "_"] char-rule
 ]
 
@@ -647,13 +658,11 @@ rules: [
 	|	fenced-code-rule
 	|	inline-code-rule
 	|	code-rule
-	|	escape-entity
-	|	escapes
+	|	entity-rule
 	|	em-rule
 	|	strong-rule
 	|	autolink-rule
 	|	link-rule
-	|	entities
 	|	line-break-rule
 	|	newline-rule
 	|	leading-spaces
