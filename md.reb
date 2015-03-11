@@ -101,11 +101,15 @@ end-para: func [
 
 ; TOD: generate two following rules to simplify maintance
 
-entity-descriptors: [
-	"&lt;" 		(emit "&lt;")
-|	"&gt;" 	(emit "&gt;")
-|	"&amp;" 	(emit "&amp;")
-|	"&quot;" 	(emit "&quot;")
+entity-descriptors: rule [entity] [
+	; copy entity to prevent case
+	copy entity some [
+		"&lt;"
+	|	"&gt;"
+	|	"&amp;"
+	|	"&quot;"
+	]
+	(emit entity)
 ]
 entities: [
 	#"<" 		(emit "&lt;")
