@@ -526,17 +526,28 @@ code-rule: rule [pos text] [
 	(end-para?: false)
 ]
 
-fenced-code-rule: rule [mark] [
+fenced-code-rule: rule [mark count] [
 	if (all [newline? start-para?])
 	(debug-print "==CODE rule can run")
-	copy mark ["```" | "~~~"]
+	copy mark [
+		set mark-char ["```" | "~~~"]
+		any mark-char
+	]
 	(emit ajoin [<pre><code>] newline?: true)
 	(debug-print "==FENCED CODE rule matched")
 	any [
-		mark break
+		end (debug-print "==FENCED CODE: END matched") break
+	|	mark any mark-char (debug-print "==FENCED CODE: MARK matched") break
 	|	code-line
 	|	any space newline (emit-newline)	
 	]
+	; remove trailing newlines (not a best solution...)
+	(
+		count: 0
+		while [equal? newline last md-buffer] [take/last md-buffer ++ count]
+		if count > 0 [emit-newline]
+	)
+	; ---	
 	(debug-print "==FENCED CODE rule ended")
 	(emit ajoin [</code></pre>])
 	(emit-newline)
