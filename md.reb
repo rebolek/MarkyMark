@@ -59,6 +59,7 @@ rule: func [
 
 emit: func [value] [ 
 	newline?: false
+	start-para
 	append md-buffer value
 ]
 
@@ -120,6 +121,7 @@ entities: [
 |	#">" 		(emit "&gt;")
 |	#"&" 		(emit "&amp;")
 |	#"^"" 		(emit "&quot;")
+|	#"\" 		(emit #"\")
 ]
 entity-escapes: [
 	"\<" 		(emit "&lt;")
@@ -152,6 +154,7 @@ hard-linebreak: [
 	(emit <br />)
 	(emit-newline)
 ]
+end-line: [newline | end]
 numbers: charset [#"0" - #"9"]
 letters: charset [#"a" - #"z"]
 not-newline: complement charset newline
@@ -190,23 +193,22 @@ html-tag: rule [] [
 	tags | closing-tags
 ]
 
-
 html-block: rule [value] [
 	if (newline?)
 	copy value [
 		0 3 space
 		[html-tag | html-comment | html-instruction | html-cdata]
 		(debug-print ["==TAG:" value])
-		to [newline | end]
+		to end-line
 	]
-	[newline | end]
+	end-line
 	(end-para/trim)
 	(emit-line value)
 	any [
-		copy value [some not-newline to [newline | end]] [newline | end]
+		copy value [some not-newline to end-line] end-line
 		(emit-line value)
 	]
-	[newline | end]
+	end-line
 ]
 
 tag-name: rule [] [
@@ -219,9 +221,11 @@ tag-attributes: rule [mark] [
 	thru mark
 ]
 
+;0 3 space some [eq (tag: <h1>) | minus (tag: <h2>)]
+
 raw-html: rule [value ] [
-;	copy value [#"<" tag-name any [tag-attributes | not #">" skip] #">"]
-	copy value [#"<" some [tag-attributes | not #">" skip] #">"]
+	copy value [#"<" tag-name any [tag-attributes | not [#">" | newline 0 3 space some [eq | minus]] skip] #">"]
+;	copy value [#"<" some [tag-attributes | |not #">" skip] #">"]
 	(debug-print ["==RAW TAG:" value])
 	(start-para)
 	(emit value)
@@ -246,7 +250,7 @@ para-char-rule: rule [value] [
 
 header-setext: rule [tag continue?] [
 	; something about lazy continuation lines?
-	if (all [lazy? start-para?])
+	if (all [lazy? newline? start-para?])
 	; just check if the rule is fine
 	(continue?: true)
 	and [
@@ -256,31 +260,28 @@ header-setext: rule [tag continue?] [
 		0 3 space
 		some [eq (tag: <h1>) | minus (tag: <h2>)]
 		any space
-		[newline | end]
+		end-line
 	]
 	(debug-print ["==HEADER matched with" tag])
-	; rule can be matched> | <generate output
 	(start-para?: false)
+	; rule can be matched> | <generate output	
 	(emit tag)
 	0 3 space
 	some [
 		[
 			any space
 			newline
-			thru [newline | end]
+			thru end-line
 			opt newline
 			(continue?: false)
 		]
-	|	if (continue?) #"\" (emit #"\")
 	|	if (continue?) inline-rules
 	|	if (continue?) space (emit space)
 	]
 	(
-		debug-print "__START PARA"
+		emit-line close-tag tag
 		end-para?: false
 		start-para?: true
-		emit close-tag tag
-		emit-newline
 	)	
 ]
 
@@ -320,12 +321,10 @@ header-atx: rule [mark continue? space?] [
 			[any space | if (space?)] 
 			newline 
 			(
-				end-para?: false
-				start-para?: true
 				debug-print "==ATX: end"
-				emit close-tag tag 
-				emit-newline
+				emit-line close-tag tag 
 				continue?: false
+				start-para?: true
 			)
 			break
 		]
@@ -461,8 +460,10 @@ horizontal-rule: rule [mark] [
 		end-para/trim
 		if end-line? [emit-newline]
 		(debug-print "::EMIT horizontal rule")
+		start-para?: false
 		emit either xml? <hr /><hr>
 		emit-newline
+		start-para?: true
 	)
 ]
 
@@ -472,46 +473,43 @@ ordered: [any space some numbers dot space]
 ; TODO: recursion for lists
 
 list-rule: rule [continue? tag item] [
-	some [
-		if (start-para?)
-		[
-			ordered (item: ordered tag: <ol>)
-		|	unordered (item: unordered tag: <ul>)
-		]
-		(continue?: true)
-		(lazy?: false)
-		(debug-print ["==LIST rule start:" tag])
-		(start-para?: end-para?: false)
-		(emit tag)
-		(emit-newline) 
-		(emit <li>)
-		(end-line?: true)
-		(debug-print ["==LIST item #1"])
-		(newline?: true)
-		line-rules
-		newline
-		(emit </li>)
-		(emit-newline)
-		(debug-print ["==LIST item #1 end"])
-		any [
-			and match-horizontal
-		|	[
-				item
-				(emit <li>)
-				(end-line?: true)
-				(newline?: true)
-				(debug-print ["==LIST item"])
-				line-rules
-				[newline | end]
-				(emit </li>)
-				(emit-newline)
-				(debug-print ["==LIST item end"])
-			]
-		]
-		(lazy?: true)
-		(emit close-tag tag emit-newline)
-		(debug-print ["==LIST rule end:" tag])
+	if (newline?)
+	[
+		ordered (item: ordered tag: <ol>)
+	|	unordered (item: unordered tag: <ul>)
 	]
+	(continue?: true)
+	(lazy?: false)
+	(debug-print ["==LIST rule start:" tag])
+	(start-para?: end-para?: false)
+	(emit-line tag)
+	(emit <li>)
+	(end-line?: true)
+	(debug-print ["==LIST item #1"])
+	(newline?: true)
+	line-rules
+	(debug-print ["??start-para?" start-para?])
+	end-line
+	(emit-line </li>)
+	(debug-print ["==LIST item #1 end"])
+	any [
+		and match-horizontal	
+	|	[
+			item
+			(emit <li>)
+			(end-line?: true)
+			(newline?: true)
+			(debug-print ["==LIST item"])
+			line-rules
+			end-line
+			(start-para?: false)
+			(emit-line </li>)
+			(debug-print ["==LIST item end"])
+		]
+	]
+	(lazy?: true)
+	(emit-line close-tag tag)
+	(debug-print ["==LIST rule end:" tag])
 ]
 
 blockquote-prefix: [gt any space]
@@ -519,11 +517,13 @@ blockquote-prefix: [gt any space]
 blockquote-rule: rule [continue] [
 	if (newline?)
 	blockquote-prefix
-	(emit <blockquote>)
-	(emit-newline)
+	(start-para?: false)
+	(emit-line <blockquote>)
+	(start-para?: true)
 	(lazy?: false)
 	line-rules
-	[[newline (emit-newline)] | end]
+	end-line (emit-newline)
+;	[[newline (emit-newline)] | end]
 	any [
 		; FIXME: what an ugly hack
 		[newline ] (
@@ -534,7 +534,8 @@ blockquote-rule: rule [continue] [
 	|	[
 			blockquote-prefix
 			opt line-rules
-			[newline (emit-newline) | end]
+			end-line (emit-newline)
+;			[newline (emit-newline) | end]
 		]
 	]
 	(end-para?: false)
@@ -578,7 +579,7 @@ code-line: rule [value length] [
 		entity-descriptors	
 	|	entities
 	|	if (newline?) newline (debug-print "==NEWLINE in CODE to be skipped") break
-	|	[newline | end] (emit-newline) break
+	|	end-line (emit-newline) break
 	|	tab (
 			debug-print ["found tab:" line-index "," 4 - (line-index // 4)] 
 			length: 4 - (line-index // 4)
@@ -595,6 +596,7 @@ code-rule: rule [pos text] [
 	(debug-print "==CODE rule can run")
 	any newline
 	code-prefix
+	(start-para?: false)
 	(emit ajoin [<pre><code>] newline?: true)
 	code-line
 	any [
@@ -610,6 +612,7 @@ code-rule: rule [pos text] [
 	; ---
 	(emit ajoin [</code></pre>])
 	(emit-newline)
+	(start-para?: true)
 	(end-para?: false)
 ]
 
@@ -620,13 +623,14 @@ fenced-code-rule: rule [mark count] [
 		set mark-char ["```" | "~~~"]
 		any mark-char
 	]
+	(start-para?: false)
 	(emit ajoin [<pre><code>] newline?: true)
 	(debug-print "==FENCED CODE rule matched")
 	any [
 		end (debug-print "==FENCED CODE: END matched") break
 	|	mark any mark-char (debug-print "==FENCED CODE: MARK matched") break
+	|	any space newline any space newline (emit-newline)
 	|	code-line
-	|	any space newline (emit-newline)	
 	]
 	; remove trailing newlines (not a best solution...)
 	(
