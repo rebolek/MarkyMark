@@ -117,7 +117,13 @@ entities: [
 |	#"&" 		(emit "&amp;")
 |	#"^"" 		(emit "&quot;")
 ]
-escape-set: charset "\`*_{}[]()#+-.!"
+entity-escapes: [
+	"\<" 		(emit "&lt;")
+|	"\>" 		(emit "&gt;")
+|	"\&" 		(emit "&amp;")
+|	"\^"" 		(emit "&quot;")
+]
+escape-set: charset {!#$%'()*+,-./:;=?@[\]^^_`{|}~}
 escapes: rule [escape] [
 	#"\"
 	(debug-print "==ESCAPE matched")
@@ -133,7 +139,14 @@ entity-rule: [
 	escape-entity
 |	escapes
 |	entity-descriptors
+|	entity-escapes
 |	entities
+|	hard-linebreak
+]
+hard-linebreak: [
+	#"\" newline 
+	(emit <br />)
+	(emit-newline)
 ]
 numbers: charset [#"0" - #"9"]
 not-newline: complement charset newline
@@ -253,6 +266,7 @@ header-atx: rule [mark continue? space?] [
 		]
 	|	[
 			; ... may be followed by spaces only. 
+			if (continue?)
 			[any space | if (space?)] 
 			newline 
 			(
@@ -328,6 +342,7 @@ em-rule: rule [mark text content] [
 	(debug-print ["==EM rule started"])
 	some [
 		mark break
+	|	inline-code-rule	
 	|	char-rule	
 	]
 	(
@@ -348,6 +363,7 @@ strong-rule: rule [mark text content pos] [
 	(debug-print ["==STRONG rule started"])
 	some [
 		mark break
+	|	inline-code-rule	
 	|	char-rule	
 	]
 	(
