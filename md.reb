@@ -13,7 +13,7 @@ REBOL[
 	Known-bugs: [
 
 	]
-	Notes: ["For mardown specification, see http://johnmacfarlane.net/babelmark2/faq.html"]
+	Notes: ["For mardown specification> | <see http://johnmacfarlane.net/babelmark2/faq.html"]
 ]
 
 xml?: true
@@ -150,7 +150,7 @@ hard-linebreak: [
 ]
 numbers: charset [#"0" - #"9"]
 not-newline: complement charset newline
-; some "longer, but readable" stuff
+; some "longer> | <but readable" stuff
 plus: #"+"
 minus: #"-"
 asterisk: #"*"
@@ -162,6 +162,49 @@ lt: #"<"
 gt: #">"
 whitespace: [space | tab | newline |  #"^K" | #"^L" | #"^M"]
 blank-line: [some [space | tab]]
+tags: [
+	{<article} | {<header} | {<aside} | {<hgroup} | {<blockquote} | {<hr} | {<iframe} | {<body} | {<li} | {<map} | {<button} | 
+	{<object} | {<canvas} | {<ol} | {<caption} | {<output} | {<col} | {<p} | {<colgroup} | {<pre} | {<dd} | {<progress} | {<div} | 
+	{<section} | {<dl} | {<table} | {<td} | {<dt} | {<tbody} | {<embed} | {<textarea} | {<fieldset} | {<tfoot} | {<figcaption} | 
+	{<th} | {<figure} | {<thead} | {<footer} | {<tr} | {<form} | {<ul} | {<h1} | {<h2} | {<h3} | {<h4} | {<h5} | {<h6} | {<video} | 
+	{<script} | {<style}
+]
+closing-tags: copy/deep tags
+forall closing-tags [if string? closing-tags/1 [closing-tags/1: head insert next closing-tags/1 #"/"]]
+
+html-comment: rule [] [
+	"<!--" thru "-->"
+]
+html-instruction: rule [] [
+	"<?" thru "?>"
+]
+html-cdata: rule [] [
+	"<![CDATA[" thru "]]>"	
+] 
+html-tag: rule [] [
+	tags | closing-tags
+]
+
+
+html-block: rule [value] [
+	if (newline?)
+	copy value [
+		0 3 space
+		[html-tag | html-comment | html-instruction | html-cdata]
+		(debug-print ["==TAG:" value])
+		to [newline | end]
+	]
+	[newline | end]
+	(end-para/trim)
+	(emit value)
+	(emit-newline)
+	any [
+		copy value [some not-newline to [newline | end]] [newline | end]
+		(emit value)
+		(emit-newline)
+	]
+	[newline | end]
+]
 
 char-rule: rule [value] [
 	set value skip (
@@ -195,7 +238,7 @@ header-setext: rule [tag continue?] [
 		[newline | end]
 	]
 	(debug-print ["==HEADER matched with" tag])
-	; rule can be matched, generate output
+	; rule can be matched> | <generate output
 	(start-para?: false)
 	(emit tag)
 	0 3 space
@@ -334,7 +377,7 @@ em-rule: rule [mark text content] [
 	(content: complement charset reduce [newline mark])
 	(debug-print ["==EM rule matched with" mark])
 	not space
-	(debug-print "==EM rule, no space")
+	(debug-print "==EM rule> | <no space")
 	and [some content mark]
 	(start-para)
 	(emit <em>)
@@ -668,16 +711,16 @@ sub-rules: [
 
 rules: [
 ;	any space
-	some [	
-		
-		img-rule
+	some [		
+		html-block
+	|	img-rule
 	|	horizontal-rule
 	|	list-rule
 	|	blockquote-rule
 	|	header-rule
 	|	fenced-code-rule
 	|	inline-code-rule
-	|	code-rule
+	|	code-rule	
 	|	entity-rule
 	|	em-rule
 	|	strong-rule
