@@ -203,6 +203,7 @@ html-block: rule [value] [
 	]
 	end-line
 	(end-para/trim)
+	(start-para?: false)
 	(emit-line value)
 	any [
 		copy value [some not-newline to end-line] end-line
