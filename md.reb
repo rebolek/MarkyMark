@@ -57,10 +57,9 @@ rule: func [
 	use local reduce [rule]
 ]
 
-emit: func [data] [
-;	print "***wrong emit***" 
+emit: func [value] [ 
 	newline?: false
-	append md-buffer data
+	append md-buffer value
 ]
 
 emit-newline: does [
@@ -68,6 +67,11 @@ emit-newline: does [
 	append md-buffer newline
 	newline?: true
 	end-line?: false
+]
+
+emit-line: func [value] [
+	emit value
+	emit-newline
 ]
 
 remove-last-newline: does [
@@ -196,12 +200,10 @@ html-block: rule [value] [
 	]
 	[newline | end]
 	(end-para/trim)
-	(emit value)
-	(emit-newline)
+	(emit-line value)
 	any [
 		copy value [some not-newline to [newline | end]] [newline | end]
-		(emit value)
-		(emit-newline)
+		(emit-line value)
 	]
 	[newline | end]
 ]
@@ -713,6 +715,7 @@ rules: [
 ;	any space
 	some [		
 		html-block
+	|	raw-html	
 	|	img-rule
 	|	horizontal-rule
 	|	list-rule
