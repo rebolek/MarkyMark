@@ -130,9 +130,9 @@ entity-escapes: [
 escape-set: charset {!#$%'()*+,-./:;=?@[\]^^_`{|}~}
 escapes: rule [escape] [
 	#"\"
+	set escape escape-set
 	(debug-print "==ESCAPE matched")
 	(start-para)
-	set escape escape-set
 	(debug-print ["==ESCAPE:" escape])
 	(emit escape)
 ]
@@ -153,6 +153,7 @@ hard-linebreak: [
 	(emit-newline)
 ]
 numbers: charset [#"0" - #"9"]
+letters: charset [#"a" - #"z"]
 not-newline: complement charset newline
 ; some "longer> | <but readable" stuff
 plus: #"+"
@@ -208,6 +209,24 @@ html-block: rule [value] [
 	[newline | end]
 ]
 
+tag-name: rule [] [
+	letters
+	any [letters | numbers]
+]
+
+tag-attributes: rule [mark] [
+	set mark [#"'" | #"^""]
+	thru mark
+]
+
+raw-html: rule [value ] [
+;	copy value [#"<" tag-name any [tag-attributes | not #">" skip] #">"]
+	copy value [#"<" some [tag-attributes | not #">" skip] #">"]
+	(debug-print ["==RAW TAG:" value])
+	(start-para)
+	(emit value)
+]
+
 char-rule: rule [value] [
 	set value skip (
 		newline?: false
@@ -251,7 +270,8 @@ header-setext: rule [tag continue?] [
 			thru [newline | end]
 			opt newline
 			(continue?: false)
-		]	
+		]
+	|	if (continue?) #"\" (emit #"\")
 	|	if (continue?) inline-rules
 	|	if (continue?) space (emit space)
 	]
@@ -262,21 +282,6 @@ header-setext: rule [tag continue?] [
 		emit close-tag tag
 		emit-newline
 	)	
-]
-
-header-underscore: rule [text tag] [
-	copy text to newline 
-	newline
-	some [eq (tag: <h1>) | minus (tag: <h2>)]
-	[newline | end]
-	(
-		debug-print ["==HEADER matched with" tag]
-		debug-print "__START PARA"
-		end-para?: false
-		start-para?: true
-		emit ajoin [tag text close-tag tag]
-		emit-newline
-	)
 ]
 
 header-atx: rule [mark continue? space?] [
@@ -330,7 +335,6 @@ header-atx: rule [mark continue? space?] [
 ]
 
 header-rule: [
-;	header-underscore
 	header-setext
 |	header-atx
 ]
@@ -513,9 +517,10 @@ list-rule: rule [continue? tag item] [
 blockquote-prefix: [gt any space]
 
 blockquote-rule: rule [continue] [
-	if (start-para?)
+	if (newline?)
 	blockquote-prefix
-	(emit ajoin [<blockquote> newline])
+	(emit <blockquote>)
+	(emit-newline)
 	(lazy?: false)
 	line-rules
 	[[newline (emit-newline)] | end]
@@ -713,7 +718,7 @@ sub-rules: [
 
 rules: [
 ;	any space
-	some [		
+	some [	
 		html-block
 	|	raw-html	
 	|	img-rule
