@@ -210,6 +210,7 @@ html-block: rule [value] [
 		(emit-line value)
 	]
 	end-line
+	(start-para?: true)
 ]
 
 tag-name: rule [] [
