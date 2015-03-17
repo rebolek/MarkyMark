@@ -219,14 +219,35 @@ tag-name: rule [] [
 ]
 
 tag-attributes: rule [mark] [
-	set mark [#"'" | #"^""]
-	thru mark
+	any space
+	attribute-name
+	opt [
+		any space
+		#"="
+		any space
+		set mark [#"'" | #"^""]
+		thru mark
+	]
 ]
 
-;0 3 space some [eq (tag: <h1>) | minus (tag: <h2>)]
+attribute-name: [some [letters | numbers | #":" | underscore]]
 
 raw-html: rule [value ] [
-	copy value [#"<" tag-name any [tag-attributes | not [#">" | newline 0 3 space some [eq | minus]] skip] #">"]
+;	copy value [#"<" tag-name any [tag-attributes | not [#">" | newline 0 3 space some [eq | minus]] skip] #">"]
+	copy value [
+		#"<" 
+		tag-name 
+		any tag-attributes
+		any space
+	;	any [
+	;		tag-attributes 
+	;	|	not [
+	;			#">" 
+	;		| 	newline 0 3 space some [eq | minus]
+	;		] skip
+	;	] 
+		#">"
+	]
 ;	copy value [#"<" some [tag-attributes | |not #">" skip] #">"]
 	(debug-print ["==RAW TAG:" value])
 	(start-para)
@@ -333,6 +354,7 @@ header-atx: rule [mark continue? space?] [
 	|	[if (continue?) (space?: false) inline-rules]
 	|	[if (continue?) space (emit space)]
 	]
+	(debug-print "==ATX: endEND")
 ]
 
 header-rule: [
@@ -489,7 +511,7 @@ list-rule: rule [continue? tag item] [
 	(end-line?: true)
 	(debug-print ["==LIST item #1"])
 	(newline?: true)
-	line-rules
+	some line-rules
 	(debug-print ["??start-para?" start-para?])
 	end-line
 	(emit-line </li>)
@@ -502,7 +524,7 @@ list-rule: rule [continue? tag item] [
 			(end-line?: true)
 			(newline?: true)
 			(debug-print ["==LIST item"])
-			line-rules
+			some line-rules
 			end-line
 			(start-para?: false)
 			(emit-line </li>)
@@ -521,11 +543,12 @@ blockquote-rule: rule [continue] [
 	blockquote-prefix
 	(start-para?: false)
 	(emit-line <blockquote>)
+	(debug-print "==BLOCKQUOTE line 1")
 	(start-para?: true)
 	(lazy?: false)
 	line-rules
+	(debug-print "==BLOCKQUOTE line rules")
 	end-line (emit-newline)
-;	[[newline (emit-newline)] | end]
 	any [
 		; FIXME: what an ugly hack
 		[newline ] (
@@ -535,6 +558,7 @@ blockquote-rule: rule [continue] [
 		)
 	|	[
 			blockquote-prefix
+			(debug-print "==BLOCKQUOTE line")
 			opt line-rules
 			end-line (emit-newline)
 ;			[newline (emit-newline) | end]
@@ -576,7 +600,7 @@ inline-code-rule: rule [code value] [
 	]
 ]
 
-code-line: rule [value length] [
+code-line-old: rule [value length] [
 	some [
 		entity-descriptors	
 	|	entities
@@ -591,6 +615,18 @@ code-line: rule [value length] [
 	]
 ]
 
+code-line: rule [length] [
+	some [
+		entity-rule
+	|	tab (
+			debug-print ["found tab:" line-index "," 4 - (line-index // 4)] 
+			length: 4 - (line-index // 4)
+			emit rejoin array/initial length space
+		)
+	|	not end-line char-rule
+	]
+]
+
 code-prefix: [[4 space | tab] (debug-print "==CODE: 4x space or tab matched")]
 
 code-rule: rule [pos text] [
@@ -600,10 +636,10 @@ code-rule: rule [pos text] [
 	code-prefix
 	(start-para?: false)
 	(emit ajoin [<pre><code>] newline?: true)
-	code-line
+	code-line-old
 	any [
 		code-prefix
-		code-line
+		code-line-old
 	|	any space newline (emit-newline)	
 	]
 	; remove trailing newlines (not a best solution...)
@@ -618,22 +654,34 @@ code-rule: rule [pos text] [
 	(end-para?: false)
 ]
 
-fenced-code-rule: rule [mark count] [
+fenced-code-rule: rule [indent mark count] [
 	if (all [newline? start-para?])
 	(debug-print "==CODE rule can run")
+	(indent: clear "")
+	copy indent any space
+	(debug-print ["==FENCED CODE indent length" length? indent])
 	copy mark [
 		set mark-char ["```" | "~~~"]
 		any mark-char
 	]
 	(start-para?: false)
+	opt [some space]
 	(emit ajoin [<pre><code>] newline?: true)
-	(debug-print "==FENCED CODE rule matched")
+	pos:
+	(debug-print ["==FENCED CODE rule matched" mark mold pos])
 	any [
-		end (debug-print "==FENCED CODE: END matched") break
-	|	mark any mark-char (debug-print "==FENCED CODE: MARK matched") break
-	|	any space newline any space newline (emit-newline)
-	|	code-line
+		pos: ([debug-print "xx" mold pos ]) opt indent [
+			(debug-print "xx1") any space newline any space newline (emit-newline)
+		|	(debug-print "xx2") not [mark | end] (debug-print "xx3") opt indent code-line newline (emit-newline)
+		|	any space newline
+		]
 	]
+	(debug-print "xx4")
+	opt indent [
+		end (debug-print "==FENCED CODE: END matched") 
+	|	mark any mark-char (debug-print "==FENCED CODE: MARK matched") 
+	]
+	(debug-print "xx5")
 	; remove trailing newlines (not a best solution...)
 	(
 		count: 0
@@ -680,16 +728,13 @@ leading-spaces: rule [] [
 ; simplified rules used as sub-rule in some rules
 
 line-rules: [
-	some [
-		header-rule
-	|	horizontal-rule
-	|	em-rule
-	|	strong-rule
-	|	link-rule
-	|	escape-entity
-	|	escapes
-	|	not newline para-char-rule
-	]
+	header-rule
+|	horizontal-rule
+|	em-rule
+|	strong-rule
+|	link-rule
+|	entity-rule
+|	not newline para-char-rule
 ]
 
 inline-rules: [
@@ -711,13 +756,6 @@ em-content: [
 	strong-rule
 |	entity-rule
 |	not [newline | space | "*" | "_"] char-rule
-]
-
-
-; other set of sub-rules
-
-sub-rules: [
-	code-rule
 ]
 
 ; main rules
