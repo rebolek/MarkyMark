@@ -86,6 +86,7 @@ start-para: does [
 		debug-print "::EMIT open-para"
 		start-para?: false 
 		end-para?: true
+		end-line?: true
 		emit open-para
 	]
 ]
@@ -594,8 +595,9 @@ inline-code-rule: rule [code value] [
 		(start-para)
 		(emit <code>)
 		(debug-print "==INLINE-CODE")
+		any space
 		some [
-			"``" (emit </code>) break ; end rule
+			any space "``" (emit </code>) break ; end rule
 		|	entity-descriptors	
 		|	entities
 		|	char-rule
