@@ -142,17 +142,21 @@ escape-entity: [
 	#"\" entities
 ]
 entity-rule: [
-	escape-entity
+	hard-linebreak
+|	escape-entity
 |	escapes
 |	entity-descriptors
 |	entity-escapes
 |	entities
-|	hard-linebreak
 ]
 hard-linebreak: [
+	if (end-line?)
 	#"\" newline 
-	(emit <br />)
-	(emit-newline)
+	(
+		debug-print "::EMIT hard linebreak"
+		emit <br />
+		emit-newline
+	)
 ]
 end-line: [newline | end]
 numbers: charset [#"0" - #"9"]
@@ -255,7 +259,12 @@ raw-html: rule [value ] [
 ]
 
 char-rule: rule [value] [
-	set value skip (
+	tab (
+		newline?: false
+		debug-print "::EMIT tab"
+		emit "    "
+	)
+|	set value skip (
 		newline?: false
 		debug-print ["::EMIT character:" value]
 		emit value
@@ -263,7 +272,12 @@ char-rule: rule [value] [
 ]
 
 para-char-rule: rule [value] [
-	set value skip (
+	tab (
+		newline?: false
+		debug-print "::EMIT tab"
+		emit "    "
+	)
+|	set value skip (
 		newline?: false
 		debug-print ["::EMIT[line] char" value]
 		start-para
@@ -287,6 +301,7 @@ header-setext: rule [tag continue?] [
 	]
 	(debug-print ["==HEADER matched with" tag])
 	(start-para?: false)
+	(end-line?: false)
 	; rule can be matched> | <generate output	
 	(emit tag)
 	0 3 space
@@ -305,6 +320,7 @@ header-setext: rule [tag continue?] [
 		emit-line close-tag tag
 		end-para?: false
 		start-para?: true
+		end-line?: true
 	)	
 ]
 
