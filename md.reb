@@ -75,6 +75,15 @@ emit-line: func [value] [
 	emit-newline
 ]
 
+emit-entity: function [entity] [
+	entity: min 65533 to integer! entity
+	emit either out: select numeric-entities entity [
+		rejoin [#"&" out #";"]
+	] [
+		to char! entity
+	] 
+]
+
 remove-last-newline: does [
 	if equal? newline last md-buffer [remove back tail md-buffer]
 ]
@@ -100,12 +109,52 @@ end-para: func [
 		debug-print "::EMIT close-para (function)"
 		emit close-para
 		emit-newline
+		start-para?: true
+		end-para?: false
 	]
-	start-para?: true
-	end-para?: false
 ]
 
-; TOD: generate two following rules to simplify maintance
+;.......... HTML entities
+
+html-entities: load %entities
+named-entities: copy html-entities
+
+forskip named-entities 2 [named-entities/2: '|]
+take/last named-entities
+
+named-entities-rule: rule [entity] [
+	#"&"
+	copy entity named-entities
+	#";"
+	(emit to char! to integer! to issue! select html-entities entity)
+]
+
+digit: charset [#"0" - #"9"]
+hex-char: charset [#"a" - #"f"]
+hex-digit: union digit hex-char
+
+decimal-entities-rule: rule [entity] [
+	"&#"
+	copy entity 1 8 digit
+	#";"
+	(emit-entity entity)
+]
+
+hexadecimal-entities-rule: rule [entity] [
+	"&#x"
+	copy entity 1 8 hex-digit
+	#";"
+	(emit-entity to issue! entity)
+]
+
+; TODO: generate following rules to simplify maintance
+
+numeric-entities: [
+	34	"quot"
+	38 	"amp"
+	60 	"lt"
+	62 	"gt"
+]
 
 entity-descriptors: rule [entity] [
 	; copy entity to prevent case
@@ -142,12 +191,24 @@ escapes: rule [escape] [
 escape-entity: [
 	#"\" entities
 ]
+percent-encoding: use [char chars] [
+	chars: charset {!#$'()*+,;[]\}
+	[set char chars (emit join #"%" skip form to-hex to integer! char 15)]
+]
 entity-rule: [
 	hard-linebreak
+|	named-entities-rule
+|	decimal-entities-rule
+|	hexadecimal-entities-rule
 |	escape-entity
 |	escapes
 |	entity-descriptors
 |	entity-escapes
+|	entities
+]
+code-entity-rule: [
+	hard-linebreak
+|	entity-descriptors
 |	entities
 ]
 hard-linebreak: [
@@ -379,14 +440,70 @@ header-rule: [
 |	header-atx
 ]
 
-autolink-rule: rule [address] [
+autolink-scheme: rule [] [
+	"coap" | "doi" | "javascript" | "aaa" | "aaas" | "about" | "acap" | "cap" | "cid" | "crid" | "data" | "dav" | "dict" | "dns" | "file" | 
+	"ftp" | "geo" | "go" | "gopher" | "h323" | "http" | "https" | "iax" | "icap" | "im" | "imap" | "info" | "ipp" | "iris" | "iris.beep" | 
+	"iris.xpc" | "iris.xpcs" | "iris.lwz" | "ldap" | "mailto" | "mid" | "msrp" | "msrps" | "mtqp" | "mupdate" | "news" | "nfs" | "ni" | 
+	"nih" | "nntp" | "opaquelocktoken" | "pop" | "pres" | "rtsp" | "service" | "session" | "shttp" | "sieve" | "sip" | "sips" | "sms" | 
+	"snmp" | "soap.beep" | "soap.beeps" | "tag" | "tel" | "telnet" | "tftp" | "thismessage" | "tn3270" | "tip" | "tv" | "urn" | "vemmi" | 
+	"ws" | "wss" | "xcon" | "xcon-userid" | "xmlrpc.beep" | "xmlrpc.beeps" | "xmpp" | "z39.50r" | "z39.50s" | "adiumxtra" | "afp" | 
+	"afs" | "aim" | "apt" | "attachment" | "aw" | "beshare" | "bitcoin" | "bolo" | "callto" | "chrome" | "chrome-extension" | 
+	"com-eventbrite-attendee" | "content" | "cvs" | "dlna-playsingle" | "dlna-playcontainer" | "dtn" | "dvb" | "ed2k" | "facetime" | 
+	"feed" | "finger" | "fish" | "gg" | "git" | "gizmoproject" | "gtalk" | "hcp" | "icon" | "ipn" | "irc" | "irc6" | "ircs" | "itms" | "jar" | 
+	"jms" | "keyparc" | "lastfm" | "ldaps" | "magnet" | "maps" | "market" | "message" | "mms" | "ms-help" | "msnim" | "mumble" | "mvn" | 
+	"notes" | "oid" | "palm" | "paparazzi" | "platform" | "proxy" | "psyc" | "query" | "res" | "resource" | "rmi" | "rsync" | "rtmp" | 
+	"secondlife" | "sftp" | "sgn" | "skype" | "smb" | "soldat" | "spotify" | "ssh" | "steam" | "svn" | "teamspeak" | "things" | "udp" | 
+	"unreal" | "ut2004" | "ventrilo" | "view-source" | "webcal" | "wtai" | "wyciwyg" | "xfire" | "xri" | "ymsgr"
+]
+
+autolink-URI: rule [] [
+	autolink-scheme
+	#":"
+	any [not [space | gt] skip]
+]
+
+autolink-rule: rule [scheme address] [
 	lt
-	copy address ; TODO: Parse address to match email
-	to gt skip
+	(debug-print "==AUTOLINK start")
+	; check if valid
+	and [autolink-URI gt]
+	; emit link start
 	(
-		debug-print "==AUTOLINK RULE"
+		debug-print ["==AUTOLINK RULE" address]
 		start-para
-		emit ajoin [{<a href="} address {">} address </a>]
+		emit {<a href="}
+	)
+	; mark address start
+	pos: 
+	; emit address
+	copy scheme autolink-scheme (emit scheme)
+	#":" (emit #":")
+	any [
+		not [space | gt]
+		[
+			percent-encoding
+		|	entities
+		|	char-rule
+		]
+	]
+	gt
+	(emit {">})
+	; rewind
+	:pos 
+	; copy adress again 
+	copy scheme thru #":" (emit scheme)
+	any [
+		not [space | gt]
+		[
+			entities
+		|	char-rule
+		]
+	]
+	gt
+	; done, close the link
+	(
+		debug-print ["==AUTOLINK RULE"]
+		emit </a>
 	)
 ]
 
@@ -635,7 +752,7 @@ code-line-old: rule [value length] [
 
 code-line: rule [length] [
 	some [
-		entity-rule
+		code-entity-rule
 	|	tab (
 			debug-print ["found tab:" line-index "," 4 - (line-index // 4)] 
 			length: 4 - (line-index // 4)
@@ -654,10 +771,11 @@ code-rule: rule [pos text] [
 	code-prefix
 	(start-para?: false)
 	(emit ajoin [<pre><code>] newline?: true)
-	code-line-old
+	[code-line | newline]
+	(debug-print "==CODE first line done")
 	any [
 		code-prefix
-		code-line-old
+		code-line
 	|	any space newline (emit-newline)	
 	]
 	; remove trailing newlines (not a best solution...)
@@ -718,7 +836,10 @@ newline-rule: [
 	any [space | tab] 
 	some newline 
 	any [space | tab]
-	(end-para)
+	(
+		debug-print "::END-PARA in newline-rule"
+		end-para
+	)
 |	[newline end | end] 
 	(end-para)	
 |	newline (
@@ -791,10 +912,10 @@ rules: [
 	|	fenced-code-rule
 	|	inline-code-rule
 	|	code-rule	
+	|	autolink-rule
 	|	entity-rule
 	|	em-rule
 	|	strong-rule
-	|	autolink-rule
 	|	link-rule
 	|	line-break-rule
 	|	newline-rule
