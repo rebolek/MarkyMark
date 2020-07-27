@@ -112,3 +112,5 @@ hm: func [
 	]
 	out
 ]
+
+markdown: :md
