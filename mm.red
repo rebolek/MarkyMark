@@ -27,24 +27,24 @@ backslash: #"\"
 mark: none
 go-back: [mark: (mark: back mark) :mark]
 
-emph-mark: none
-emph-start: [
-	copy emph-mark [#"*" | #"_"]
+em-mark: none
+em-start: [
+	copy em-mark [#"*" | #"_"]
 	not space ; TODO: not whitespace
-	ahead to emph-end
+	ahead to em-end
 ]
-emph-end: [
-	not [emph-mark emph-mark not emph-mark] ; not a start/end of STRONG, but end of STRONG+end of EMPH is possible
-	emph-mark
+em-end: [
+	not [em-mark em-mark not em-mark] ; not a start/end of STRONG, but end of STRONG+end of EM is possible
+	em-mark
 	2 go-back ; move before mark and check what's there
-	not [emph-mark | backslash | space]
+	not [em-mark | backslash | space]
 	2 skip
 ]
-emph-content: [
-	emph-start 
-	(push 'emph)
+em-content: [
+	em-start 
+	(push 'em)
 	some [
-		emph-end (emit-pop) break
+		em-end (emit-pop) break
 	|	ahead strong-start (emit) strong-content
 	|	set value skip (append string value)
 	]
@@ -67,7 +67,7 @@ strong-content: [
 	(push 'strong)
 	some [
 		strong-end (emit-pop) break
-	|	ahead emph-start (emit) emph-content
+	|	ahead em-start (emit) em-content
 	|	set value skip (append string value)
 	]
 ]
@@ -75,7 +75,7 @@ strong-content: [
 main-rule: [
 	some [
 		strong-content
-	|	emph-content
+	|	em-content
 	|	set value skip (append string value)
 	]
 ]
@@ -89,4 +89,26 @@ md: func [value [string!]][
 	parse value main-rule
 	emit
 	output
+]
+
+hm: func [
+	data [block!]
+;	/local out rule
+][
+	out: clear ""
+	rule: [
+		some [
+			'em (append out <em>) rule (append out </em>)
+		|	'strong (append out <strong>) rule (append out </strong>)
+		|	set value string! (append out value)
+		|	ahead block! into rule
+		]
+	]
+	parse data [
+		(append out <p>)
+		rule
+		(append out </p>)
+		(append out newline)
+	]
+	out
 ]
