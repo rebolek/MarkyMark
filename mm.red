@@ -7,17 +7,19 @@ target: output
 stack: []
 
 push: func [rule [word!]][
+	unless empty? string [emit]
 	repend target [rule copy []]
 	append/only stack tail target
 	target: last target
 ]
-emit-pop: func ["Emit content and pop from stack" value [string!]][
-	emit value
+emit-pop: func ["Emit content and pop from stack"][
+	emit string 
 	target: take/last stack
 ]
-emit: func [value [string!]][
-	append target copy value
-	clear value
+emit: func [][
+	if empty? string [exit]
+	append target copy string
+	clear string
 ]
 
 backslash: #"\"
@@ -32,7 +34,7 @@ emph-start: [
 	ahead to emph-end
 ]
 emph-end: [
-	not [emph-mark emph-mark] ; not a start of STRONG
+	not [emph-mark emph-mark not emph-mark] ; not a start/end of STRONG, but end of STRONG+end of EMPH is possible
 	emph-mark
 	2 go-back ; move before mark and check what's there
 	not [emph-mark | backslash | space]
@@ -42,8 +44,8 @@ emph-content: [
 	emph-start 
 	(push 'emph)
 	some [
-		emph-end (emit-pop string) break
-	|	ahead strong-start (emit string) strong-content
+		emph-end (emit-pop) break
+	|	ahead strong-start (emit) strong-content
 	|	set value skip (append string value)
 	]
 ] 
@@ -64,7 +66,27 @@ strong-content: [
 	strong-start
 	(push 'strong)
 	some [
-		strong-end (emit-pop string) break
+		strong-end (emit-pop) break
+	|	ahead emph-start (emit) emph-content
 	|	set value skip (append string value)
 	]
+]
+
+main-rule: [
+	some [
+		strong-content
+	|	emph-content
+	|	set value skip (append string value)
+	]
+]
+
+md: func [value [string!]][
+	string: clear ""
+	output: clear []
+	target: output
+	stack: clear []
+
+	parse value main-rule
+	emit
+	output
 ]
