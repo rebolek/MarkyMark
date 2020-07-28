@@ -5,6 +5,7 @@ string: ""
 output: []
 target: output
 stack: []
+stop?: false
 
 push: func [rule [word!]][
 	unless empty? string [emit]
@@ -100,6 +101,19 @@ thematic-break: [
 	(append target 'hr)
 ]
 
+; -- ATX heading --
+
+atx-mark: none
+atx-heading: [
+	copy atx-mark 1 6 #"#" space
+	(print "atx")
+	(stop?: true)
+	(push to word! rejoin ['h length? atx-mark])
+	inline-content
+	(emit-pop)
+	(stop?: false)
+]
+
 ; -- indent-code --
 
 #TODO ""
@@ -138,7 +152,7 @@ inline-content: [
 line-content: [
 	ws*
 	some [
-		newline (append string newline) break
+		newline (unless stop? [append string newline]) break
 	|	set value skip (append string value)
 	]
 ]
@@ -149,6 +163,7 @@ main-rule: [
 	some [
 		blank-line
 	|	thematic-break
+	|	atx-heading
 	|	para
 	]
 ]
@@ -183,10 +198,11 @@ hm: func [
 	rule: [
 		some [
 			'em (append out <em>) ahead block! into rule (append out </em>)
-		|	'strong (append out <strong>) ahead block! into rule (probe append out </strong>)
+		|	'strong (append out <strong>) ahead block! into rule (append out </strong>)
 		|	'hr	(append out "<hr />^/")
+		|	set tag ['h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6] (append out to tag! tag) ahead block! into rule (append out to tag! to refinement! tag append out newline)
 		|	para
-		|	set value string! (probe append out value)
+		|	set value string! (append out value)
 		|	ahead block! into rule
 		]
 	]
