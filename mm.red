@@ -49,7 +49,7 @@ em-end: [
 	2 skip
 ]
 em-content: [
-	em-start 
+	em-start
 	(push 'em)
 	some [
 		em-end (emit-pop) break
@@ -84,14 +84,15 @@ strong-content: [
 
 ; -- thematic break --
 
+thematic-mark: none
 thematic-break: [
 	0 3 space
 	[
-		"***" any #"*"
-	|	"---" any #"-"
-	|	"___" any #"_"
+		set thematic-mark [#"*" | #"-" | #"_"]
+		2 [any space thematic-mark]
+		any [any space thematic-mark]
+		any space
 	]
-	ws*
 	newline
 	(append target 'hr)
 ]
@@ -115,6 +116,7 @@ indent-code: [
 para: [
 	not blank-line
 	(push 'para)
+	ws*
 	some inline-content
 	(emit-pop)
 ]
@@ -125,7 +127,16 @@ inline-content: [
 	blank-line break
 |	strong-content
 |	em-content
-|	set value skip (append string value)
+|	line-content
+;|	set value skip (append string value)
+]
+
+line-content: [
+	ws*
+	some [
+		newline (append string newline) break
+	|	set value skip (append string value)
+	]
 ]
 
 ; -- main --
