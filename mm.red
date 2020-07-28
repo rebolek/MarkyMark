@@ -22,10 +22,18 @@ emit: func [][
 	clear string
 ]
 
+; ---------------------------------------------------------------------------
+
 backslash: #"\"
+ws: charset " ^-" ; NOTE: newline has special meaning
+ws*: [any ws]
+ws+: [some ws]
+blank-line: [go-back newline ws* newline]
 
 mark: none
 go-back: [mark: (mark: back mark) :mark]
+
+; -- emphasis --
 
 em-mark: none
 em-start: [
@@ -50,6 +58,8 @@ em-content: [
 	]
 ] 
 
+; -- strong --
+
 strong-mark: none
 strong-start: [
 	copy strong-mark ["**" | "__"] 
@@ -72,45 +82,103 @@ strong-content: [
 	]
 ]
 
-main-rule: [
+; -- thematic break --
+
+thematic-break: [
+	0 3 space
+	[
+		"***" any #"*"
+	|	"---" any #"-"
+	|	"___" any #"_"
+	]
+	ws*
+	newline
+	(append target 'hr)
+]
+
+; -- indent-code --
+
+#TODO ""
+
+code-mark: none
+code-content: []
+indent-code: [
+	copy code mark [any space tab] (push 'pre push 'code)
 	some [
-		strong-content
-	|	em-content
-	|	set value skip (append string value)
+		newline (append string newline)
+	|	
 	]
 ]
 
-md: func [value [string!]][
+; -- para --
+
+para: [
+	not blank-line
+	(push 'para)
+	some inline-content
+	(emit-pop)
+]
+
+; -- inline --
+
+inline-content: [
+	blank-line break
+|	strong-content
+|	em-content
+|	set value skip (append string value)
+]
+
+; -- main --
+
+main-rule: [
+	some [
+		blank-line
+	|	thematic-break
+	|	para
+	]
+]
+
+md: func [input [string!]][
 	string: clear ""
 	output: clear []
 	target: output
 	stack: clear []
 
-	parse value main-rule
+	parse input main-rule
 	emit
 	output
 ]
 
+
+; -- lest -------------------------------------------------------------------
+
 hm: func [
 	data [block!]
-;	/local out rule
+	/local out rule para value
 ][
 	out: clear ""
+	para: [
+		'para (append out <p>)
+		ahead block! into rule
+		; NEWLINE goes after </p>
+		(take/last out)
+		(append out </p>)
+		(append out newline)
+	]
 	rule: [
 		some [
-			'em (append out <em>) rule (append out </em>)
-		|	'strong (append out <strong>) rule (append out </strong>)
-		|	set value string! (append out value)
+			'em (append out <em>) ahead block! into rule (append out </em>)
+		|	'strong (append out <strong>) ahead block! into rule (probe append out </strong>)
+		|	'hr	(append out "<hr />^/")
+		|	para
+		|	set value string! (probe append out value)
 		|	ahead block! into rule
 		]
 	]
 	parse data [
-		(append out <p>)
 		rule
-		(append out </p>)
-		(append out newline)
 	]
 	out
 ]
 
-markdown: :md
+markdown: func [value][hm md value]
