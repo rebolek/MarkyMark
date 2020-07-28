@@ -106,7 +106,6 @@ thematic-break: [
 atx-mark: none
 atx-heading: [
 	copy atx-mark 1 6 #"#" space
-	(print "atx")
 	(stop?: true)
 	(push to word! rejoin ['h length? atx-mark])
 	inline-content
@@ -114,7 +113,38 @@ atx-heading: [
 	(stop?: false)
 ]
 
-; -- indent-code --
+; -- block quote --
+
+
+block-quote-marker: [
+	0 3 space
+	#">"
+	any space
+]
+block-quote: [
+	block-quote-marker
+	(push 'blockquote)
+; TODO
+]
+
+; -- inline code --
+
+code-span-mark: none
+code-span-start: [
+	copy code-span-mark some #"`"
+	ahead to code-span-mark
+]
+code-span-content: [
+	code-span-start
+	(push 'code)
+	some [
+		code-span-mark break
+	|	set value skip (append string value)
+	]
+	(emit-pop)
+]
+
+; -- indent code --
 
 #TODO ""
 
@@ -143,6 +173,7 @@ para: [
 inline-content: [
 	blank-line break
 |	ahead thematic-start break
+|	code-span-content
 |	strong-content
 |	em-content
 |	line-content
@@ -187,6 +218,7 @@ hm: func [
 	/local out rule para value
 ][
 	out: clear ""
+	tag-stack: clear []
 	para: [
 		'para (append out <p>)
 		ahead block! into rule
@@ -195,10 +227,19 @@ hm: func [
 		(append out </p>)
 		(append out newline)
 	]
+	tag-rule: [
+		set tag ['em | 'strong | 'code]
+		(append out to tag! tag)
+		(append tag-stack tag)
+		ahead block! into rule
+		(tag: take/last tag-stack)
+		(append out to tag! to refinement! tag)
+	]
+	
+
 	rule: [
 		some [
-			'em (append out <em>) ahead block! into rule (append out </em>)
-		|	'strong (append out <strong>) ahead block! into rule (append out </strong>)
+			tag-rule
 		|	'hr	(append out "<hr />^/")
 		|	set tag ['h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6] (append out to tag! tag) ahead block! into rule (append out to tag! to refinement! tag append out newline)
 		|	para
