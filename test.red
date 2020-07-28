@@ -90,13 +90,13 @@ status: function [] [
 
 ; ---------------------------------------------------------------------------
 
-tests: reduce load %tests
+tests: reduce load %tests.red
 
 results: if exists? %results [do %results]
 unless results [
 	results: context [
-		script-checksum:	checksum to binary! mold read %md.reb 'SHA1
-		tests-checksum:		checksum to binary! mold read %tests 'SHA1
+		script-checksum:	checksum to binary! mold read %mm.red 'SHA1
+		tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
 		passed:				make block! 0
 		failed:					make block! 0
 	]
@@ -104,8 +104,8 @@ unless results [
 
 passed: 				make block! length? tests
 failed: 				make block! length? tests
-script-checksum:	checksum to binary! mold read %md.reb 'SHA1
-tests-checksum:		checksum to binary! mold read %tests 'SHA1
+script-checksum:	checksum to binary! mold read %mm.red 'SHA1
+tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
 
 foreach test tests [
 	result: equal? test/html markdown test/markdown
@@ -118,7 +118,7 @@ print [
 	"Tests checksum: " enbase tests-checksum newline
 	"=============================" newline
 	length? passed "tests passed," length? failed "tests failed." newline
-	"CommonMark.reb is" round/to to percent! divide length? passed length? tests 0.01% "ready." 
+	"CommonMark.reb is" to percent! round/to divide length? passed length? tests 0.01% "ready." 
 	newline
 	improvements: max 0 subtract length? passed length? results/passed "improvements" newline
 	regressions: max 0 subtract length? failed length? results/failed "regressions" newline
