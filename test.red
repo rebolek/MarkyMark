@@ -107,7 +107,12 @@ failed: 				make block! length? tests
 script-checksum:	checksum to binary! mold read %mm.red 'SHA1
 tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
 
+check: func [number [integer!]][
+	equal? tests/:number/html markdown tests/:number/markdown
+]
+
 foreach test tests [
+	print test/example
 	result: equal? test/html markdown test/markdown
 	append either result [passed] [failed] test/example
 ]
