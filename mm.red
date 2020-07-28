@@ -40,6 +40,7 @@ em-mark: none
 em-start: [
 	copy em-mark [#"*" | #"_"]
 	not space ; TODO: not whitespace
+	not ahead to code-span-start
 	ahead to em-end
 ]
 em-end: [
@@ -65,6 +66,7 @@ strong-mark: none
 strong-start: [
 	copy strong-mark ["**" | "__"] 
 	not space
+	not ahead code-span-start
 	ahead to strong-end
 ]
 strong-end: [
@@ -184,6 +186,7 @@ line-content: [
 	ws*
 	some [
 		newline (unless stop? [append string newline]) break
+	|	ahead [code-span-start | strong-start | em-start] break
 	|	set value skip (append string value)
 	]
 ]
