@@ -85,7 +85,7 @@ strong-content: [
 ; -- thematic break --
 
 thematic-mark: none
-thematic-break: [
+thematic-start: [
 	0 3 space
 	[
 		set thematic-mark [#"*" | #"-" | #"_"]
@@ -94,6 +94,9 @@ thematic-break: [
 		any space
 	]
 	newline
+]
+thematic-break: [
+	thematic-start
 	(append target 'hr)
 ]
 
@@ -125,6 +128,7 @@ para: [
 
 inline-content: [
 	blank-line break
+|	ahead thematic-start break
 |	strong-content
 |	em-content
 |	line-content
