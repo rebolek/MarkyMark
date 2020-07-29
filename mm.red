@@ -273,7 +273,7 @@ code-span-content: [
 	(code?: true)
 	some [
 		any space code-span-mark break
-	|	newline ; ignore
+	|	newline (keep space) ; convert to space
 	|	text-content
 	]
 	(code?: false)
