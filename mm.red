@@ -222,7 +222,7 @@ fenced-code: [
 	(push 'pre)
 	(push 'code)
 	any [
-		[fenced-code-mark thru newline | end] break
+		[fenced-code-mark thru newline | (print "check end") end] break
 	|	0 fenced-code-indent space
 		fenced-code-line
 	]
@@ -311,10 +311,9 @@ hm: func [
 		(tag: take/last tag-stack)
 		(append out to tag! to refinement! tag)
 	]
-	
 
 	rule: [
-		some [
+		any [
 			tag-rule
 		|	'hr	(append out "<hr />^/")
 		|	set tag ['h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6] (append out to tag! tag) ahead block! into rule (append out to tag! to refinement! tag append out newline)
