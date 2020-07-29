@@ -37,6 +37,28 @@ keep: func [value][append string value]
 
 ; ---------------------------------------------------------------------------
 
+; -- entities --
+
+html-entities: load %entities
+named-entities: copy html-entities
+
+entity-list: collect [
+	foreach [entity _] html-entities [keep reduce [entity '|]]
+]
+take/last named-entities
+
+entity: none
+named-entities: [
+	#"&"
+	copy entity entity-list
+	#";"
+;	(keep to char! to integer! to issue! select/case html-entities entity)
+	(
+		value: select/case html-entities entity
+		foreach _ value [keep to char! _]
+	)
+]
+
 ; definitions from specs
 
 ; support
@@ -77,9 +99,14 @@ entities: [
 |	#"^"" 		(keep "&quot;")
 ;|	#"\" 		(keep #"\")
 ]
+keep-as-entities: [
+	"&amp;" (keep "&amp;")
+]
 
 text-content: [
-	entities
+	keep-as-entities
+|	if (not code?) named-entities
+|	entities
 |	if (code?) not newline set value skip (keep value) ; TODO: Optimize, it same as last line
 |	#"\" entities
 |	#"\" line-ending (emit emit-value 'br)
@@ -373,7 +400,7 @@ md: func [input [string!]][
 	stack: clear []
 	stop?: false
 
-	parse input main-rule
+	parse/case input main-rule
 	emit
 	output
 ]
