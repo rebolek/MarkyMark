@@ -80,7 +80,8 @@ entities: [
 text-content: [
 	entities
 |	#"\" entities
-|	#"\" set value skip (keep value)
+|	#"\" line-ending (emit emit-value 'br)
+|	#"\" set value ascii-punctuation-char (keep value)
 |	not newline set value skip (keep value)
 ]
 
@@ -418,6 +419,7 @@ hm: func [
 			tag-rule
 		|	link-rule
 		|	'hr	(append out "<hr />^/")
+		|	'br	(append out "<br />^/")
 		|	para
 		|	set value [string! | char!] (append out value)
 		|	ahead block! into rule
