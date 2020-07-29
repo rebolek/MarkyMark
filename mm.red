@@ -342,12 +342,11 @@ fenced-code-line: [
 	(emit-newline)
 ]
 fenced-code: [
-	(fenced-code-lang: none)
 	fenced-code-start
 	(code?: true)
 	(push 'pre)
 	(push 'code)
-	(if fenced-code-lang [emit-value to issue! fenced-code-lang])
+	(unless empty? fenced-code-lang [emit-value to issue! fenced-code-lang])
 	any [
 		[fenced-code-mark thru newline | end] break
 	|	0 fenced-code-indent space
@@ -471,10 +470,13 @@ hm: func [
 	class: none
 	code-rule: [
 		'code
+		(class: none)
 		(append out {<code})
 		(append tag-stack 'code)
 		into [
-			opt [set class issue! (append out rejoin [{ class=language-"} form class {"}])]
+			opt [
+				set class issue!
+				(append out rejoin [{ class=language-"} form class {"}])]
 			(append out ">")
 			rule
 		]
