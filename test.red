@@ -92,20 +92,6 @@ status: function [] [
 
 tests: reduce load %tests.red
 
-results: if exists? %results [do %results]
-unless results [
-	results: context [
-		script-checksum:	checksum to binary! mold read %mm.red 'SHA1
-		tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
-		passed:				make block! 0
-		failed:					make block! 0
-	]
-]
-
-passed: 				make block! length? tests
-failed: 				make block! length? tests
-script-checksum:	checksum to binary! mold read %mm.red 'SHA1
-tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
 
 hr: func [value /local line][
 	unless value [print append/dup clear "" #"#" 80 exit]
@@ -144,19 +130,39 @@ get-sections: func [
 ]
 
 check-section: func [name /local passed test section][
-	passed: clear []
-	section: select sections name
-	foreach test section [
-		if check/quiet test [append passed test]
+	if 'all = name [name: words-of sections]
+	unless block? name [name: reduce [name]]
+	foreach part name [
+		passed: clear []
+		section: select sections part
+		foreach test section [
+			if check/quiet test [append passed test]
+		]
+		hr part
+		print ["Total: " length? section]
+		print ["Passed:" passed]
+		print ["Rate:  " to percent! round/to (length? passed) / (1.0 * length? section) 0.01%]
 	]
-	hr name
-	print ["Total: " length? section]
-	print ["Passed:" passed]
-	print ["Rate:  " to percent! round/to (length? passed) / (1.0 * length? section) 0.01%]
 ]
 
 
-main: func [/local test][
+main: func [
+	/local test
+][
+	results: if exists? %results [do %results]
+	unless results [
+		results: context [
+			script-checksum:	checksum to binary! mold read %mm.red 'SHA1
+			tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
+			passed:				make block! 0
+			failed:				make block! 0
+		]
+	]
+
+	passed:				make block! length? tests
+	failed:				make block! length? tests
+	script-checksum:	checksum to binary! mold read %mm.red 'SHA1
+	tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
 	foreach test tests [
 		print test/example
 		result: equal? test/html markdown test/markdown
