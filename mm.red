@@ -246,6 +246,7 @@ para: [
 inline-content: [
 	blank-line break
 |	ahead thematic-start break
+|	ahead fenced-code-start break
 |	code-span-content
 |	strong-content
 |	em-content
