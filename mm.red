@@ -1,4 +1,10 @@
-Red[]
+Red[
+	Bugs: [
+		#89 {
+			`parse " " [0 0 space]` returns TRUE, I believe it's a bug
+		}
+	]
+]
 
 string: ""
 
@@ -25,6 +31,8 @@ emit: func [][
 emit-value: func [value][append target value]
 emit-newline: func [][append target newline]
 
+keep: func [value][append string value]
+
 ; ---------------------------------------------------------------------------
 backtick: #"`"
 tilde: #"~"
@@ -33,6 +41,19 @@ ws: charset " ^-" ; NOTE: newline has special meaning
 ws*: [any ws]
 ws+: [some ws]
 blank-line: [go-back newline ws* newline]
+
+entities: [
+	#"<" 		(keep "&lt;")
+|	#">" 		(keep "&gt;")
+|	#"&" 		(keep "&amp;")
+|	#"^"" 		(keep "&quot;")
+|	#"\" 		(keep #"\")
+]
+
+text-content: [
+	entities
+|	set value skip (keep value)
+]
 
 mark: none
 go-back: [mark: (mark: back mark) :mark]
@@ -59,7 +80,7 @@ em-content: [
 	some [
 		em-end (emit-pop) break
 	|	ahead strong-start (emit) strong-content
-	|	set value skip (append string value)
+	|	text-content
 	]
 ] 
 
@@ -84,7 +105,7 @@ strong-content: [
 	some [
 		strong-end (emit-pop) break
 	|	ahead em-start (emit) em-content
-	|	set value skip (append string value)
+	|	text-content
 	]
 ]
 
@@ -165,7 +186,7 @@ code-span-content: [
 	(push 'code)
 	some [
 		code-span-mark break
-	|	set value skip (append string value)
+	|	text-content
 	]
 	(emit-pop)
 ]
@@ -187,6 +208,14 @@ fenced-code-start: [
 	thru newline
 	ahead to [fenced-code-mark | end]
 ]
+fenced-code-line: [
+	some [
+		newline break
+	|	text-content
+	]
+	(emit)
+	(emit-newline)
+]
 fenced-code: [
 	fenced-code-start
 	(push 'pre)
@@ -194,8 +223,7 @@ fenced-code: [
 	any [
 		[fenced-code-mark thru newline | end] break
 	|	0 fenced-code-indent space
-		copy fenced-code-line thru newline
-		(emit-value fenced-code-line)
+		fenced-code-line
 	]
 	(emit-pop)
 	(emit-pop)
@@ -229,7 +257,7 @@ line-content: [
 	some [
 		newline (unless stop? [append string newline]) break
 	|	ahead [code-span-start | strong-start | em-start] break
-	|	set value skip (append string value)
+	|	text-content
 	]
 ]
 
