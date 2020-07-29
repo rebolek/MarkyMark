@@ -4,6 +4,12 @@ Red[
 			`parse " " [0 0 space]` returns TRUE, I believe it's a bug
 		}
 	]
+	To-Do: {
+		CLASS stuff in HM should be universal (needs support in EMIT)
+		and also should be on same level as tag:
+			currently: [tag [#class content]]
+			preffered: [tag #class [content]]
+	}
 ]
 
 string: ""
@@ -322,6 +328,7 @@ fenced-code-start: [
 	|	3 tilde any tilde
 	]
 	any space
+	; TODO: entities in fenced-code-lang must be translated (&ouml; -> ö) #320
 	copy fenced-code-lang to [space | newline]
 	thru newline
 	ahead to [fenced-code-mark | end]
@@ -335,10 +342,12 @@ fenced-code-line: [
 	(emit-newline)
 ]
 fenced-code: [
+	(fenced-code-lang: none)
 	fenced-code-start
 	(code?: true)
 	(push 'pre)
 	(push 'code)
+	(if fenced-code-lang [emit-value to issue! fenced-code-lang])
 	any [
 		[fenced-code-mark thru newline | end] break
 	|	0 fenced-code-indent space
@@ -452,10 +461,23 @@ hm: func [
 		(append out newline)
 	]
 	tag-rule: [
-		set tag ['em | 'strong | 'code | 'pre | 'h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6]
+		set tag ['em | 'strong | 'pre | 'h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6]
 		(append out to tag! tag)
 		(append tag-stack tag)
 		ahead block! into rule
+		(tag: take/last tag-stack)
+		(append out to tag! to refinement! tag)
+	]
+	class: none
+	code-rule: [
+		'code
+		(append out {<code})
+		(append tag-stack 'code)
+		into [
+			opt [set class issue! (append out rejoin [{ class=language-"} form class {"}])]
+			(append out ">")
+			rule
+		]
 		(tag: take/last tag-stack)
 		(append out to tag! to refinement! tag)
 	]
@@ -480,6 +502,7 @@ hm: func [
 	rule: [
 		any [
 			tag-rule
+		|	code-rule
 		|	link-rule
 		|	'hr	(append out "<hr />^/")
 		|	'br	(append out "<br />^/")
