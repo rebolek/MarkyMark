@@ -186,6 +186,7 @@ code-span-content: [
 	(push 'code)
 	some [
 		code-span-mark break
+	|	newline ; ignore
 	|	text-content
 	]
 	(emit-pop)
