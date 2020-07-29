@@ -87,6 +87,11 @@ ascii-punctuation-char: make bitset! #{000000007FFF003F8000001F8000001E} ; see %
 backtick: #"`"
 tilde: #"~"
 backslash: #"\"
+amp: #"&"
+semicolon: #";"
+hash: #"#"
+digit: charset "1234567890"
+hex-digit: charset "1234567890abcdefABCDEF"
 ws: charset " ^-" ; NOTE: newline has special meaning
 ws*: [any ws]
 ws+: [some ws]
@@ -103,9 +108,28 @@ keep-as-entities: [
 	"&amp;" (keep "&amp;")
 ]
 
+#TODO "converted chars must be checked agains entities list (e.g. & -> &amp;)"
+number: none
+decimal-entities: [
+	amp hash copy number 1 7 digit semicolon
+	(number: to integer! number)
+]
+hexadecimal-entities: [
+	amp hash [#"x" | #"X"] copy number 1 6 hex-digit semicolon
+	(number: to integer! to issue! number)
+]
+numeric-entities: [
+	[decimal-entities | hexadecimal-entities]
+	(
+		if zero? number [number: 65533] ; NOTE: REPLACEMENT CHARACTER (#312)
+		keep to char! number
+	)
+]
+
 text-content: [
 	keep-as-entities
 |	if (not code?) named-entities
+|	if (not code?) numeric-entities
 |	entities
 |	if (code?) not newline set value skip (keep value) ; TODO: Optimize, it same as last line
 |	#"\" entities
@@ -245,15 +269,20 @@ block-quote: [
 ; -- indented code block --
 
 code-line: none
-indented-code-line: [[4 space | 0 3 space tab] copy code-line thru newline]
-indented-code-block: [
-	indented-code-line
-	(push 'pre push 'code)
-	(emit-value code-line)
-	any [
-		indented-code-line
-		(emit-value code-line)
+indented-code-start: [ahead [4 space | 0 3 space tab]]
+indented-code-line: [
+	[4 space | 0 3 space tab] 
+	some [
+		newline (keep newline) break
+	|	entities
+	|	set value skip (keep value)
 	]
+	(emit)
+]
+indented-code-block: [
+	indented-code-start
+	(push 'pre push 'code)
+	some indented-code-line
 	(emit-pop)
 	(emit-pop)
 	(emit-newline)
