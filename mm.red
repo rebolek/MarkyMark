@@ -22,6 +22,8 @@ emit: func [][
 	append target copy string
 	clear string
 ]
+emit-value: func [value][append target value]
+emit-newline: func [][append target newline]
 
 ; ---------------------------------------------------------------------------
 
@@ -115,6 +117,10 @@ atx-heading: [
 	(stop?: false)
 ]
 
+; -- setext heading
+
+; TODO
+
 ; -- block quote --
 
 
@@ -127,6 +133,23 @@ block-quote: [
 	block-quote-marker
 	(push 'blockquote)
 ; TODO
+]
+
+; -- indented code block --
+
+code-line: none
+indented-code-line: [4 space copy code-line thru newline]
+indented-code-block: [
+	indented-code-line
+	(push 'pre push 'code)
+	(emit-value code-line)
+	any [
+		indented-code-line
+		(emit-value code-line)
+	]
+	(emit-pop)
+	(emit-pop)
+	(emit-newline)
 ]
 
 ; -- inline code --
@@ -198,6 +221,7 @@ main-rule: [
 		blank-line
 	|	thematic-break
 	|	atx-heading
+	|	indented-code-block
 	|	para
 	]
 ]
@@ -231,7 +255,7 @@ hm: func [
 		(append out newline)
 	]
 	tag-rule: [
-		set tag ['em | 'strong | 'code]
+		set tag ['em | 'strong | 'code | 'pre]
 		(append out to tag! tag)
 		(append tag-stack tag)
 		ahead block! into rule
@@ -246,7 +270,7 @@ hm: func [
 		|	'hr	(append out "<hr />^/")
 		|	set tag ['h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6] (append out to tag! tag) ahead block! into rule (append out to tag! to refinement! tag append out newline)
 		|	para
-		|	set value string! (append out value)
+		|	set value [string! | char!] (append out value)
 		|	ahead block! into rule
 		]
 	]
