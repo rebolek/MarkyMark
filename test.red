@@ -107,40 +107,94 @@ failed: 				make block! length? tests
 script-checksum:	checksum to binary! mold read %mm.red 'SHA1
 tests-checksum:		checksum to binary! mold read %tests.red 'SHA1
 
-check: func [number [integer!]][
+hr: func [value /local line][
+	unless value [print append/dup clear "" #"#" 80 exit]
+	line: rejoin ["## " value space]
+	append/dup line #"#" 80 - length? line
+	print line
+]
+
+test: func [number [integer!]][
+	markdown tests/:number/markdown
+]
+
+check: func [number [integer!] /quiet][
+	unless quiet [
+		hr "markdown"
+		print tests/:number/markdown
+		hr "expected"
+		print tests/:number/html
+		hr "result"
+		print markdown tests/:number/markdown
+		hr none
+	]
 	equal? tests/:number/html markdown tests/:number/markdown
 ]
 
-foreach test tests [
-	print test/example
-	result: equal? test/html markdown test/markdown
-	append either result [passed] [failed] test/example
+get-sections: func [
+	/local test section
+][
+	sections: make map! []
+	foreach test tests [
+		section: test/section
+		unless sections/:section [sections/:section: copy []]
+		append sections/:section test/example
+	]
+	sections
 ]
 
-print [
-	"=============================" newline
-	"Script checksum:" enbase script-checksum newline
-	"Tests checksum: " enbase tests-checksum newline
-	"=============================" newline
-	length? passed "tests passed," length? failed "tests failed." newline
-	"CommonMark.reb is" to percent! round/to divide length? passed length? tests 0.01% "ready." 
-	newline
-	improvements: max 0 subtract length? passed length? results/passed "improvements" newline
-	regressions: max 0 subtract length? failed length? results/failed "regressions" newline
-	either zero? improvements [""][rejoin ["Check these improvements: " mold difference results/passed passed]]
-	either zero? regressions [""][rejoin ["Check these regressions: " mold difference results/failed failed]]
+check-section: func [name /local passed test section][
+	passed: clear []
+	section: select sections name
+	foreach test section [
+		if check/quiet test [append passed test]
+	]
+	hr name
+	print ["Total: " length? section]
+	print ["Passed:" passed]
+	print ["Rate:  " to percent! round/to (length? passed) / (1.0 * length? section) 0.01%]
 ]
 
-if any [
-	not zero? improvements
-	not zero? regressions
-	not equal? script-checksum results/script-checksum
-	not equal? tests-checksum results/tests-checksum
-] [
-	save/header %results context compose/only [
-		script-checksum: 	(script-checksum)
-		tests-checksum: 	(tests-checksum)
-		passed: 				(passed) 
-		failed: 				(failed)
-	][]
+
+main: func [/local test][
+	foreach test tests [
+		print test/example
+		result: equal? test/html markdown test/markdown
+		append either result [passed] [failed] test/example
+	]
+
+	#TODO {
+		The logic here is wrong. Total numbers may be fine, but the difference is
+		poblematic. need to look into it.
+	}
+
+	print [
+		"=============================" newline
+		"Script checksum:" enbase script-checksum newline
+		"Tests checksum: " enbase tests-checksum newline
+		"=============================" newline
+		length? passed "tests passed," length? failed "tests failed." newline
+		"CommonMark.reb is" to percent! round/to divide length? passed length? tests 0.01% "ready." 
+		newline
+		improvements: max 0 subtract length? passed length? results/passed "improvements" newline
+		regressions: max 0 subtract length? failed length? results/failed "regressions" newline
+		either zero? improvements [""][rejoin ["Check these improvements: " mold difference results/passed passed]]
+		either zero? regressions [""][rejoin ["Check these regressions: " mold difference results/failed failed]]
+	]
+
+	if any [
+		not zero? improvements
+		not zero? regressions
+		not equal? script-checksum results/script-checksum
+		not equal? tests-checksum results/tests-checksum
+	] [
+		save/header %results context compose/only [
+			script-checksum: 	(script-checksum)
+			tests-checksum: 	(tests-checksum)
+			passed: 				(passed) 
+			failed: 				(failed)
+		][]
+	]
 ]
+
+main
