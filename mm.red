@@ -35,6 +35,32 @@ emit-newline: func [][append target newline]
 keep: func [value][append string value]
 
 ; ---------------------------------------------------------------------------
+
+; definitions from specs
+
+; support
+
+to-char: func [value][to char! to integer! value]
+chset: func [value][charset collect [foreach char value [keep to-char char]]]
+
+crlf-set: charset reduce [cr lf]
+sptb-set: charset reduce [space tab]
+
+; actual defs
+
+character: [skip]
+line: [any [not crlf-set skip] line-ending]
+line-ending: [crlf-set not crlf-set]
+blank-line: [any sptb-set line-ending]
+whitespace-char: chset [#20 #09 #0A #0B #0C #0D]
+whitespace: [some whitespace-char]
+; unicode-whitespace
+; space - already defined in Red
+non-whitespace-char: complement whitespace-char
+ascii-punctuation-char: make bitset! #{000000007FFF003F8000001F8000001E} ; see %scraper.red how to get this [grab 'punct]
+; punctuation-char - TODO: see Unicode categories Pc, Pd, Pe, Pf, Pi, Po and Ps
+
+
 backtick: #"`"
 tilde: #"~"
 backslash: #"\"
@@ -48,11 +74,13 @@ entities: [
 |	#">" 		(keep "&gt;")
 |	#"&" 		(keep "&amp;")
 |	#"^"" 		(keep "&quot;")
-|	#"\" 		(keep #"\")
+;|	#"\" 		(keep #"\")
 ]
 
 text-content: [
 	entities
+|	#"\" entities
+|	#"\" set value skip (keep value)
 |	not newline set value skip (keep value)
 ]
 
@@ -187,7 +215,7 @@ block-quote: [
 ; -- indented code block --
 
 code-line: none
-indented-code-line: [4 space copy code-line thru newline]
+indented-code-line: [[4 space | 0 3 space tab] copy code-line thru newline]
 indented-code-block: [
 	indented-code-line
 	(push 'pre push 'code)
