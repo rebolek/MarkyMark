@@ -126,21 +126,34 @@ get-sections: func [
 		unless sections/:section [sections/:section: copy []]
 		append sections/:section test/example
 	]
-	sections
+	sections?
 ]
 
-check-section: func [name /local passed test section][
+sections?: func [/local section][
+	foreach section words-of sections [print section]
+]
+
+get-section: func [value /local name section][
+	foreach [name section] sections [
+		if find/match name value [return section]
+	]
+	none
+]
+
+check-section: func [name /local passed failed test section][
 	if 'all = name [name: words-of sections]
 	unless block? name [name: reduce [name]]
 	foreach part name [
 		passed: clear []
-		section: select sections part
+		failed: clear []
+		section: get-section part
 		foreach test section [
-			if check/quiet test [append passed test]
+			either check/quiet test [append passed test][append failed test]
 		]
-		hr part
+		hr select tests/:test 'section
 		print ["Total: " length? section]
 		print ["Passed:" passed]
+		print ["Failed:" failed]
 		print ["Rate:  " to percent! round/to (length? passed) / (1.0 * length? section) 0.01%]
 	]
 ]
