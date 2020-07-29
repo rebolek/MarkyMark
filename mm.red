@@ -19,9 +19,10 @@ push: func [rule [word!]][
 	append/only stack tail target
 	target: last target
 ]
+pop: func [][target: take/last stack]
 emit-pop: func ["Emit content and pop from stack"][
-	emit string 
-	target: take/last stack
+	emit
+	pop
 ]
 emit: func [][
 	if empty? string [exit]
@@ -257,6 +258,33 @@ fenced-code: [
 	(emit-newline)
 ]
 
+; -- links --
+
+link-text:
+link-destination:
+link-title: none
+
+inline-link-start: [
+	#"["
+	ahead [to [#"]" #"("]]
+]
+inline-link-content: [
+	inline-link-start
+	copy link-text to #"]" skip
+	#"(" copy link-target to [space | #")"]
+	(link-title: none)
+	opt [
+		space
+		copy link-title to #")"
+	]
+	#")"
+	(push 'a)
+	(emit-value to url! link-target)
+	(if link-title [emit-value 'title emit-value link-title])
+	(emit-value link-text)
+	(pop)
+]
+
 ; -- para --
 para: [
 	not blank-line
@@ -275,6 +303,7 @@ inline-content: [
 |	code-span-content
 |	strong-content
 |	em-content
+|	inline-link-content
 |	line-content
 ]
 
@@ -318,7 +347,7 @@ md: func [input [string!]][
 
 hm: func [
 	data [block!]
-	/local out rule para value
+	/local out rule para value target
 ][
 	out: clear ""
 	tag-stack: clear []
@@ -338,10 +367,28 @@ hm: func [
 		(tag: take/last tag-stack)
 		(append out to tag! to refinement! tag)
 	]
-
+	link-rule: [
+		'a
+		into [
+			set target url!
+			(append out rejoin [{<a href="} target {"}])
+			opt [
+				'title
+				set value string!
+				(append out rejoin [{ title=} value])
+			]
+			(append out #">")
+			some [
+				tag-rule
+			|	set value [string! | char!] (append out value)
+			]
+			(append out </a>)
+		]
+	]
 	rule: [
 		any [
 			tag-rule
+		|	link-rule
 		|	'hr	(append out "<hr />^/")
 		|	para
 		|	set value [string! | char!] (append out value)
