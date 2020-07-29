@@ -12,6 +12,7 @@ output: []
 target: output
 stack: []
 stop?: false ; NOTE: set this to TRUE to not include newline after inline text
+code?: false
 
 push: func [rule [word!]][
 	unless empty? string [emit]
@@ -79,6 +80,7 @@ entities: [
 
 text-content: [
 	entities
+|	if (code?) not newline set value skip (keep value) ; TODO: Optimize, it same as last line
 |	#"\" entities
 |	#"\" line-ending (emit emit-value 'br)
 |	#"\" set value ascii-punctuation-char (keep value)
@@ -239,12 +241,15 @@ code-span-start: [
 ]
 code-span-content: [
 	code-span-start
+	any space
 	(push 'code)
+	(code?: true)
 	some [
-		code-span-mark break
+		any space code-span-mark break
 	|	newline ; ignore
 	|	text-content
 	]
+	(code?: false)
 	(emit-pop)
 ]
 
@@ -275,6 +280,7 @@ fenced-code-line: [
 ]
 fenced-code: [
 	fenced-code-start
+	(code?: true)
 	(push 'pre)
 	(push 'code)
 	any [
@@ -282,6 +288,7 @@ fenced-code: [
 	|	0 fenced-code-indent space
 		fenced-code-line
 	]
+	(code?: false)
 	(emit-pop)
 	(emit-pop)
 	(emit-newline)
