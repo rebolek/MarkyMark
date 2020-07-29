@@ -109,7 +109,7 @@ text-content: [
 |	entities
 |	if (code?) not newline set value skip (keep value) ; TODO: Optimize, it same as last line
 |	#"\" entities
-|	#"\" line-ending (emit emit-value 'br)
+|	[#"\" | 2 space any space] line-ending  any space (emit emit-value 'br)
 |	#"\" set value ascii-punctuation-char (keep value)
 |	not newline set value skip (keep value)
 ]
