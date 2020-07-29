@@ -11,7 +11,7 @@ string: ""
 output: []
 target: output
 stack: []
-stop?: false
+stop?: false ; NOTE: set this to TRUE to not include newline after inline text
 
 push: func [rule [word!]][
 	unless empty? string [emit]
@@ -52,7 +52,7 @@ entities: [
 
 text-content: [
 	entities
-|	set value skip (keep value)
+|	not newline set value skip (keep value)
 ]
 
 mark: none
@@ -136,12 +136,38 @@ atx-heading: [
 	(push to word! rejoin ['h length? atx-mark])
 	inline-content
 	(emit-pop)
+	(emit-newline)
 	(stop?: false)
 ]
 
-; -- setext heading
+; -- setext heading --
 
-; TODO
+setext-type: none
+setext-heading-start: [
+	ahead [
+		thru newline ;at least one line precedes underlining
+		thru [
+			0 3 space
+			copy setext-type [some #"=" | some #"-"]
+		]
+		(setext-type: select [#"=" h1 #"-" h2] first setext-type)
+		any space
+		newline
+	]
+]
+setext-heading: [
+	setext-heading-start
+	(push setext-type)
+	(stop?: true)
+	some [
+		newline break
+	|	inline-content
+	]
+	thru newline
+	(emit-pop)
+	(emit-newline)
+	(stop?: false)
+]
 
 ; -- block quote --
 
@@ -222,7 +248,7 @@ fenced-code: [
 	(push 'pre)
 	(push 'code)
 	any [
-		[fenced-code-mark thru newline | (print "check end") end] break
+		[fenced-code-mark thru newline | end] break
 	|	0 fenced-code-indent space
 		fenced-code-line
 	]
@@ -232,7 +258,6 @@ fenced-code: [
 ]
 
 ; -- para --
-
 para: [
 	not blank-line
 	(push 'para)
@@ -251,7 +276,6 @@ inline-content: [
 |	strong-content
 |	em-content
 |	line-content
-;|	set value skip (append string value)
 ]
 
 line-content: [
@@ -270,6 +294,7 @@ main-rule: [
 		blank-line
 	|	thematic-break
 	|	atx-heading
+	|	setext-heading
 	|	indented-code-block
 	|	fenced-code
 	|	para
@@ -281,6 +306,7 @@ md: func [input [string!]][
 	output: clear []
 	target: output
 	stack: clear []
+	stop?: false
 
 	parse input main-rule
 	emit
@@ -305,7 +331,7 @@ hm: func [
 		(append out newline)
 	]
 	tag-rule: [
-		set tag ['em | 'strong | 'code | 'pre]
+		set tag ['em | 'strong | 'code | 'pre | 'h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6]
 		(append out to tag! tag)
 		(append tag-stack tag)
 		ahead block! into rule
@@ -317,7 +343,6 @@ hm: func [
 		any [
 			tag-rule
 		|	'hr	(append out "<hr />^/")
-		|	set tag ['h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6] (append out to tag! tag) ahead block! into rule (append out to tag! to refinement! tag append out newline)
 		|	para
 		|	set value [string! | char!] (append out value)
 		|	ahead block! into rule
