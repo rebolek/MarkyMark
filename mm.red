@@ -26,7 +26,8 @@ emit-value: func [value][append target value]
 emit-newline: func [][append target newline]
 
 ; ---------------------------------------------------------------------------
-
+backtick: #"`"
+tilde: #"~"
 backslash: #"\"
 ws: charset " ^-" ; NOTE: newline has special meaning
 ws*: [any ws]
@@ -169,18 +170,36 @@ code-span-content: [
 	(emit-pop)
 ]
 
-; -- indent code --
-
-#TODO ""
-
-code-mark: none
-code-content: []
-indent-code: [
-	copy code mark [any space tab] (push 'pre push 'code)
-	some [
-		newline (append string newline)
-	|	
+; -- fenced code --
+fenced-code-indent:
+fenced-code-lang:
+fenced-code-mark:
+fenced-code-line: none
+fenced-code-start: [
+	copy fenced-code-indent 0 3 space
+	(fenced-code-indent: length? fenced-code-indent)
+	copy fenced-code-mark [
+		3 backtick any backtick
+	|	3 tilde any tilde
 	]
+	any space
+	copy fenced-code-lang to [space | newline]
+	thru newline
+	ahead to [fenced-code-mark | end]
+]
+fenced-code: [
+	fenced-code-start
+	(push 'pre)
+	(push 'code)
+	any [
+		[fenced-code-mark thru newline | end] break
+	|	0 fenced-code-indent space
+		copy fenced-code-line thru newline
+		(emit-value fenced-code-line)
+	]
+	(emit-pop)
+	(emit-pop)
+	(emit-newline)
 ]
 
 ; -- para --
@@ -222,6 +241,7 @@ main-rule: [
 	|	thematic-break
 	|	atx-heading
 	|	indented-code-block
+	|	fenced-code
 	|	para
 	]
 ]
