@@ -427,7 +427,16 @@ inline-content: [
 line-content: [
 	ws*
 	some [
-		newline (unless stop? [append string newline]) break
+;		newline (unless stop? [append string newline]) break
+		newline (
+			if space = string/1 [take string]
+			if all [
+				space = last string
+				space <> first skip tail string -2
+			][take/last string]
+			unless stop? [keep newline]
+			emit
+		) break
 	|	ahead [code-span-start | strong-start | em-start] break
 	|	text-content
 	]
