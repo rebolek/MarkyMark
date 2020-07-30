@@ -297,22 +297,39 @@ indented-code-block: [
 ; -- inline code --
 
 code-span-mark: none
+code-span-last: none
+code-span-end: [ ; backtick string: https://spec.commonmark.org/0.29/#backtick-string
+	not backtick set code-span-last skip
+	code-span-mark
+	not backtick
+]
 code-span-start: [
-	copy code-span-mark some #"`"
-	ahead to code-span-mark
+	copy code-span-mark some backtick
+	ahead to code-span-end
 ]
 code-span-content: [
 	code-span-start
-	any space
 	(push 'code)
 	(code?: true)
 	some [
-		any space code-span-mark break
+		code-span-end break
 	|	newline (keep space) ; convert to space
 	|	text-content
 	]
-	(code?: false)
-	(emit-pop)
+	(
+		; NOTE: compensate the SKIP from CODE-SPAN-END
+		keep code-span-last
+		; NOTE: convert last newline to space
+		if newline = last string [change back tail string space]
+		; NOTE: strip space if on start and end (but not if just two spaces) 
+		if all [
+			2 < length? string
+			space = first string
+			space = last string
+		][take string take/last string]
+		code?: false
+		emit-pop
+	)
 ]
 
 ; -- fenced code --
@@ -455,7 +472,7 @@ hm: func [
 		'para (append out <p>)
 		ahead block! into rule
 		; NEWLINE goes after </p>
-		(take/last out)
+		(if equal? newline last out [take/last out])
 		(append out </p>)
 		(append out newline)
 	]
@@ -476,7 +493,8 @@ hm: func [
 		into [
 			opt [
 				set class issue!
-				(append out rejoin [{ class=language-"} form class {"}])]
+				(append out rejoin [{ class=language-"} form class {"}])
+			]
 			(append out ">")
 			rule
 		]
