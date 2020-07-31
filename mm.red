@@ -178,7 +178,7 @@ single-quoted-att-value: [#"'" some [not #"'" skip] #"'"]
 double-quoted-att-value: [#"^"" some [not #"^"" skip] #"^""]
 attribute: [some whitespace attribute-name opt attribute-value-specification]
 
-html-comment: ["<--" not [#">" | "->"] some [not "--" skip] "-->"]
+html-comment: ["<!--" not [#">" | "->"] some [not "--" skip] "-->"]
 processing-instruction: ["<?" some [not "?>" skip] "?>"]
 declaration: ["<!" some uppercase-letter whitespace some [not #">" skip] #">"]
 CDATA-section: ["<![CDATA[" some [not "[[>" skip] "]]>"]
