@@ -163,8 +163,9 @@ open-tag: [#"<" tag-name any attribute opt-whitespace opt #"/" #">"]
 closing-tag: [#"<" #"/" tag-name opt-whitespace #">"]
 
 attribute-special: charset "_.:-"
+attribute-first: union ascii-letter charset ":_"
 attribute-char: union alphanum attribute-special
-attribute-name: [ascii-letter any attribute-char]
+attribute-name: [attribute-first any attribute-char]
 attribute-value-specification: [any wsch* #"=" opt-whitespace attribute-value]
 attribute-value: [
 	unquoted-att-value
