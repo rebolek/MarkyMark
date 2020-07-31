@@ -83,6 +83,7 @@ line-ending: [crlf-set not crlf-set]
 blank-line: [any sptb-set line-ending]
 whitespace-char: chset [#20 #09 #0A #0B #0C #0D]
 whitespace: [some whitespace-char]
+opt-whitespace: [any whitespace-char]
 ; unicode-whitespace
 ; space - already defined in Red
 non-whitespace-char: complement whitespace-char
@@ -146,6 +147,50 @@ text-content: [
 
 mark: none
 go-back: [mark: (mark: back mark) :mark]
+
+; -- raw HTML
+
+wsch*: [any whitespace-char]
+
+lowercase-letter: charset [#"a" - #"z"]
+uppercase-letter: charset [#"A" - #"Z"]
+ascii-letter: union lowercase-letter uppercase-letter
+
+alphanum: union ascii-letter digit
+tag-char: union alphanum charset #"-"
+tag-name: [ascii-letter any tag-char]
+open-tag: [#"<" tag-name any attribute opt-whitespace opt #"/" #">"]
+closing-tag: [#"<" #"/" tag-name opt-whitespace #">"]
+
+attribute-special: charset "_.:-"
+attribute-char: union alphanum attribute-special
+attribute-name: [ascii-letter any attribute-char]
+attribute-value-specification: [any wsch* #"=" opt-whitespace attribute-value]
+attribute-value: [
+	unquoted-att-value
+|	single-quoted-att-value
+|	double-quoted-att-value
+]
+unquoted-att-chars: complement union whitespace-char charset {"'=<>`}
+unquoted-att-value: [some unquoted-att-chars]
+single-quoted-att-value: [#"'" some [not #"'" skip] #"'"]
+double-quoted-att-value: [#"^"" some [not #"^"" skip] #"^""]
+attribute: [some whitespace attribute-name opt attribute-value-specification]
+
+html-comment: ["<--" not [#">" | "->"] some [not "--" skip] "-->"]
+processing-instruction: ["<?" some [not "?>" skip] "?>"]
+declaration: ["<!" some uppercase-letter whitespace some [not #">" skip] #">"]
+CDATA-section: ["<![CDATA[" some [not "[[>" skip] "]]>"]
+html-tag: [
+	copy value [
+		open-tag
+	|	closing-tag
+	|	html-comment
+	|	processing-instruction
+	|	CDATA-section
+	|	declaration
+	] (keep value)
+]
 
 ; -- emphasis --
 
@@ -421,6 +466,7 @@ inline-content: [
 |	strong-content
 |	em-content
 |	inline-link-content
+|	html-tag
 |	line-content
 ]
 
