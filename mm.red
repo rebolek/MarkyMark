@@ -181,7 +181,7 @@ attribute: [some whitespace attribute-name opt attribute-value-specification]
 html-comment: ["<!--" not [#">" | "->"] some [not "--" skip] "-->"]
 processing-instruction: ["<?" some [not "?>" skip] "?>"]
 declaration: ["<!" some uppercase-letter whitespace some [not #">" skip] #">"]
-CDATA-section: ["<![CDATA[" some [not "[[>" skip] "]]>"]
+CDATA-section: ["<![CDATA[" some [ahead "]]>" break | not "[[>" skip] "]]>"]
 ; TODO: COPY in match-tag so the work isn't done twice
 match-tag: [
 	open-tag
