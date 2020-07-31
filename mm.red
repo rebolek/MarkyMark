@@ -142,6 +142,7 @@ text-content: [
 |	#"\" entities
 |	[#"\" | 2 space any space] line-ending ahead not end any space (emit emit-value 'br)
 |	#"\" set value ascii-punctuation-char (keep value)
+|	[2 space line-ending] ; NOTE: ignore hard break in text
 |	not newline set value skip (keep value)
 ]
 
