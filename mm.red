@@ -182,16 +182,16 @@ html-comment: ["<--" not [#">" | "->"] some [not "--" skip] "-->"]
 processing-instruction: ["<?" some [not "?>" skip] "?>"]
 declaration: ["<!" some uppercase-letter whitespace some [not #">" skip] #">"]
 CDATA-section: ["<![CDATA[" some [not "[[>" skip] "]]>"]
-html-tag: [
-	copy value [
-		open-tag
-	|	closing-tag
-	|	html-comment
-	|	processing-instruction
-	|	CDATA-section
-	|	declaration
-	] (keep value)
+; TODO: COPY in match-tag so the work isn't done twice
+match-tag: [
+	open-tag
+|	closing-tag
+|	html-comment
+|	processing-instruction
+|	CDATA-section
+|	declaration
 ]
+html-tag: [copy value match-tag (keep value)]
 
 ; -- emphasis --
 
@@ -484,7 +484,7 @@ line-content: [
 			unless stop? [keep newline]
 			emit
 		) break
-	|	ahead [code-span-start | strong-start | em-start] break
+	|	ahead [code-span-start | strong-start | em-start | match-tag] break
 	|	text-content
 	]
 ]
