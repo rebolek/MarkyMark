@@ -315,11 +315,10 @@ block-quote: [
 	ahead block-quote-marker
 	(push 'blockquote)
 	(emit-newline)
-	p0:
-	block-quote-marker
-	any space
-	p1:
-	some block-content
+	some [
+		newline (emit-newline)
+	|	block-quote-marker any space (print "BLLL") block-content
+	]
 	(emit-pop)
 	(emit-newline)
 ; TODO
@@ -467,16 +466,32 @@ para: [
 	not blank-line
 	(push 'para)
 	ws*
-	some inline-content
+	some [
+		blank-line break
+	|	para-newline
+	|	inline-content
+	]
 	(emit-pop)
+]
+
+para-newline: [
+	newline (
+		if space = string/1 [take string]
+		if all [
+			space = last string
+			space <> first skip tail string -2
+		][take/last string]
+		unless stop? [keep newline]
+		emit
+	)
 ]
 
 ; -- inline --
 
 inline-content: [
-	blank-line break
-|	ahead thematic-start break
+	ahead thematic-start break
 |	ahead fenced-code-start break
+|	ahead block-quote-marker break
 |	code-span-content
 |	strong-content
 |	em-content
@@ -488,17 +503,7 @@ inline-content: [
 line-content: [
 	ws*
 	some [
-;		newline (unless stop? [append string newline]) break
-		newline (
-			if space = string/1 [take string]
-			if all [
-				space = last string
-				space <> first skip tail string -2
-			][take/last string]
-			unless stop? [keep newline]
-			emit
-		) break
-	|	ahead [code-span-start | strong-start | em-start | match-tag] break
+		ahead [code-span-start | strong-start | em-start | match-tag] break
 	|	text-content
 	]
 ]
