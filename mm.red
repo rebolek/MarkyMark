@@ -41,6 +41,15 @@ emit-newline: func [][append target newline]
 
 keep: func [value][append string value]
 
+trim-string: func [][
+	if space = string/1 [take string]
+	if all [
+		space = last string
+		space <> first skip tail string -2
+	][take/last string]
+	unless stop? [keep newline]
+]
+
 ; ---------------------------------------------------------------------------
 
 ; -- entities --
@@ -471,17 +480,13 @@ para: [
 	|	para-newline
 	|	inline-content
 	]
+	(trim/tail string)
 	(emit-pop)
 ]
 
 para-newline: [
 	newline (
-		if space = string/1 [take string]
-		if all [
-			space = last string
-			space <> first skip tail string -2
-		][take/last string]
-		unless stop? [keep newline]
+		trim-string
 		emit
 	)
 ]
