@@ -307,15 +307,21 @@ setext-heading: [
 
 ; -- block quote --
 
-
 block-quote-marker: [
 	0 3 space
 	#">"
-	any space
 ]
 block-quote: [
-	block-quote-marker
+	ahead block-quote-marker
 	(push 'blockquote)
+	(emit-newline)
+	p0:
+	block-quote-marker
+	any space
+	p1:
+	some block-content
+	(emit-pop)
+	(emit-newline)
 ; TODO
 ]
 
@@ -449,7 +455,14 @@ inline-link-content: [
 	(pop)
 ]
 
+; -- list --
+
+bullet-list-marker: charset "-+*"
+ordered-chars: charset ".)"
+ordered-list-marker: [1 9 digit ordered-chars]
+
 ; -- para --
+
 para: [
 	not blank-line
 	(push 'para)
@@ -490,6 +503,17 @@ line-content: [
 	]
 ]
 
+block-content: [
+	blank-line
+|	thematic-break
+|	atx-heading
+|	setext-heading
+|	indented-code-block
+|	fenced-code
+|	block-quote
+|	para
+]
+
 ; -- main --
 
 main-rule: [
@@ -500,6 +524,7 @@ main-rule: [
 	|	setext-heading
 	|	indented-code-block
 	|	fenced-code
+	|	block-quote
 	|	para
 	]
 ]
@@ -534,7 +559,10 @@ hm: func [
 		(append out newline)
 	]
 	tag-rule: [
-		set tag ['em | 'strong | 'pre | 'h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6]
+		set tag [
+			'em | 'strong | 'pre | 'blockquote
+			| 'h1 | 'h2 | 'h3 | 'h4 | 'h5 | 'h6
+		]
 		(append out to tag! tag)
 		(append tag-stack tag)
 		ahead block! into rule
