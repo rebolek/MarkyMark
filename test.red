@@ -104,17 +104,21 @@ test: func [number [integer!]][
 	markdown tests/:number/markdown
 ]
 
-check: func [number [integer!] /quiet][
+check: func [number [integer! string!] /quiet /local result][
+	if string? number [
+		return check-section number
+	]
+	result: markdown tests/:number/markdown
 	unless quiet [
 		hr "markdown"
-		print tests/:number/markdown
+		print mold tests/:number/markdown
 		hr "expected"
-		print tests/:number/html
+		print mold tests/:number/html
 		hr "result"
-		print markdown tests/:number/markdown
+		print mold result
 		hr none
 	]
-	equal? tests/:number/html markdown tests/:number/markdown
+	equal? tests/:number/html result
 ]
 
 get-sections: func [
@@ -216,4 +220,5 @@ main: func [
 	]
 ]
 
+get-sections
 main
