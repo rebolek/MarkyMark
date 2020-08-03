@@ -534,8 +534,8 @@ leaf-block: [
 |	(!! #fen) fenced-code-block
 |	(!! #htm) html-block
 |	(!! #lrd) link-reference-definition
-|	(print "para") para
 |	blank-line
+|	(print "para") para
 ]
 
 container-block: [
