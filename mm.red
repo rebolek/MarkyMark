@@ -12,6 +12,9 @@ Red[
 	}
 ]
 
+!!: func [value][print mold value]
+
+
 string: ""
 
 output: []
@@ -52,6 +55,10 @@ trim-string: func [][
 ]
 
 ; ---------------------------------------------------------------------------
+
+; parse probe
+
+pp: [p: (print mold p)]
 
 ; -- entities --
 
@@ -154,7 +161,7 @@ text-content: [
 |	[#"\" | 2 space any space] line-ending ahead not end any space (emit emit-value 'br)
 ;|	any space newline end break ; #196 - NOTE: is this a hack to pass it, or a proper solution?
 |	#"\" set value ascii-punctuation-char (keep value)
-|	2 space ahead line-ending ahead [end | blank-line] break ; end paragraph (#196)
+|	2 space ahead [line-ending [end | blank-line]] (print "end para") break ; end paragraph (#196)
 |	[2 space line-ending] ; NOTE: ignore hard break in text
 |	not newline keep-char
 ]
@@ -283,7 +290,7 @@ atx-heading: [
 	copy atx-mark 1 6 #"#" space
 	(stop?: true)
 	(push to word! rejoin ['h length? atx-mark])
-	inline-content
+	some [p: (print ["IC" mold p]) inline-content]
 	(emit-pop)
 	(emit-newline)
 	(stop?: false)
@@ -295,10 +302,8 @@ setext-type: none
 setext-heading-start: [
 	ahead [
 		thru newline ;at least one line precedes underlining
-		thru [
-			0 3 space
-			copy setext-type [some #"=" | some #"-"]
-		]
+		0 3 space
+		copy setext-type [some #"=" | some #"-"]
 		(setext-type: select [#"=" h1 #"-" h2] first setext-type)
 		any space
 		newline
@@ -423,7 +428,7 @@ fenced-code-line: [
 	(emit)
 	(emit-newline)
 ]
-fenced-code: [
+fenced-code-block: [
 	fenced-code-start
 	(code?: true)
 	(push 'pre)
@@ -467,11 +472,15 @@ inline-link-content: [
 	(pop)
 ]
 
+link-reference-definition: [fail] ; NOTE: empty rule
+
 ; -- list --
 
 bullet-list-marker: charset "-+*"
 ordered-chars: charset ".)"
 ordered-list-marker: [1 9 digit ordered-chars]
+
+list: []
 
 ; -- para --
 
@@ -496,9 +505,9 @@ para-newline: [
 ; -- inline --
 
 inline-content: [
-	ahead thematic-start break
-|	ahead fenced-code-start break
-|	ahead block-quote-marker break
+	ahead thematic-start (!! #tc) break
+|	ahead fenced-code-start (!! #fc) break
+|	ahead block-quote-marker (!! #bq) break
 |	code-span-content
 |	strong-content
 |	em-content
@@ -508,14 +517,37 @@ inline-content: [
 ]
 
 line-content: [
-	ws*
+;	ws*
 	some [
 		ahead [code-span-start | strong-start | em-start | match-tag] break
-	|	text-content
+	|	opt [4 space any space] text-content
 	]
 ]
 
+html-block: [html-tag]
+
+leaf-block: [
+	thematic-break
+|	(!! #atx) atx-heading
+|	(!! #set) setext-heading
+|	(!! #ind) indented-code-block
+|	(!! #fen) fenced-code-block
+|	(!! #htm) html-block
+|	(!! #lrd) link-reference-definition
+|	(print "para") para
+|	blank-line
+]
+
+container-block: [
+	block-quote
+|	list
+]
+
 block-content: [
+	leaf-block
+|	container-block
+]
+comment [
 	blank-line
 |	thematic-break
 |	atx-heading
