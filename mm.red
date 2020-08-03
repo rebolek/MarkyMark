@@ -47,6 +47,7 @@ trim-string: func [][
 		space = last string
 		space <> first skip tail string -2
 	][take/last string]
+	trim/tail string
 	unless stop? [keep newline]
 ]
 
@@ -87,9 +88,10 @@ sptb-set: charset reduce [space tab]
 ; actual defs
 
 character: [skip]
+keep-char: [set value skip (keep value)]
 line: [any [not crlf-set skip] line-ending]
 line-ending: [crlf-set not crlf-set]
-blank-line: [any sptb-set line-ending]
+blank-line: [any sptb-set some crlf-set]
 whitespace-char: chset [#20 #09 #0A #0B #0C #0D]
 whitespace: [some whitespace-char]
 opt-whitespace: [any whitespace-char]
@@ -111,7 +113,7 @@ hex-digit: charset "1234567890abcdefABCDEF"
 ws: charset " ^-" ; NOTE: newline has special meaning
 ws*: [any ws]
 ws+: [some ws]
-blank-line: [go-back newline ws* newline]
+;blank-line: [go-back newline ws* newline]
 
 entities: [
 	#"<" 		(keep "&lt;")
@@ -147,12 +149,14 @@ text-content: [
 |	if (not code?) named-entities
 |	if (not code?) numeric-entities
 |	entities
-|	if (code?) not newline set value skip (keep value) ; TODO: Optimize, it same as last line
+|	if (code?) not newline keep-char ; TODO: Optimize, it same as last line
 |	#"\" entities
 |	[#"\" | 2 space any space] line-ending ahead not end any space (emit emit-value 'br)
+;|	any space newline end break ; #196 - NOTE: is this a hack to pass it, or a proper solution?
 |	#"\" set value ascii-punctuation-char (keep value)
+|	2 space ahead line-ending ahead [end | blank-line] break ; end paragraph (#196)
 |	[2 space line-ending] ; NOTE: ignore hard break in text
-|	not newline set value skip (keep value)
+|	not newline keep-char
 ]
 
 mark: none
@@ -326,7 +330,7 @@ block-quote: [
 	(emit-newline)
 	some [
 		newline (emit-newline)
-	|	block-quote-marker any space (print "BLLL") block-content
+	|	block-quote-marker any space block-content
 	]
 	(emit-pop)
 	(emit-newline)
@@ -342,7 +346,7 @@ indented-code-line: [
 	some [
 		newline (keep newline) break
 	|	entities
-	|	set value skip (keep value)
+	|	keep-char
 	]
 	(emit)
 ]
@@ -472,13 +476,11 @@ ordered-list-marker: [1 9 digit ordered-chars]
 ; -- para --
 
 para: [
-	not blank-line
 	(push 'para)
 	ws*
 	some [
 		blank-line break
-	|	para-newline
-	|	inline-content
+	|	inline-content para-newline
 	]
 	(trim/tail string)
 	(emit-pop)
@@ -527,16 +529,7 @@ block-content: [
 ; -- main --
 
 main-rule: [
-	some [
-		blank-line
-	|	thematic-break
-	|	atx-heading
-	|	setext-heading
-	|	indented-code-block
-	|	fenced-code
-	|	block-quote
-	|	para
-	]
+	some block-content
 ]
 
 md: func [input [string!]][
