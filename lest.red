@@ -43,16 +43,15 @@ lest: func [
 		(append out to tag! to refinement! tag)
 	]
 	link-rule: [
-		'a
+		'link
+		set target url!
+		(append out rejoin [{<a href="} target {"}])
+		opt [
+			set value string!
+			(append out rejoin [{ title=} value])
+		]
+		(append out #">")
 		into [
-			set target url!
-			(append out rejoin [{<a href="} target {"}])
-			opt [
-				'title
-				set value string!
-				(append out rejoin [{ title=} value])
-			]
-			(append out #">")
 			some [
 				tag-rule
 			|	set value [string! | char!] (append out value)
@@ -60,11 +59,24 @@ lest: func [
 			(append out </a>)
 		]
 	]
+	image-rule: [
+		'image
+		set target url!
+		(append out rejoin [{<img src="} target {"}])
+		set value string!
+		(append out rejoin [{ alt="} value {"}])
+		opt [
+			set value string! 
+			(append out rejoin [ { title=} value])
+		]
+		(append out " />")
+	]
 	rule: [
 		any [
 			tag-rule
 		|	code-rule
 		|	link-rule
+		|	image-rule
 		|	'hr	(append out "<hr />^/")
 		|	'br	(append out "<br />^/")
 		|	para

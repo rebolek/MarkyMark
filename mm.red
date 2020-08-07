@@ -23,6 +23,7 @@ string: ""
 output: []
 target: output
 stack: []
+mark: none
 stop?: false ; NOTE: set this to TRUE to not include newline after inline text
 code?: false
 full-trim?: false ; remove all leading/trailing whitespace from string
@@ -67,7 +68,11 @@ pp: [p: (!! p)]
 
 ; -- entities --
 
-html-entities: load %entities
+html-entities: either exists? %entities.c [
+	load decompress read/binary %entities.c
+][
+	load %entities
+]
 named-entities: copy html-entities
 
 entity-list: collect [
@@ -476,14 +481,44 @@ inline-link-content: [
 		copy link-title to #")"
 	]
 	#")"
-	(push 'a)
-	(emit-value to url! link-target)
-	(if link-title [emit-value 'title emit-value link-title])
+	(mark: target)
+	(push 'link)
+	(insert next mark to url! link-target)
+	(if link-title [insert next next mark link-title])
 	(emit-value link-text)
 	(pop)
 ]
 
-link-reference-definition: [fail] ; NOTE: empty rule
+link-reference-definition: [fail] ; TODO: empty rule until it's done
+
+; -- image --
+
+image-description:
+image-target:
+image-title:
+	none
+
+image-start: [
+	"!["
+	ahead [to [#"]" #"("]]
+]
+image-content: [
+	image-start
+	copy image-description to #"]" skip
+	#"(" copy image-target to [space | #")"]
+	(image-title: none)
+	opt [
+		space
+		copy image-title to #")"
+	]
+	#")"
+	(mark: target)
+	(push 'image)
+	(insert next mark to url! image-target)
+	(insert next next mark image-description)
+	(if image-title [insert next next next mark image-title])
+	(pop)
+]
 
 ; -- list --
 
@@ -526,6 +561,7 @@ inline-content: [
 |	(!! #stc) strong-content
 |	(!! #emc) em-content
 |	(!! #ilc) inline-link-content
+|	(!! #iim) image-content
 |	(!! #hmc) html-tag
 |	(!! #lic) line-content (!! #line-ended)
 ]
