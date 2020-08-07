@@ -12,6 +12,7 @@ Red[
 	}
 ]
 
+#include %lest.red
 
 !?: false ;true
 !!: func [value][if !? [print mold value]]
