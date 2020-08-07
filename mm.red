@@ -14,7 +14,8 @@ Red[
 
 #include %lest.red
 
-!?: false ;true
+!?: false
+;!?: true
 !!: func [value][if !? [print mold value]]
 
 
@@ -481,7 +482,7 @@ inline-link-content: [
 		copy link-title to #")"
 	]
 	#")"
-	(mark: target)
+	(mark: tail target)
 	(push 'link)
 	(insert next mark to url! link-target)
 	(if link-title [insert next next mark link-title])
