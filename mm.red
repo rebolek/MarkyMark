@@ -116,10 +116,13 @@ ascii-punctuation-char: make bitset! #{000000007FFF003F8000001F8000001E} ; see %
 
 backtick: #"`"
 tilde: #"~"
+slash: #"/"
 backslash: #"\"
 amp: #"&"
 semicolon: #";"
 hash: #"#"
+lt: #"<"
+gt: #">"
 digit: charset "1234567890"
 hex-digit: charset "1234567890abcdefABCDEF"
 ws: charset " ^-" ; NOTE: newline has special meaning
@@ -497,8 +500,8 @@ para: [
 	ws*
 	(!! #-->para)
 	some [
-		blank-line break
-	|	para-newline
+;		blank-line break
+		para-newline
 	|	inline-content 
 	]
 	(!! #--<para)
@@ -534,7 +537,90 @@ line-content: [
 	]
 ]
 
-html-block: [html-tag]
+html-block-1: [
+	; Start condition: line begins with the string <script, <pre, or <style 
+	case off
+	#"<" ["script" | "pre" | "style"] ; (case-insensitive),
+	case on
+	;	followed by whitespace, the string >, or the end of the line.
+	[whitespace | #">" | crlf]
+	; End condition: line contains an end tag </script>, </pre>, or </style> 
+	case off
+	ahead to [</script> | </pre> | </style>] ; (case-insensitive; it need not match the start tag).
+	case on
+]
+
+html-block-2: [
+	; Start condition: line begins with the string <!--.
+	{<!--}
+	; End condition: line contains the string -->.
+	ahead to {-->}
+]
+
+html-block-3: [
+	; Start condition: line begins with the string <?.
+	{<?}
+	; End condition: line contains the string ?>.
+	ahead to {?>}
+]
+
+html-block-4: [
+	; Start condition: line begins with the string <! followed by an uppercase ASCII letter.
+	{<!} uppercase-letter
+	;  End condition: line contains the character >.
+	ahead to {>}
+]
+
+html-block-5: [
+	; Start condition: line begins with the string <![CDATA[.
+	{<![CDATA[}
+	; End condition: line contains the string ]]>.
+	ahead to {]]>}
+]
+
+html-block-6: [
+	; Start condition: line begins the string < or </ followed by one of the strings (case-insensitive) address, article, aside, base, basefont, blockquote, body, caption, center, col, colgroup, dd, details, dialog, dir, div, dl, dt, fieldset, figcaption, figure, footer, form, frame, frameset, h1, h2, h3, h4, h5, h6, head, header, hr, html, iframe, legend, li, link, main, menu, menuitem, nav, noframes, ol, optgroup, option, p, param, section, source, summary, table, tbody, td, tfoot, th, thead, title, tr, track, ul, 
+	case off
+	#"<" opt slash [
+		"address" | "article" | "aside" | "base" | "basefont" | "blockquote" |
+		"body" | "caption" | "center" | "col" | "colgroup" | "dd" | "details" |
+		"dialog" | "dir" | "div" | "dl" | "dt" | "fieldset" | "figcaption" |
+		"figure" | "footer" | "form" | "frame" | "frameset" | "h1" | "h2" |
+		"h3" | "h4" | "h5" | "h6" | "head" | "header" | "hr" | "html" |
+		"iframe" | "legend" | "li" | "link" | "main" | "menu" | "menuitem" |
+		"nav" | "noframes" | "ol" | "optgroup" | "option" | "p" | "param" |
+		"section" | "source" | "summary" | "table" | "tbody" | "td" | "tfoot" |
+		"th" | "thead" | "title" | "tr" | "track" | "ul"
+	]
+	case on
+	; followed by whitespace, the end of the line, the string >, or the string />.
+	[whitespace | crlf-set | opt slash #">"]
+	; End condition: line is followed by a blank line.
+	ahead blank-line
+]
+
+html-block-7: [
+	; Start condition: line begins with a complete open tag (with any tag name other than script, style, or pre) or a complete closing tag, followed only by whitespace or the end of the line.
+	case off
+	#"<" opt slash
+	not ["script" | "style" | "pre"]
+	thru #">"
+	case on
+	[whitespace | crlf-set]
+	; End condition: line is followed by a blank line.
+	ahead blank-line
+]
+
+
+html-block: [
+	html-block-1
+|	html-block-2
+|	html-block-3
+|	html-block-4
+|	html-block-5
+|	html-block-6
+|	html-block-7
+]
 
 leaf-block: [
 	thematic-break
