@@ -162,6 +162,29 @@ check-section: func [name /local passed failed test section][
 	]
 ]
 
+check-sections: func [/local passed failed test section][
+	result: copy #()
+	foreach part words-of sections [
+		passed: clear []
+		failed: clear []
+		section: get-section part
+		foreach test section [
+			either check/quiet test [append passed test][append failed test]
+		]
+		result/:part: reduce [
+			to percent! round/to (length? passed) / (1.0 * length? section) 0.01%
+			passed
+			failed
+		]
+	]
+	result
+]
+by-rate: func [sections][
+	rates: copy []
+	foreach [section data] sections [repend rates [section data/1]]
+	new-line/skip sort/reverse/skip/compare rates 2 2 true 2
+]
+
 
 main: func [
 	/local test
