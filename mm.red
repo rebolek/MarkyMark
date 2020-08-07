@@ -12,7 +12,9 @@ Red[
 	}
 ]
 
-!!: func [value][print mold value]
+
+!?: false ;true
+!!: func [value][if !? [print mold value]]
 
 
 string: ""
@@ -22,6 +24,7 @@ target: output
 stack: []
 stop?: false ; NOTE: set this to TRUE to not include newline after inline text
 code?: false
+full-trim?: false ; remove all leading/trailing whitespace from string
 
 push: func [rule [word!]][
 	unless empty? string [emit]
@@ -45,6 +48,7 @@ emit-newline: func [][append target newline]
 keep: func [value][append string value]
 
 trim-string: func [][
+	if full-trim? [full-trim?: false return trim string]
 	if space = string/1 [take string]
 	if all [
 		space = last string
@@ -58,7 +62,7 @@ trim-string: func [][
 
 ; parse probe
 
-pp: [p: (print mold p)]
+pp: [p: (!! p)]
 
 ; -- entities --
 
@@ -152,18 +156,17 @@ numeric-entities: [
 ]
 
 text-content: [
-	keep-as-entities
-|	if (not code?) named-entities
-|	if (not code?) numeric-entities
-|	entities
-|	if (code?) not newline keep-char ; TODO: Optimize, it same as last line
-|	#"\" entities
-|	[#"\" | 2 space any space] line-ending ahead not end any space (emit emit-value 'br)
-;|	any space newline end break ; #196 - NOTE: is this a hack to pass it, or a proper solution?
-|	#"\" set value ascii-punctuation-char (keep value)
-|	2 space ahead [line-ending [end | blank-line]] (print "end para") break ; end paragraph (#196)
-|	[2 space line-ending] ; NOTE: ignore hard break in text
-|	not newline keep-char
+	(!! #t0) pp keep-as-entities
+|	(!! #t1) pp if (not code?) named-entities
+|	(!! #t2) if (not code?) numeric-entities
+|	(!! #t3) entities
+|	(!! #t4) if (code?) not newline keep-char ; TODO: Optimize, it same as last line
+|	(!! #t5) #"\" entities
+|	(!! #t6) [#"\" | 2 space any space] line-ending ahead not end any space (emit emit-value 'br)
+|	(!! #t7) pp #"\" set value ascii-punctuation-char (keep value) pp
+|	(!! #t8) 2 space ahead [line-ending [end | blank-line]]
+|	(!! #t9) [2 space line-ending] ; NOTE: ignore hard break in text
+|	(!! #tx) pp not newline (!! #tt) keep-char pp
 ]
 
 mark: none
@@ -288,11 +291,15 @@ thematic-break: [
 atx-mark: none
 atx-heading: [
 	copy atx-mark 1 6 #"#" space
+	(full-trim?: true)
 	(stop?: true)
 	(push to word! rejoin ['h length? atx-mark])
-	some [p: (print ["IC" mold p]) inline-content]
+	some [(!! #ATX-IC) pp inline-content]
+	(!! #atend) pp
+	(either full-trim? [trim string][trim/tail string])
 	(emit-pop)
 	(emit-newline)
+	(full-trim?: false)
 	(stop?: false)
 ]
 
@@ -487,10 +494,13 @@ list: []
 para: [
 	(push 'para)
 	ws*
+	(!! #-->para)
 	some [
 		blank-line break
-	|	inline-content para-newline
+	|	para-newline
+	|	inline-content 
 	]
+	(!! #--<para)
 	(trim/tail string)
 	(emit-pop)
 ]
@@ -505,22 +515,21 @@ para-newline: [
 ; -- inline --
 
 inline-content: [
-	ahead thematic-start (!! #tc) break
-|	ahead fenced-code-start (!! #fc) break
-|	ahead block-quote-marker (!! #bq) break
-|	code-span-content
-|	strong-content
-|	em-content
-|	inline-link-content
-|	html-tag
-|	line-content
+	(!! #tc?) ahead thematic-start (!! #tc) break
+|	(!! #fc?) ahead fenced-code-start (!! #fc) break
+|	(!! #bq?) ahead block-quote-marker (!! #bq) break
+|	(!! #csc) code-span-content
+|	(!! #stc) strong-content
+|	(!! #emc) em-content
+|	(!! #ilc) inline-link-content
+|	(!! #hmc) html-tag
+|	(!! #lic) line-content (!! #line-ended)
 ]
 
 line-content: [
-;	ws*
 	some [
-		ahead [code-span-start | strong-start | em-start | match-tag] break
-	|	opt [4 space any space] text-content
+		(!! #check-break) ahead [code-span-start | strong-start | em-start | match-tag] (!! #break-matched ) break
+		|	text-content (!! #after-tc)
 	]
 ]
 
@@ -535,7 +544,7 @@ leaf-block: [
 |	(!! #htm) html-block
 |	(!! #lrd) link-reference-definition
 |	blank-line
-|	(print "para") para
+|	para
 ]
 
 container-block: [
@@ -571,7 +580,7 @@ md: func [input [string!]][
 	stack: clear []
 	stop?: false
 
-	parse/case input main-rule
+	!! parse/case input main-rule
 	emit
 	output
 ]

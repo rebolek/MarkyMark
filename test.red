@@ -104,8 +104,8 @@ test: func [number [integer!]][
 	markdown tests/:number/markdown
 ]
 
-check: func [number [integer! string!] /quiet /local result][
-	if string? number [
+check: func [number [integer! string! word!] /quiet /local result][
+	unless integer? number [
 		return check-section number
 	]
 	result: markdown tests/:number/markdown
