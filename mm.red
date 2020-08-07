@@ -250,6 +250,7 @@ em-content: [
 		em-end (emit-pop) break
 	|	ahead strong-start (emit) strong-content
 	|	text-content
+	|	if (setext?) newline (keep newline)
 	]
 ] 
 
@@ -275,6 +276,7 @@ strong-content: [
 		strong-end (emit-pop) break
 	|	ahead em-start (emit) em-content
 	|	text-content
+	|	if (setext?) newline (keep newline)
 	]
 ]
 
@@ -315,10 +317,22 @@ atx-heading: [
 
 ; -- setext heading --
 
+setext?: false
 setext-type: none
+setext-newline?: false
+
+setext-char: charset "=-"
 setext-heading-start: [
+	(setext?: setext-newline?: false)
 	ahead [
-		thru newline ;at least one line precedes underlining
+		some [
+			ahead [0 3 space setext-char] break
+		|	newline (setext-newline?: true)
+		|	4 space fail
+		|	skip
+		]
+		; at least one line precedes underlining
+		if (setext-newline?)
 		0 3 space
 		copy setext-type [some #"=" | some #"-"]
 		(setext-type: select [#"=" h1 #"-" h2] first setext-type)
@@ -329,15 +343,20 @@ setext-heading-start: [
 setext-heading: [
 	setext-heading-start
 	(push setext-type)
+	(setext?: true)
 	(stop?: true)
+	any sptb-set
 	some [
-		newline break
+		ahead [0 3 space setext-char] break
+	|	newline
 	|	inline-content
 	]
 	thru newline
+	(trim string)
 	(emit-pop)
 	(emit-newline)
 	(stop?: false)
+	(setext?: false)
 ]
 
 ; -- block quote --
@@ -537,7 +556,8 @@ para: [
 	(!! #-->para)
 	some [
 ;		blank-line break
-		para-newline
+		newline ahead newline break
+	|	para-newline
 	|	inline-content 
 	]
 	(!! #--<para)
