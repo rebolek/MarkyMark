@@ -542,11 +542,64 @@ image-content: [
 
 ; -- list --
 
+comment [
+	#NOTE {All rules should follow same structure}
+list: [
+	start-condition []
+	content []
+	break-condition []
+	end-condition []
+	match [
+		ahead [
+			start-condition
+			some [
+				break-condition fail
+			|	end-condition break
+			|	skip
+			]
+		]
+		start-condition
+		some [
+			end-condition break
+		|	content
+		]
+	]
+]
+]
+
 bullet-list-marker: charset "-+*"
 ordered-chars: charset ".)"
 ordered-list-marker: [1 9 digit ordered-chars]
 
-list: []
+list-marker: [
+	bullet-list-marker
+|	ordered-list-marker
+]
+
+bullet-indent: none
+
+bullet-list-start: [
+	; -- start condition
+	copy bullet-indent [bullet-list-marker 1 4 space]
+	(bullet-indent: length? bullet indent)
+	; --
+	some [
+		; -- break condition
+		not bullet-indent space fail
+		; -- end condition (same as break condition)
+	|	skip	
+	]
+]
+
+bullet-list-break: [
+	not bullet-indent space
+]
+
+bullet-list: [
+	ahead [
+		bullet-list-start
+	]
+]
 
 ; -- para --
 
