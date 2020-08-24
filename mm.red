@@ -610,6 +610,7 @@ para: [
 	some [
 ;		blank-line break
 		newline ahead newline break
+	|	ahead [newline html-break-para] break ; TODO: should break on all blocks
 	|	para-newline
 	|	inline-content 
 	]
@@ -647,6 +648,8 @@ line-content: [
 	]
 ]
 
+html-block-end: none
+
 html-block-1: [
 	; Start condition: line begins with the string <script, <pre, or <style 
 	case off
@@ -656,7 +659,11 @@ html-block-1: [
 	[whitespace | #">" | crlf]
 	; End condition: line contains an end tag </script>, </pre>, or </style> 
 	case off
-	ahead to [</script> | </pre> | </style>] ; (case-insensitive; it need not match the start tag).
+	ahead to html-block-end-1
+	(html-block-end: html-block-end-1)
+]
+html-block-end-1: [
+	[</script> | </pre> | </style>]
 	case on
 ]
 
@@ -664,32 +671,50 @@ html-block-2: [
 	; Start condition: line begins with the string <!--.
 	{<!--}
 	; End condition: line contains the string -->.
-	ahead to {-->}
+	ahead to html-block-2-end
+	(html-block-end: html-block-2-end)
 ]
+html-block-2-end: {-->}
 
 html-block-3: [
 	; Start condition: line begins with the string <?.
 	{<?}
 	; End condition: line contains the string ?>.
-	ahead to {?>}
+	ahead to html-block-3-end
+	(html-block-end: html-block-3-end)
 ]
+html-block-3-end: {?>}
 
 html-block-4: [
 	; Start condition: line begins with the string <! followed by an uppercase ASCII letter.
 	{<!} uppercase-letter
 	;  End condition: line contains the character >.
-	ahead to {>}
+	ahead to html-block-4-end
+	(html-block-end: html-block-4-end)
 ]
+html-block-4-end: #">"
 
 html-block-5: [
 	; Start condition: line begins with the string <![CDATA[.
 	{<![CDATA[}
 	; End condition: line contains the string ]]>.
-	ahead to {]]>}
+	ahead to html-block-5-end
+	(html-block-end: html-block-5-end)
 ]
+html-block-5-end: {]]>}
 
 html-block-6: [
-	; Start condition: line begins the string < or </ followed by one of the strings (case-insensitive) address, article, aside, base, basefont, blockquote, body, caption, center, col, colgroup, dd, details, dialog, dir, div, dl, dt, fieldset, figcaption, figure, footer, form, frame, frameset, h1, h2, h3, h4, h5, h6, head, header, hr, html, iframe, legend, li, link, main, menu, menuitem, nav, noframes, ol, optgroup, option, p, param, section, source, summary, table, tbody, td, tfoot, th, thead, title, tr, track, ul, 
+hb:
+(!! #hb6a)
+(!! hb)
+	; Start condition: line begins the string < or </ followed by one
+	; of the strings (case-insensitive) address, article, aside, base,
+	; basefont, blockquote, body, caption, center, col, colgroup, dd,
+	; details, dialog, dir, div, dl, dt, fieldset, figcaption, figure,
+	; footer, form, frame, frameset, h1, h2, h3, h4, h5, h6, head, header,
+	; hr, html, iframe, legend, li, link, main, menu, menuitem, nav,
+	; noframes, ol, optgroup, option, p, param, section, source, summary,
+	; table, tbody, td, tfoot, th, thead, title, tr, track, ul, 
 	case off
 	#"<" opt slash [
 		"address" | "article" | "aside" | "base" | "basefont" | "blockquote" |
@@ -703,11 +728,16 @@ html-block-6: [
 		"th" | "thead" | "title" | "tr" | "track" | "ul"
 	]
 	case on
+(!! #hb6b)
 	; followed by whitespace, the end of the line, the string >, or the string />.
 	[whitespace | crlf-set | opt slash #">"]
 	; End condition: line is followed by a blank line.
-	ahead blank-line
+(!! #hb6c)
+	ahead to html-block-6-end
+(!! #hb6d)
+	(html-block-end: html-block-6-end)
 ]
+html-block-6-end: [newline [blank-line | end]]
 
 html-block-7: [
 	; Start condition: line begins with a complete open tag (with any tag name other than script, style, or pre) or a complete closing tag, followed only by whitespace or the end of the line.
@@ -718,18 +748,49 @@ html-block-7: [
 	case on
 	[whitespace | crlf-set]
 	; End condition: line is followed by a blank line.
-	ahead blank-line
+	ahead to html-block-7-end
+	(html-block-end: html-block-7-end)
+]
+html-block-7-end: [newline [blank-line | end]]
+
+html-block-start: [
+	(!! #htm1) html-block-1
+|	(!! #htm2) html-block-2
+|	(!! #htm3) html-block-3
+|	(!! #htm4) html-block-4
+|	(!! #htm5) html-block-5
+|	(!! #htm6) html-block-6
+|	(!! #htm7) html-block-7
 ]
 
+html-break-para: [
+	(!! #bphtm1) html-block-1
+|	(!! #bphtm2) html-block-2
+|	(!! #bphtm3) html-block-3
+|	(!! #bphtm4) html-block-4
+|	(!! #bphtm5) html-block-5
+|	(!! #bphtm6) html-block-6 (!! #match)
+]
 
 html-block: [
-	html-block-1
-|	html-block-2
-|	html-block-3
-|	html-block-4
-|	html-block-5
-|	html-block-6
-|	html-block-7
+	copy value html-block-start
+	(!! #htm+)
+	(keep value)
+	some [
+		p0: copy value html-block-end (
+			; NOTE: BLANK-LINE match keeps previous NEWLINE also, but we need
+			;		to ignore it, but only if there's more text after
+			all [
+				not single? value
+				newline = first value
+				remove value
+			]
+			keep value
+		) 
+		p1: break
+	|	keep-char
+	]
+	p: (print mold p)
 ]
 
 leaf-block: [
@@ -738,7 +799,7 @@ leaf-block: [
 |	(!! #set) setext-heading
 |	(!! #ind) indented-code-block
 |	(!! #fen) fenced-code-block
-|	(!! #htm) html-block
+|	(!! #htm) html-block (!! #htm-)
 |	(!! #lrd) link-reference-definition
 |	blank-line
 |	para
