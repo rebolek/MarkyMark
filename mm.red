@@ -715,8 +715,7 @@ hb:
 	; hr, html, iframe, legend, li, link, main, menu, menuitem, nav,
 	; noframes, ol, optgroup, option, p, param, section, source, summary,
 	; table, tbody, td, tfoot, th, thead, title, tr, track, ul, 
-	case off
-	#"<" opt slash [
+	#"<" opt slash case off [
 		"address" | "article" | "aside" | "base" | "basefont" | "blockquote" |
 		"body" | "caption" | "center" | "col" | "colgroup" | "dd" | "details" |
 		"dialog" | "dir" | "div" | "dl" | "dt" | "fieldset" | "figcaption" |
@@ -741,8 +740,8 @@ html-block-6-end: [newline [blank-line | end]]
 
 html-block-7: [
 	; Start condition: line begins with a complete open tag (with any tag name other than script, style, or pre) or a complete closing tag, followed only by whitespace or the end of the line.
-	case off
 	#"<" opt slash
+	case off
 	not ["script" | "style" | "pre"]
 	thru #">"
 	case on
