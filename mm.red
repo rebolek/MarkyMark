@@ -754,22 +754,26 @@ html-block-7: [
 html-block-7-end: [newline [blank-line | end]]
 
 html-block-start: [
-	(!! #htm1) html-block-1
-|	(!! #htm2) html-block-2
-|	(!! #htm3) html-block-3
-|	(!! #htm4) html-block-4
-|	(!! #htm5) html-block-5
-|	(!! #htm6) html-block-6
-|	(!! #htm7) html-block-7
+	0 3 space [
+		(!! #htm1) html-block-1
+	|	(!! #htm2) html-block-2
+	|	(!! #htm3) html-block-3
+	|	(!! #htm4) html-block-4
+	|	(!! #htm5) html-block-5
+	|	(!! #htm6) html-block-6
+	|	(!! #htm7) html-block-7
+	]
 ]
 
 html-break-para: [
-	(!! #bphtm1) html-block-1
-|	(!! #bphtm2) html-block-2
-|	(!! #bphtm3) html-block-3
-|	(!! #bphtm4) html-block-4
-|	(!! #bphtm5) html-block-5
-|	(!! #bphtm6) html-block-6 (!! #match)
+	0 3 space [
+		(!! #bphtm1) html-block-1
+	|	(!! #bphtm2) html-block-2
+	|	(!! #bphtm3) html-block-3
+	|	(!! #bphtm4) html-block-4
+	|	(!! #bphtm5) html-block-5
+	|	(!! #bphtm6) html-block-6
+	]
 ]
 
 html-block: [
@@ -777,7 +781,7 @@ html-block: [
 	(!! #htm+)
 	(keep value)
 	some [
-		p0: copy value html-block-end (
+		copy value html-block-end (
 			; NOTE: BLANK-LINE match keeps previous NEWLINE also, but we need
 			;		to ignore it, but only if there's more text after
 			all [
@@ -787,10 +791,9 @@ html-block: [
 			]
 			keep value
 		) 
-		p1: break
+		break
 	|	keep-char
 	]
-	p: (print mold p)
 ]
 
 leaf-block: [
