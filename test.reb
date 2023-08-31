@@ -79,16 +79,16 @@ do %md.reb
 tests: reduce load %tests
 results: if exists? %results [do %results]
 default results context [
-	script-checksum:	checksum/method to binary! mold read %md.reb 'SHA1
-	tests-checksum:		checksum/method to binary! mold read %tests 'SHA1
+	script-checksum:	checksum to binary! mold read %md.reb 'SHA1
+	tests-checksum:		checksum to binary! mold read %tests 'SHA1
 	passed:				make block! 0
 	failed:					make block! 0
 ]
 
 passed: 				make block! length? tests
 failed: 				make block! length? tests
-script-checksum:	checksum/method to binary! mold read %md.reb 'SHA1
-tests-checksum:		checksum/method to binary! mold read %tests 'SHA1
+script-checksum:	checksum to binary! mold read %md.reb 'SHA1
+tests-checksum:		checksum to binary! mold read %tests 'SHA1
 
 foreach test tests [
 	result: equal? test/html markdown test/markdown
@@ -97,8 +97,8 @@ foreach test tests [
 
 print [
 	"=============================" newline
-	"Script checksum:" enbase script-checksum newline
-	"Tests checksum: " enbase tests-checksum newline
+	"Script checksum:" enbase script-checksum 64 newline
+	"Tests checksum: " enbase tests-checksum 64 newline
 	"=============================" newline
 	length? passed "tests passed," length? failed "tests failed." newline
 	"CommonMark.reb is" round/to to percent! divide length? passed length? tests 0.01% "ready." 
